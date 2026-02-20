@@ -1,6 +1,6 @@
-import ProductCard from "../ProductCard";
+import ProductCard from '../ProductCard'
 
-export default function ProductGrid({products}) {
+export default function ProductGrid({ products }) {
     return (
         <section className="space-y-6">
             <div className="flex items-center justify-between px-2">
@@ -20,8 +20,8 @@ export default function ProductGrid({products}) {
             </div>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {products.map((product) => (
-                    <ProductCard product={product}></ProductCard>
+                {products.map((product, index) => (
+                    <ProductCard key={`${product.name}-${index}`} product={product} />
                 ))}
             </div>
         </section>

@@ -1,9 +1,8 @@
-import { matchaThemeVars } from '../theme'
-import NavBar from '/components/NavBar'
-import Hero from '/components/Home/Hero'
+import StorefrontLayout from '../StorefrontLayout'
+import Hero from './Hero'
 import ProductCategories from './ProductCategories'
 import ProductGrid from './ProductsGrid'
-import Footer from '../Footer'
+import ExtraCards from './ExtraCards'
 
 const categories = [
     { icon: 'memory', title: 'Processors' },
@@ -60,25 +59,13 @@ const products = [
 
 export default function ElectronicsHubPage() {
     return (
-        <div
-            style={matchaThemeVars}
-            className="min-h-screen bg-[var(--matcha-bg)] text-[var(--charcoal-dark)] font-['Fredoka',sans-serif] selection:bg-[color:var(--baby-green)]/50"
-        >
-            <div className="mx-auto flex max-w-[1600px] flex-col gap-6 p-4 md:p-6 lg:p-8">
-                <NavBar></NavBar>
-
-                <main className="w-full space-y-8">
-                    <Hero></Hero>
-
-                    <ProductCategories categories={categories}></ProductCategories>
-
-                    <ProductGrid products={products}></ProductGrid>
-
-                    
-                </main>
-
-                <Footer></Footer>
-            </div>
-        </div>
+        <StorefrontLayout>
+            <main className="w-full space-y-8">
+                <Hero />
+                <ProductCategories categories={categories} />
+                <ProductGrid products={products} />
+                <ExtraCards />
+            </main>
+        </StorefrontLayout>
     )
 }

@@ -1,25 +1,25 @@
 export default function Hero(){
     return(
-        <section className="window-container relative flex min-h-[500px] items-center overflow-hidden border-none">
+    <section className="window-container relative flex min-h-[420px] items-center overflow-hidden border-none md:min-h-[500px]">
             <div className="absolute top-0 right-0 h-full w-2/3 translate-x-12 rounded-l-[3rem] bg-[color:var(--baby-green)]/30" />
-            <div className="relative grid w-full grid-cols-1 items-center gap-12 px-8 py-12 md:px-16 lg:grid-cols-2">
+      <div className="relative grid w-full grid-cols-1 items-center gap-10 px-5 py-10 sm:px-8 md:gap-12 md:px-16 md:py-12 lg:grid-cols-2">
               <div className="z-10">
                 <div className="btn-glow mb-6 inline-flex items-center gap-2 rounded-full bg-[var(--baby-green)] px-4 py-1.5 text-xs font-bold tracking-wider text-[var(--matcha-deep)] uppercase">
                   <span className="material-symbols-outlined text-sm">auto_awesome</span>
                   Fresh Drop: Baby Green Edition
                 </div>
-                <h2 className="mb-6 text-5xl leading-[1.05] font-bold text-[var(--charcoal-dark)] md:text-7xl">
+                <h2 className="mb-6 text-4xl leading-[1.05] font-bold text-[var(--charcoal-dark)] sm:text-5xl md:text-7xl">
                   High-Tech Meets <br />
                   <span className="text-[var(--matcha-deep)]">Matcha Soul.</span>
                 </h2>
-                <p className="mb-8 max-w-md text-lg leading-relaxed font-medium text-[color:var(--charcoal-dark)]/80">
+                <p className="mb-8 max-w-md text-base leading-relaxed font-medium text-[color:var(--charcoal-dark)]/80 sm:text-lg">
                   Engineered for enthusiasts who value both peak performance and a curated, calming workspace aesthetic.
                 </p>
                 <div className="flex flex-wrap items-center gap-4">
-                  <button className="btn-glow-dark rounded-2xl bg-[var(--matcha-deep)] px-10 py-4 font-bold text-white transition-all hover:bg-[var(--charcoal-dark)]">
+                  <button className="btn-glow-dark rounded-2xl bg-[var(--matcha-deep)] px-7 py-3.5 font-bold text-white transition-all hover:bg-[var(--charcoal-dark)] sm:px-10 sm:py-4">
                     Shop Components
                   </button>
-                  <button className="btn-glow rounded-2xl bg-[var(--baby-green)] px-10 py-4 font-bold text-[var(--charcoal-dark)] transition-all hover:bg-[color:var(--baby-green)]/80">
+                  <button className="btn-glow rounded-2xl bg-[var(--baby-green)] px-7 py-3.5 font-bold text-[var(--charcoal-dark)] transition-all hover:bg-[color:var(--baby-green)]/80 sm:px-10 sm:py-4">
                     Custom Builds
                   </button>
                 </div>

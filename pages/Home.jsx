@@ -1,6 +1,5 @@
-import ElectronicsHubPage from "../components/Home/ElectronicsHubPage"
+import ElectronicsHubPage from '../components/Home/ElectronicsHubPage'
+
 export default function Home() {
-    return (
-        <ElectronicsHubPage></ElectronicsHubPage>
-    )
+    return <ElectronicsHubPage />
 }
