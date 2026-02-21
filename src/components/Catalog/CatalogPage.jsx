@@ -1,0 +1,208 @@
+import { useMemo, useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import StorefrontLayout from '../StorefrontLayout'
+import CatalogSidebar from './CatalogSidebar'
+import CatalogToolbar from './CatalogToolbar'
+import CatalogResults from './CatalogResults'
+import ProductCardSkeleton from '../Loaders/ProductCardSkeleton'
+import CatalogSidebarSkeleton from '../Loaders/CatalogSidebarSkeleton'
+import api from '../../api'
+
+const perPage = 6
+
+export default function CatalogPage() {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [queryCategory, setQueryCategory] = useState(searchParams.get('category'))
+  const [categories, setCategories] = useState([])
+
+  const [catalogProducts, setCatalogProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  // Update state whenever the query param changes (like when clicking nav)
+  const [selectedSubCategories, setSelectedSubCategories] = useState([])
+  const [subCategories, setSubCategories] = useState([])
+  const [brands, setBrands] = useState([])
+
+  useEffect(() => {
+    const currentCategory = searchParams.get('category')
+    setQueryCategory(currentCategory)
+    // Clear subcategories when navigating to a new main category
+    setSelectedSubCategories([])
+    setSelectedBrand('All')
+    setPage(1)
+  }, [searchParams])
+
+  const [selectedBrand, setSelectedBrand] = useState('All')
+  const [priceCap, setPriceCap] = useState(10000)
+  const [sortBy, setSortBy] = useState('featured')
+  const [view, setView] = useState('grid')
+  const [page, setPage] = useState(1)
+
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        setLoading(true)
+        const params = new URLSearchParams()
+
+        if (queryCategory) {
+          const categoryObj = categories.find(c => c.name === queryCategory)
+          if (categoryObj) {
+            params.append('category_id', categoryObj.id)
+          } else {
+            // Categories might not be loaded yet, wait for them
+            if (categories.length === 0) return
+          }
+        }
+
+        if (selectedSubCategories.length > 0) {
+          const subCatObj = subCategories.find(s => s.name === selectedSubCategories[0])
+          if (subCatObj) {
+            params.append('subCategory_id', subCatObj.id)
+          }
+        }
+
+        if (selectedBrand !== 'All') {
+          const brandObj = brands.find(b => b.name === selectedBrand)
+          if (brandObj) {
+            params.append('brand_id', brandObj.id)
+          }
+        }
+
+        const url = `/listings${params.toString() ? `?${params.toString()}` : ''}`
+        const response = await api.get(url)
+
+        // Map backend data to frontend format
+        const mappedProducts = response.data.map(item => ({
+          ...item,
+          priceValue: item.price,
+          price: `$${item.price}`,
+          rating: 4.5, // Mock rating
+          image: item.image_url || 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600&auto=format&fit=crop&q=60',
+          tags: [item.item_status]
+        }))
+        setCatalogProducts(mappedProducts)
+      } catch (err) {
+        console.error("Failed to fetch listings:", err)
+        setError("Failed to load catalog.")
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchListings()
+  }, [categories, queryCategory, selectedSubCategories, selectedBrand, subCategories, brands])
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await api.get('/categories')
+        setCategories(response.data)
+      } catch (err) {
+        console.error("Failed to fetch categories:", err)
+      }
+    }
+    fetchCategories()
+  }, [])
+
+  useEffect(() => {
+    const currentCategoryObj = categories.find(c => c.name === queryCategory)
+    if (currentCategoryObj) {
+      api.get(`/subCategories?category_id=${currentCategoryObj.id}`)
+        .then(res => setSubCategories(res.data))
+        .catch(err => console.error("Failed to fetch subcategories:", err))
+    } else {
+      setSubCategories([])
+    }
+  }, [categories, queryCategory])
+
+  useEffect(() => {
+    if (selectedSubCategories.length > 0) {
+      const selectedSubCatObj = subCategories.find(sc => sc.name === selectedSubCategories[0])
+      if (selectedSubCatObj) {
+        api.get(`/brands?subCategory_id=${selectedSubCatObj.id}`)
+          .then(res => setBrands(res.data))
+          .catch(err => console.error("Failed to fetch brands", err))
+      }
+    } else {
+      setBrands([])
+      setSelectedBrand('All')
+    }
+  }, [selectedSubCategories, subCategories])
+
+  const filteredProducts = useMemo(() => {
+    const base = catalogProducts.filter((item) => {
+      // Assuming listings return sub_category_name or sub_category. 
+      // If none selected, show all for that main category.
+      const subCategoryMatch = selectedSubCategories.length
+        ? selectedSubCategories.includes(item.sub_category_name || item.sub_category)
+        : true
+      const brandMatch = selectedBrand === 'All' ? true : item.brand === selectedBrand
+      const priceMatch = item.priceValue <= priceCap
+      return subCategoryMatch && brandMatch && priceMatch
+    })
+
+    const sorted = [...base]
+    if (sortBy === 'price-asc') sorted.sort((a, b) => a.priceValue - b.priceValue)
+    if (sortBy === 'price-desc') sorted.sort((a, b) => b.priceValue - a.priceValue)
+    if (sortBy === 'rating') sorted.sort((a, b) => b.rating - a.rating)
+    return sorted
+  }, [catalogProducts, priceCap, selectedBrand, selectedSubCategories, sortBy])
+
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / perPage))
+  const safePage = Math.min(page, totalPages)
+  const paginatedProducts = filteredProducts.slice((safePage - 1) * perPage, safePage * perPage)
+
+  const toggleSubCategory = (value) => {
+    setPage(1)
+    setSelectedSubCategories((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]))
+  }
+
+  return (
+    <StorefrontLayout>
+      <main className="w-full">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[320px_1fr]">
+          {categories.length === 0 && loading ? (
+            <CatalogSidebarSkeleton />
+          ) : (
+            <CatalogSidebar
+              selectedSubCategories={selectedSubCategories}
+              toggleSubCategory={toggleSubCategory}
+              selectedBrand={selectedBrand}
+              setSelectedBrand={setSelectedBrand}
+              priceCap={priceCap}
+              setPriceCap={setPriceCap}
+              categories={categories}
+              queryCategory={queryCategory}
+              subCategories={subCategories}
+              brands={brands}
+            />
+          )}
+
+          <div>
+            {loading ? (
+              <>
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-xl bg-off-white p-4">
+                  <div className="h-6 w-32 animate-pulse rounded bg-gray-200" />
+                  <div className="flex gap-4">
+                    <div className="h-10 w-40 animate-pulse rounded-xl bg-gray-200" />
+                    <div className="h-10 w-24 animate-pulse rounded-xl bg-gray-200" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                  {[1, 2, 3, 4, 5, 6].map(n => <ProductCardSkeleton key={n} />)}
+                </div>
+              </>
+            ) : error ? (
+              <div className="p-8 text-center text-red-500">{error}</div>
+            ) : (
+              <>
+                <CatalogToolbar sortBy={sortBy} setSortBy={setSortBy} view={view} setView={setView} resultCount={filteredProducts.length} />
+                <CatalogResults products={paginatedProducts} view={view} page={safePage} setPage={setPage} totalPages={totalPages} />
+              </>
+            )}
+          </div>
+        </div>
+      </main>
+    </StorefrontLayout>
+  )
+}

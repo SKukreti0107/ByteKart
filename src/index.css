@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@theme {
+  --color-matcha-bg: #95BD86;
+  --color-baby-green: #C6DCBA;
+  --color-matcha-deep: #5D7B43;
+  --color-charcoal-dark: #1A1C1A;
+  --color-off-white: #F8FAF5;
+  --color-pure-white: #FFFFFF;
+
+  --radius-squish: 2rem;
+  --radius-bubble: 9999px;
+
+  --shadow-window-sep: 0 25px 50px -12px rgba(26, 28, 26, 0.15);
+  --shadow-card-pop: 0 15px 30px -5px rgba(26, 28, 26, 0.1), inset 0 -4px 0 rgba(0, 0, 0, 0.05);
+  --shadow-neon-glow: 0 0 15px 2px rgba(198, 220, 186, 0.6), 0 0 30px 5px rgba(198, 220, 186, 0.4);
+}
+
 :root {
   line-height: 1.5;
   font-weight: 400;
@@ -15,27 +31,27 @@ body {
 }
 
 .window-container {
-  background-color: var(--pure-white);
+  background-color: var(--color-pure-white);
   border-radius: var(--radius-squish);
   box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
   border: 4px solid rgba(255, 255, 255, 0.4);
 }
 
 .product-card {
-  background: var(--pure-white);
+  background: var(--color-pure-white);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid var(--pure-white);
+  border: 2px solid var(--color-pure-white);
 }
 
 .product-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-  border-color: var(--baby-green);
+  border-color: var(--color-baby-green);
 }
 
 .nav-link:hover {
-  color: var(--matcha-deep);
-  background-color: var(--baby-green);
+  color: var(--color-matcha-deep);
+  background-color: var(--color-baby-green);
   box-shadow: 0 0 12px rgba(198, 220, 186, 0.5);
 }
 
