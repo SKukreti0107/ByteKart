@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import api from '../api'
 import { authClient } from '../auth-client'
 import AuthModal from './AuthModal'
@@ -27,17 +27,32 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
     setIsProfileMenuOpen(false)
   }
 
-  const handleCatalogHover = async () => {
-    setIsHoveringCatalog(true)
-    if (!hasFetchedCategories) {
+  // Fetch categories on mount with session storage caching
+  useEffect(() => {
+    const fetchCategoriesOnLoad = async () => {
       try {
-        const response = await api.get('/categories')
-        setCategories(response.data)
-        setHasFetchedCategories(true)
+        const cachedCategories = sessionStorage.getItem('catalog_categories')
+        if (cachedCategories) {
+          setCategories(JSON.parse(cachedCategories))
+          setHasFetchedCategories(true)
+        } else {
+          const response = await api.get('/categories')
+          setCategories(response.data)
+          sessionStorage.setItem('catalog_categories', JSON.stringify(response.data))
+          setHasFetchedCategories(true)
+        }
       } catch (err) {
         console.error("Failed to fetch categories:", err)
       }
     }
+
+    if (!hasFetchedCategories) {
+      fetchCategoriesOnLoad()
+    }
+  }, [hasFetchedCategories])
+
+  const handleCatalogHover = () => {
+    setIsHoveringCatalog(true)
   }
 
   const handleCatalogLeave = () => {
