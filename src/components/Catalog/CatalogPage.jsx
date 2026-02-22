@@ -134,13 +134,16 @@ export default function CatalogPage() {
   }, [selectedSubCategories, subCategories])
 
   const filteredProducts = useMemo(() => {
+    const selectedSubCatIds = selectedSubCategories
+      .map(name => subCategories.find(s => s.name === name)?.id)
+      .filter(Boolean)
+    const activeBrandId = selectedBrand !== 'All' ? brands.find(b => b.name === selectedBrand)?.id : null
+
     const base = catalogProducts.filter((item) => {
-      // Assuming listings return sub_category_name or sub_category. 
-      // If none selected, show all for that main category.
-      const subCategoryMatch = selectedSubCategories.length
-        ? selectedSubCategories.includes(item.sub_category_name || item.sub_category)
+      const subCategoryMatch = selectedSubCatIds.length
+        ? selectedSubCatIds.includes(item.subcategory_id)
         : true
-      const brandMatch = selectedBrand === 'All' ? true : item.brand === selectedBrand
+      const brandMatch = activeBrandId ? item.brand_id === activeBrandId : true
       const priceMatch = item.priceValue <= priceCap
       return subCategoryMatch && brandMatch && priceMatch
     })

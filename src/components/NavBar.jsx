@@ -57,9 +57,9 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
 
   return (
     <header className="sticky top-3 z-50 w-full md:top-6">
-      <div className="window-container flex h-auto flex-wrap items-center justify-between gap-3 px-4 py-3 md:h-20 md:flex-nowrap md:gap-6 md:px-6 md:py-0">
+      <div className="window-container flex h-auto flex-wrap items-center justify-between gap-3 px-4 py-3 md:h-28 md:flex-nowrap md:gap-6 md:px-6 md:py-0">
         <Link to="/" className="flex shrink-0 cursor-pointer items-center gap-2.5 md:gap-3">
-          <img src="/ByteKart_logo.png" alt="ByteKart Logo" className="h-16 w-auto object-contain sm:h-20" />
+          <img src="/ByteKart_logo.png" alt="ByteKart Logo" className="h-20 w-auto object-contain sm:h-28" />
         </Link>
 
         <nav className="hidden items-center gap-1 font-semibold text-charcoal-dark/80 xl:flex">

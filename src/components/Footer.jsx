@@ -4,7 +4,7 @@ export default function Footer() {
             <div className="max-w-[1440px] mx-auto px-6 lg:px-20 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
                 <div className="space-y-6">
                     <div className="flex items-center gap-3">
-                        <img src="/ByteKart_logo.png" alt="ByteKart Logo" className="h-20 w-auto object-contain" />
+                        <img src="/ByteKart_logo.png" alt="ByteKart Logo" className="h-32 w-auto object-contain" />
                     </div>
                     <p className="text-baby-green/60 text-sm font-medium leading-relaxed">The premier destination for botanical gaming aesthetics and high-performance hardware.</p>
                 </div>
