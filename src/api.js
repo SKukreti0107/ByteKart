@@ -2,8 +2,8 @@ import axios from 'axios';
 import { authClient } from './auth-client';
 
 const api = axios.create({
-  // baseURL: 'http://localhost:8000', // Local dev backend
-  baseURL: 'https://byte-kart-be.vercel.app', // Production backend
+  baseURL: 'http://localhost:8000', // Local dev backend
+  // baseURL: 'https://byte-kart-be.vercel.app', // Production backend
 });
 
 api.interceptors.request.use(

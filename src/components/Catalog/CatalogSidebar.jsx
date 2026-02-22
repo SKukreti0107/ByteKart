@@ -87,13 +87,13 @@ export default function CatalogSidebar({
       <div>
         <div className="mb-3 flex items-center justify-between">
           <p className="text-sm font-bold uppercase tracking-wider text-matcha-deep">Max Price</p>
-          <span className="rounded-full bg-baby-green px-3 py-1 text-xs font-bold">${priceCap}</span>
+          <span className="rounded-full bg-baby-green px-3 py-1 text-xs font-bold">₹{priceCap.toLocaleString('en-IN')}</span>
         </div>
         <input
           type="range"
           min="100"
-          max="10000"
-          step="100"
+          max="1000000"
+          step="1000"
           value={priceCap}
           onChange={(event) => setPriceCap(Number(event.target.value))}
           className="w-full accent-matcha-deep"

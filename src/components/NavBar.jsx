@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import api from '../api'
 import { authClient } from '../auth-client'
 import AuthModal from './AuthModal'
+import { useCart } from '../context/CartContext'
 
 const defaultLinks = [
   { label: 'Home', to: '/' },
@@ -16,6 +17,8 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
   const [categories, setCategories] = useState([])
   const [isHoveringCatalog, setIsHoveringCatalog] = useState(false)
   const [hasFetchedCategories, setHasFetchedCategories] = useState(false)
+
+  const { cartCount } = useCart()
 
   // Auth State
   const { data: session, isPending } = authClient.useSession()
@@ -63,10 +66,7 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
     <header className="sticky top-3 z-50 w-full md:top-6">
       <div className="window-container flex h-auto flex-wrap items-center justify-between gap-3 px-4 py-3 md:h-20 md:flex-nowrap md:gap-6 md:px-6 md:py-0">
         <Link to="/" className="flex shrink-0 cursor-pointer items-center gap-2.5 md:gap-3">
-          <div className="btn-glow rounded-xl bg-baby-green p-2 text-matcha-deep">
-            <span className="material-symbols-outlined text-2xl font-bold">bolt</span>
-          </div>
-          <h1 className="text-lg font-bold tracking-tight text-charcoal-dark sm:text-xl md:text-2xl">{title}</h1>
+          <img src="/ByteKart_logo.png" alt="ByteKart Logo" className="h-16 w-auto object-contain sm:h-20" />
         </Link>
 
         <nav className="hidden items-center gap-1 font-semibold text-charcoal-dark/80 xl:flex">
@@ -141,9 +141,17 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
             </span>
           </button>
 
-          <button className="hidden sm:flex btn-glow h-10 w-10 items-center justify-center rounded-full bg-baby-green text-charcoal-dark transition-all hover:bg-matcha-deep hover:text-white">
+          <Link
+            to="/cart"
+            className="flex btn-glow h-10 w-10 relative items-center justify-center rounded-full bg-baby-green text-charcoal-dark transition-all hover:bg-matcha-deep hover:text-white"
+          >
             <span className="material-symbols-outlined text-xl">shopping_cart</span>
-          </button>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 font-bold text-white text-[10px]">
+                {cartCount}
+              </span>
+            )}
+          </Link>
 
           {isPending ? (
             <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200"></div>

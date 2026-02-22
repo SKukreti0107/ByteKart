@@ -23,7 +23,11 @@ export default function AdminInventoryPage() {
     try {
       setLoading(true)
       const response = await api.get('/admin/listings')
-      setRows(response.data)
+      const mappedRows = response.data.map(item => ({
+        ...item,
+        price: (item.supplier_price || 0) + (item.our_cut || 0)
+      }))
+      setRows(mappedRows)
     } catch (err) {
       console.error("Failed to fetch listings:", err)
       setError("Failed to load inventory.")

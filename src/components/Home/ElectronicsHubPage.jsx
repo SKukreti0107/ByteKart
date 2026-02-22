@@ -24,12 +24,16 @@ export default function ElectronicsHubPage() {
             try {
                 const response = await api.get('/listings')
                 // Map backend data to frontend format
-                const mappedProducts = response.data.slice(0, 6).map(item => ({
-                    ...item,
-                    price: `$${item.price}`,
-                    image: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600&auto=format&fit=crop&q=60', // Mock image
-                    tags: [item.item_status]
-                }))
+                const mappedProducts = response.data.slice(0, 6).map(item => {
+                    const displayPrice = (item.supplier_price || 0) + (item.our_cut || 0)
+                    return {
+                        ...item,
+                        price: `₹${displayPrice}`,
+                        oldPrice: item.MRP > displayPrice ? `₹${item.MRP}` : null,
+                        image: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600&auto=format&fit=crop&q=60', // Mock image
+                        tags: []
+                    }
+                })
                 setProducts(mappedProducts)
             } catch (err) {
                 console.error("Failed to fetch listings:", err)

@@ -22,7 +22,7 @@ export default function InventoryTable({ rows, onEdit, onDelete, page, setPage, 
                 </td>
                 <td className="px-3 py-3 text-sm font-medium">{row.category}</td>
                 <td className="px-3 py-3 text-sm font-medium">{row.stock}</td>
-                <td className="px-3 py-3 text-sm font-bold text-matcha-deep">${row.price}</td>
+                <td className="px-3 py-3 text-sm font-bold text-matcha-deep">₹{row.price}</td>
                 <td className="px-3 py-3">
                   <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase ${row.status === 'in-stock' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
                     {row.status}

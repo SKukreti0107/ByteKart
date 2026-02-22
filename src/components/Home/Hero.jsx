@@ -49,7 +49,7 @@ export default function Hero() {
             </p>
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <Link to={`/product/${currentItem.id}`} className="btn-glow-dark inline-block rounded-2xl bg-matcha-deep px-7 py-3.5 font-bold text-white transition-all hover:bg-charcoal-dark sm:px-10 sm:py-4">
-                Shop Now - ${currentItem.price}
+                Shop Now - ₹{(currentItem.supplier_price || 0) + (currentItem.our_cut || 0)}
               </Link>
             </div>
             {/* Slide indicators */}

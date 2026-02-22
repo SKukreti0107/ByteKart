@@ -29,7 +29,7 @@ export default function ProductCard({ product, actionLabel = 'Quick Add', onActi
                 <div className="mb-4 flex items-center gap-2">
                     <span className="text-2xl font-bold text-matcha-deep">{product.price}</span>
                     {product.oldPrice ? (
-                        <span className="text-sm font-medium text-charcoal-dark/40 line-through">{product.oldPrice}</span>
+                        <span className="text-sm font-medium text-red-500 line-through">{product.oldPrice}</span>
                     ) : null}
                 </div>
             </div>

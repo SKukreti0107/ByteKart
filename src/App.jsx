@@ -12,66 +12,71 @@ import AdminBrands from './pages/AdminBrands'
 import AdminHero from './pages/AdminHero'
 
 import ProtectedRoute from './components/ProtectedRoute'
+import { CartProvider } from './context/CartContext'
+import CartPage from './pages/CartPage'
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route
-          path="/admin/inventory"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminInventory />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/categories"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminCategories />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/subcategories"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminSubcategories />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/brands"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminBrands />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/hero"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminHero />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <CartProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route
+            path="/admin/inventory"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminInventory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/categories"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminCategories />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/subcategories"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminSubcategories />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/brands"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminBrands />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/hero"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminHero />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </CartProvider>
   )
 }
 

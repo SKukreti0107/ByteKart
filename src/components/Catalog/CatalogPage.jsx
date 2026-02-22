@@ -34,7 +34,7 @@ export default function CatalogPage() {
   }, [searchParams])
 
   const [selectedBrand, setSelectedBrand] = useState('All')
-  const [priceCap, setPriceCap] = useState(10000)
+  const [priceCap, setPriceCap] = useState(1000000)
   const [sortBy, setSortBy] = useState('featured')
   const [view, setView] = useState('grid')
   const [page, setPage] = useState(1)
@@ -73,14 +73,18 @@ export default function CatalogPage() {
         const response = await api.get(url)
 
         // Map backend data to frontend format
-        const mappedProducts = response.data.map(item => ({
-          ...item,
-          priceValue: item.price,
-          price: `$${item.price}`,
-          rating: 4.5, // Mock rating
-          image: item.image_url || 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600&auto=format&fit=crop&q=60',
-          tags: [item.item_status]
-        }))
+        const mappedProducts = response.data.map(item => {
+          const displayPrice = (item.supplier_price || 0) + (item.our_cut || 0)
+          return {
+            ...item,
+            priceValue: displayPrice,
+            price: `₹${displayPrice}`,
+            oldPrice: item.MRP > displayPrice ? `₹${item.MRP}` : null,
+            rating: 4.5, // Mock rating
+            image: item.image_url || 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600&auto=format&fit=crop&q=60',
+            tags: []
+          }
+        })
         setCatalogProducts(mappedProducts)
       } catch (err) {
         console.error("Failed to fetch listings:", err)

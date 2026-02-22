@@ -28,7 +28,17 @@ export default function ProductDetailPage() {
 
         try {
           const relatedRes = await api.get(`/listings?category_id=${fetchedProduct.category_id}`)
-          const filteredRelated = relatedRes.data.filter(p => p.id !== fetchedProduct.id).slice(0, 3)
+          const filteredRelated = relatedRes.data
+            .filter(p => p.id !== fetchedProduct.id)
+            .map(item => {
+              const displayPrice = (item.supplier_price || 0) + (item.our_cut || 0)
+              return {
+                ...item,
+                price: `₹${displayPrice}`,
+                oldPrice: item.MRP > displayPrice ? `₹${item.MRP}` : null
+              }
+            })
+            .slice(0, 3)
           setRelatedProducts(filteredRelated)
         } catch (relatedErr) {
           console.error("Failed to fetch related products:", relatedErr)
