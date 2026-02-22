@@ -22,12 +22,12 @@ export default function ProductDetailPage() {
     const fetchProduct = async () => {
       try {
         setLoading(true)
-        const response = await api.get(`/listings/${id}`)
+        const response = await api.getWithCache(`/listings/${id}`)
         const fetchedProduct = response.data
         setProduct(fetchedProduct)
 
         try {
-          const relatedRes = await api.get(`/listings?category_id=${fetchedProduct.category_id}`)
+          const relatedRes = await api.getWithCache(`/listings?category_id=${fetchedProduct.category_id}`)
           const filteredRelated = relatedRes.data
             .filter(p => p.id !== fetchedProduct.id)
             .map(item => {

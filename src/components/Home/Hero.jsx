@@ -9,7 +9,7 @@ export default function Hero() {
   useEffect(() => {
     const fetchHero = async () => {
       try {
-        const res = await api.get('/hero')
+        const res = await api.getWithCache('/hero')
         setHeroData(res.data)
       } catch (err) {
         console.error("Failed to fetch hero:", err)

@@ -20,4 +20,33 @@ api.interceptors.request.use(
   }
 );
 
+api.getWithCache = async (url, config = {}, ttl = 300000) => {
+  const cacheKey = `cache_${url}`;
+  try {
+    const cachedItem = sessionStorage.getItem(cacheKey);
+    if (cachedItem) {
+      const { data, timestamp } = JSON.parse(cachedItem);
+      if (Date.now() - timestamp < ttl) {
+        return { data, fromCache: true };
+      }
+    }
+  } catch (error) {
+    console.warn("Failed to read from cache:", error);
+  }
+
+  const response = await api.get(url, config);
+
+  try {
+    const cacheData = {
+      data: response.data,
+      timestamp: Date.now()
+    };
+    sessionStorage.setItem(cacheKey, JSON.stringify(cacheData));
+  } catch (error) {
+    console.warn("Failed to write to cache:", error);
+  }
+
+  return response;
+};
+
 export default api;

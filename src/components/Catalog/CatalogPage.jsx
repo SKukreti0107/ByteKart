@@ -70,7 +70,7 @@ export default function CatalogPage() {
         }
 
         const url = `/listings${params.toString() ? `?${params.toString()}` : ''}`
-        const response = await api.get(url)
+        const response = await api.getWithCache(url)
 
         // Map backend data to frontend format
         const mappedProducts = response.data.map(item => {
@@ -99,7 +99,7 @@ export default function CatalogPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await api.get('/categories')
+        const response = await api.getWithCache('/categories')
         setCategories(response.data)
       } catch (err) {
         console.error("Failed to fetch categories:", err)
@@ -111,7 +111,7 @@ export default function CatalogPage() {
   useEffect(() => {
     const currentCategoryObj = categories.find(c => c.name === queryCategory)
     if (currentCategoryObj) {
-      api.get(`/subCategories?category_id=${currentCategoryObj.id}`)
+      api.getWithCache(`/subCategories?category_id=${currentCategoryObj.id}`)
         .then(res => setSubCategories(res.data))
         .catch(err => console.error("Failed to fetch subcategories:", err))
     } else {
@@ -123,7 +123,7 @@ export default function CatalogPage() {
     if (selectedSubCategories.length > 0) {
       const selectedSubCatObj = subCategories.find(sc => sc.name === selectedSubCategories[0])
       if (selectedSubCatObj) {
-        api.get(`/brands?subCategory_id=${selectedSubCatObj.id}`)
+        api.getWithCache(`/brands?subCategory_id=${selectedSubCatObj.id}`)
           .then(res => setBrands(res.data))
           .catch(err => console.error("Failed to fetch brands", err))
       }

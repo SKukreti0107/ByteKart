@@ -22,7 +22,7 @@ export default function ElectronicsHubPage() {
     useEffect(() => {
         const fetchListings = async () => {
             try {
-                const response = await api.get('/listings')
+                const response = await api.getWithCache('/listings')
                 // Map backend data to frontend format
                 const mappedProducts = response.data.slice(0, 6).map(item => {
                     const displayPrice = (item.supplier_price || 0) + (item.our_cut || 0)

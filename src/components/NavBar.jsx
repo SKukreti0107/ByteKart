@@ -34,16 +34,9 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
   useEffect(() => {
     const fetchCategoriesOnLoad = async () => {
       try {
-        const cachedCategories = sessionStorage.getItem('catalog_categories')
-        if (cachedCategories) {
-          setCategories(JSON.parse(cachedCategories))
-          setHasFetchedCategories(true)
-        } else {
-          const response = await api.get('/categories')
-          setCategories(response.data)
-          sessionStorage.setItem('catalog_categories', JSON.stringify(response.data))
-          setHasFetchedCategories(true)
-        }
+        const response = await api.getWithCache('/categories')
+        setCategories(response.data)
+        setHasFetchedCategories(true)
       } catch (err) {
         console.error("Failed to fetch categories:", err)
       }
