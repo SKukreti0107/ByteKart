@@ -1,5 +1,5 @@
-export default function OrderSummary({ shippingMethod, quantity, paymentMethod, onPlaceOrder, canPlaceOrder }) {
-  const subtotal = 899 * quantity
+export default function OrderSummary({ shippingMethod, cartItems, cartTotal, onPlaceOrder, canPlaceOrder }) {
+  const subtotal = cartTotal || 0
   const shipping = shippingMethod.fee
   const total = subtotal + shipping
 
@@ -8,16 +8,25 @@ export default function OrderSummary({ shippingMethod, quantity, paymentMethod, 
       <h3 className="mb-5 text-2xl font-bold">Order Summary</h3>
 
       <div className="mb-4 space-y-2 text-sm font-medium">
-        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between"><span>Matcha Pro GPU 5080 × {quantity}</span><span>${subtotal}</span></div>
-        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between"><span>Shipping ({shippingMethod.label})</span><span>{shipping ? `$${shipping}` : 'Free'}</span></div>
+        {cartItems?.map(item => (
+          <div key={item.cartItemId} className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between py-1">
+            <span className="line-clamp-1 truncate max-w-[200px]" title={item.name}>
+              {item.name} × {item.quantity}
+            </span>
+            <span>₹{item.price * item.quantity}</span>
+          </div>
+        ))}
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between border-t border-dotted border-gray-300 pt-2 mt-2">
+          <span>Shipping ({shippingMethod.label})</span>
+          <span>{shipping ? `₹${shipping}` : 'Free'}</span>
+        </div>
       </div>
 
       <div className="mb-6 border-t border-baby-green/50 pt-4">
         <div className="flex items-center justify-between text-xl font-bold">
           <span>Total</span>
-          <span className="text-matcha-deep">${total}</span>
+          <span className="text-matcha-deep">₹{total}</span>
         </div>
-        <p className="mt-2 text-xs font-semibold text-charcoal-dark/60 uppercase tracking-wider">Payment: {paymentMethod.toUpperCase()}</p>
       </div>
 
       <button

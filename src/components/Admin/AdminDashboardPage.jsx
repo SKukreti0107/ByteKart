@@ -1,13 +1,26 @@
+import { useEffect, useState } from 'react'
 import AdminSidebar from './AdminSidebar'
 import NavBar from '../NavBar'
+import api from '../../api'
+import Skeleton from '../Loaders/Skeleton'
 
 export default function AdminDashboardPage() {
-    const kpi = {
-        totalProducts: 45, // Mock data
-        totalOrders: 128, // Mock data
-        revenue: "$12,450", // Mock data
-        pendingRequests: 5 // Mock data
-    }
+    const [kpi, setKpi] = useState(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const res = await api.get('/admin/dashboard-stats')
+                setKpi(res.data)
+            } catch (err) {
+                console.error("Failed to fetch admin stats", err)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchStats()
+    }, [])
 
     return (
         <div className="min-h-screen bg-matcha-bg text-charcoal-dark font-['Fredoka',sans-serif]">
@@ -24,37 +37,51 @@ export default function AdminDashboardPage() {
 
                         {/* Phase 1: High-Level Overview Cards */}
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                            <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
-                                <div className="mb-2 flex items-center justify-between text-matcha-deep">
-                                    <p className="text-xs font-bold uppercase tracking-wider">Total Products</p>
-                                    <span className="material-symbols-outlined text-xl">inventory_2</span>
-                                </div>
-                                <p className="text-3xl font-bold">{kpi.totalProducts}</p>
-                            </div>
+                            {loading ? (
+                                Array.from({ length: 4 }).map((_, idx) => (
+                                    <div key={idx} className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
+                                        <div className="mb-2 flex items-center justify-between text-matcha-deep">
+                                            <Skeleton className="h-4 w-24" />
+                                            <Skeleton className="h-6 w-6 rounded-full" />
+                                        </div>
+                                        <Skeleton className="h-8 w-16 mt-2" />
+                                    </div>
+                                ))
+                            ) : kpi ? (
+                                <>
+                                    <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
+                                        <div className="mb-2 flex items-center justify-between text-matcha-deep">
+                                            <p className="text-xs font-bold uppercase tracking-wider">Total Products</p>
+                                            <span className="material-symbols-outlined text-xl">inventory_2</span>
+                                        </div>
+                                        <p className="text-3xl font-bold">{kpi.totalProducts}</p>
+                                    </div>
 
-                            <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
-                                <div className="mb-2 flex items-center justify-between text-matcha-deep">
-                                    <p className="text-xs font-bold uppercase tracking-wider">Total Orders</p>
-                                    <span className="material-symbols-outlined text-xl">local_shipping</span>
-                                </div>
-                                <p className="text-3xl font-bold">{kpi.totalOrders}</p>
-                            </div>
+                                    <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
+                                        <div className="mb-2 flex items-center justify-between text-matcha-deep">
+                                            <p className="text-xs font-bold uppercase tracking-wider">Total Orders</p>
+                                            <span className="material-symbols-outlined text-xl">local_shipping</span>
+                                        </div>
+                                        <p className="text-3xl font-bold">{kpi.totalOrders}</p>
+                                    </div>
 
-                            <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
-                                <div className="mb-2 flex items-center justify-between text-matcha-deep">
-                                    <p className="text-xs font-bold uppercase tracking-wider">Revenue</p>
-                                    <span className="material-symbols-outlined text-xl">payments</span>
-                                </div>
-                                <p className="text-3xl font-bold">{kpi.revenue}</p>
-                            </div>
+                                    <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
+                                        <div className="mb-2 flex items-center justify-between text-matcha-deep">
+                                            <p className="text-xs font-bold uppercase tracking-wider">Revenue</p>
+                                            <span className="material-symbols-outlined text-xl">payments</span>
+                                        </div>
+                                        <p className="text-3xl font-bold">₹{(kpi.revenue || 0).toLocaleString()}</p>
+                                    </div>
 
-                            <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
-                                <div className="mb-2 flex items-center justify-between text-matcha-deep">
-                                    <p className="text-xs font-bold uppercase tracking-wider">Pending Requests</p>
-                                    <span className="material-symbols-outlined text-xl">pending_actions</span>
-                                </div>
-                                <p className="text-3xl font-bold">{kpi.pendingRequests}</p>
-                            </div>
+                                    <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
+                                        <div className="mb-2 flex items-center justify-between text-matcha-deep">
+                                            <p className="text-xs font-bold uppercase tracking-wider">Pending Requests</p>
+                                            <span className="material-symbols-outlined text-xl">pending_actions</span>
+                                        </div>
+                                        <p className="text-3xl font-bold">{kpi.pendingRequests}</p>
+                                    </div>
+                                </>
+                            ) : null}
                         </div>
                     </section>
 

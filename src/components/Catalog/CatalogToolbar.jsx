@@ -22,18 +22,16 @@ export default function CatalogToolbar({ sortBy, setSortBy, view, setView, resul
           <button
             type="button"
             onClick={() => setView('grid')}
-            className={`rounded-lg px-3 py-2 text-sm font-bold ${
-              view === 'grid' ? 'bg-baby-green text-matcha-deep' : 'text-charcoal-dark/60'
-            }`}
+            className={`rounded-lg px-3 py-2 text-sm font-bold ${view === 'grid' ? 'bg-baby-green text-matcha-deep' : 'text-charcoal-dark/60'
+              }`}
           >
             Grid
           </button>
           <button
             type="button"
             onClick={() => setView('list')}
-            className={`rounded-lg px-3 py-2 text-sm font-bold ${
-              view === 'list' ? 'bg-baby-green text-matcha-deep' : 'text-charcoal-dark/60'
-            }`}
+            className={`rounded-lg px-3 py-2 text-sm font-bold ${view === 'list' ? 'bg-baby-green text-matcha-deep' : 'text-charcoal-dark/60'
+              }`}
           >
             List
           </button>

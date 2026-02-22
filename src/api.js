@@ -2,8 +2,8 @@ import axios from 'axios';
 import { authClient } from './auth-client';
 
 const api = axios.create({
-  // baseURL: 'http://localhost:8000', // Local dev backend
-  baseURL: 'https://byte-kart-be.vercel.app', // Production backend
+  baseURL: 'http://localhost:8000', // Local dev backend
+  // baseURL: 'https://byte-kart-be.vercel.app', // Production backend
 });
 
 api.interceptors.request.use(
@@ -27,6 +27,8 @@ api.getWithCache = async (url, config = {}, ttl = 300000) => {
     if (cachedItem) {
       const { data, timestamp } = JSON.parse(cachedItem);
       if (Date.now() - timestamp < ttl) {
+        // Enforce a deliberate 300ms delay to allow Skeleton UI to smoothly transition instead of flashing instantly
+        await new Promise(resolve => setTimeout(resolve, 300));
         return { data, fromCache: true };
       }
     }

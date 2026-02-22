@@ -1,80 +1,99 @@
 import './App.css'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import Home from './pages/Home'
-import Catalog from './pages/Catalog'
-import ProductDetail from './pages/ProductDetail'
-import Checkout from './pages/Checkout'
-import AdminInventory from './pages/AdminInventory'
-import AdminDashboard from './pages/AdminDashboard'
-import AdminCategories from './pages/AdminCategories'
-import AdminSubcategories from './pages/AdminSubcategories'
-import AdminBrands from './pages/AdminBrands'
-import AdminHero from './pages/AdminHero'
-
+import { lazy, Suspense } from 'react'
 import ProtectedRoute from './components/ProtectedRoute'
 import { CartProvider } from './context/CartContext'
-import CartPage from './pages/CartPage'
+
+// Lazy-loaded routes for Code Splitting (Reduces initial JS bundle)
+const Home = lazy(() => import('./pages/Home'))
+const Catalog = lazy(() => import('./pages/Catalog'))
+const ProductDetail = lazy(() => import('./pages/ProductDetail'))
+const Checkout = lazy(() => import('./pages/Checkout'))
+const OrderSuccess = lazy(() => import('./pages/OrderSuccess'))
+const OrdersPage = lazy(() => import('./pages/OrdersPage'))
+const CartPage = lazy(() => import('./pages/CartPage'))
+
+// Admin Pages
+const AdminInventory = lazy(() => import('./pages/AdminInventory'))
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
+const AdminOrders = lazy(() => import('./pages/AdminOrders'))
+const AdminCategories = lazy(() => import('./pages/AdminCategories'))
+const AdminSubcategories = lazy(() => import('./pages/AdminSubcategories'))
+const AdminBrands = lazy(() => import('./pages/AdminBrands'))
+const AdminHero = lazy(() => import('./pages/AdminHero'))
+
+// Fallback Loader for Suspense boundaries
+const PageFallbackLoader = () => (
+  <div className="flex min-h-screen items-center justify-center bg-matcha-bg">
+    <div className="h-12 w-12 animate-spin rounded-full border-4 border-baby-green border-t-matcha-deep"></div>
+  </div>
+)
 
 function App() {
   return (
     <CartProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/catalog" element={<Catalog />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route
-            path="/admin/inventory"
-            element={
-              <ProtectedRoute requireAdmin={true}>
-                <AdminInventory />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute requireAdmin={true}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/categories"
-            element={
-              <ProtectedRoute requireAdmin={true}>
-                <AdminCategories />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/subcategories"
-            element={
-              <ProtectedRoute requireAdmin={true}>
-                <AdminSubcategories />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/brands"
-            element={
-              <ProtectedRoute requireAdmin={true}>
-                <AdminBrands />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/hero"
-            element={
-              <ProtectedRoute requireAdmin={true}>
-                <AdminHero />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <Suspense fallback={<PageFallbackLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-success/:id" element={<OrderSuccess />} />
+            <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
+            <Route path="/admin/orders" element={<ProtectedRoute requireAdmin={true}><AdminOrders /></ProtectedRoute>} />
+            <Route
+              path="/admin/inventory"
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminInventory />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/categories"
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminCategories />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/subcategories"
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminSubcategories />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/brands"
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminBrands />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/hero"
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminHero />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </CartProvider>
   )

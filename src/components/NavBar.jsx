@@ -178,6 +178,13 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
                         <span className="material-symbols-outlined text-[18px]">admin_panel_settings</span> Dashboard
                       </Link>
                     )}
+                    <Link
+                      to="/orders"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-charcoal-dark hover:bg-baby-green"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">receipt_long</span> Orders
+                    </Link>
                     <button
                       onClick={handleSignOut}
                       className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50"
