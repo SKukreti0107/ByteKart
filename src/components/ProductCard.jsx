@@ -1,6 +1,21 @@
 import { Link } from 'react-router-dom'
+import { useCart } from '../context/CartContext'
 
 export default function ProductCard({ product, actionLabel = 'Quick Add', onAction }) {
+    const { addToCart } = useCart()
+
+    const handleAction = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        if (onAction) {
+            onAction(product)
+        } else {
+            // Default Quick Add behavior
+            addToCart(product, null, {}, 1)
+        }
+    }
+
     return (
         <div className="product-card flex flex-col rounded-squish p-4 shadow-md">
             <Link to={`/product/${product.id}`} className="group relative mb-4 aspect-square overflow-hidden rounded-2xl bg-off-white block">
@@ -34,7 +49,7 @@ export default function ProductCard({ product, actionLabel = 'Quick Add', onActi
                 </div>
             </div>
             <button
-                onClick={() => onAction?.(product)}
+                onClick={handleAction}
                 className="flex w-full items-center justify-center gap-2 rounded-xl border border-baby-green/50 bg-off-white py-3 font-bold text-charcoal-dark transition-all hover:bg-baby-green"
             >
                 <span className="material-symbols-outlined text-lg">add_shopping_cart</span>

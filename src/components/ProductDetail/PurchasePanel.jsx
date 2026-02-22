@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
 
 export default function PurchasePanel({ product, quantity, setQuantity }) {
+  const navigate = useNavigate()
   // Initialize first choice for each variant
   const initialVariants = {}
   if (product.variants && Array.isArray(product.variants)) {
@@ -25,6 +27,11 @@ export default function PurchasePanel({ product, quantity, setQuantity }) {
 
   const handleVariantChange = (name, value) => {
     setSelectedVariants(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleBuyNow = () => {
+    addToCart(product, matchedSku, selectedVariants, quantity)
+    navigate('/checkout')
   }
 
   return (
@@ -88,7 +95,12 @@ export default function PurchasePanel({ product, quantity, setQuantity }) {
         >
           Add to Cart
         </button>
-        <button className="rounded-xl bg-off-white px-6 py-3 font-bold">Buy Now</button>
+        <button
+          onClick={handleBuyNow}
+          className="rounded-xl bg-off-white px-6 py-3 font-bold hover:bg-baby-green transition-colors"
+        >
+          Buy Now
+        </button>
       </div>
     </section>
   )
