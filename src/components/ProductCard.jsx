@@ -4,6 +4,19 @@ import { useCart } from '../context/CartContext'
 export default function ProductCard({ product, actionLabel = 'Quick Add', onAction }) {
     const { addToCart } = useCart()
 
+    const parsePrice = (priceStr) => {
+        if (!priceStr) return 0;
+        const num = parseFloat(String(priceStr).replace(/[^0-9.]/g, ''));
+        return isNaN(num) ? 0 : num;
+    };
+
+    const currentPriceNum = parsePrice(product.price);
+    const oldPriceNum = parsePrice(product.oldPrice);
+    let discountPercentage = 0;
+    if (oldPriceNum > 0 && currentPriceNum > 0 && oldPriceNum > currentPriceNum) {
+        discountPercentage = Math.round(((oldPriceNum - currentPriceNum) / oldPriceNum) * 100);
+    }
+
     const handleAction = (e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -42,10 +55,17 @@ export default function ProductCard({ product, actionLabel = 'Quick Add', onActi
                     <Link to={`/product/${product.id}`} className="block">
                         <h3 className="mb-1 text-base sm:text-xl line-clamp-2 sm:line-clamp-none font-bold text-charcoal-dark hover:text-matcha-deep transition-colors">{product.name}</h3>
                     </Link>
-                    <div className="mb-3 sm:mb-4 flex items-center gap-2">
+                    <div className="mb-3 sm:mb-4 flex items-center gap-2 flex-wrap">
                         <span className="text-lg sm:text-2xl font-bold text-matcha-deep">{product.price}</span>
                         {product.oldPrice ? (
-                            <span className="text-xs sm:text-sm font-medium text-red-500 line-through">{product.oldPrice}</span>
+                            <>
+                                <span className="text-xs sm:text-sm font-medium text-red-500 line-through flex-shrink-0">{product.oldPrice}</span>
+                                {discountPercentage > 0 && (
+                                    <span className="text-[10px] sm:text-xs font-bold text-white bg-red-500 px-2 py-0.5 rounded-full flex-shrink-0 shadow-sm">
+                                        {discountPercentage}% OFF
+                                    </span>
+                                )}
+                            </>
                         ) : null}
                     </div>
                 </div>

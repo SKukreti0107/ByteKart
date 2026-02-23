@@ -45,13 +45,18 @@ export default function CatalogPage() {
         setLoading(true)
         const params = new URLSearchParams()
 
+        const querySearch = searchParams.get('search')
+        if (querySearch) {
+          params.append('search', querySearch)
+        }
+
         if (queryCategory) {
           const categoryObj = categories.find(c => c.name === queryCategory)
           if (categoryObj) {
             params.append('category_id', categoryObj.id)
           } else {
             // Categories might not be loaded yet, wait for them
-            if (categories.length === 0) return
+            if (categories.length === 0 && !querySearch) return
           }
         }
 
@@ -94,7 +99,7 @@ export default function CatalogPage() {
       }
     }
     fetchListings()
-  }, [categories, queryCategory, selectedSubCategories, selectedBrand, subCategories, brands])
+  }, [categories, queryCategory, selectedSubCategories, selectedBrand, subCategories, brands, searchParams])
 
   useEffect(() => {
     const fetchCategories = async () => {
