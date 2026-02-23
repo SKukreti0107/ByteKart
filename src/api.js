@@ -51,4 +51,19 @@ api.getWithCache = async (url, config = {}, ttl = 300000) => {
   return response;
 };
 
+api.clearCache = (urlPattern) => {
+  try {
+    const keys = Object.keys(sessionStorage);
+    for (const key of keys) {
+      if (key.startsWith('cache_')) {
+        if (!urlPattern || key.includes(urlPattern)) {
+          sessionStorage.removeItem(key);
+        }
+      }
+    }
+  } catch (error) {
+    console.warn("Failed to clear cache:", error);
+  }
+};
+
 export default api;

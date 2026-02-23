@@ -2,6 +2,38 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../../api'
 
+const HeroSkeleton = () => {
+  return (
+    <section className="window-container relative flex min-h-[420px] items-center overflow-hidden border-none md:min-h-[500px]">
+      <div className="absolute top-0 right-0 h-full w-2/3 translate-x-12 rounded-l-[3rem] bg-charcoal-dark/5" />
+      <div className="relative flex w-full flex-col-reverse items-center gap-10 px-5 py-10 sm:px-8 md:gap-12 md:px-16 md:py-12 lg:grid lg:grid-cols-2">
+        <div className="z-10 w-full text-center lg:text-left flex flex-col items-center lg:items-start gap-6">
+          <div className="h-8 w-32 animate-pulse rounded-full bg-charcoal-dark/10" />
+          <div className="flex flex-col gap-2 items-center lg:items-start w-full">
+            <div className="h-12 sm:h-16 md:h-20 w-3/4 sm:w-2/3 animate-pulse rounded-2xl bg-charcoal-dark/10" />
+            <div className="h-12 sm:h-16 md:h-20 w-2/3 sm:w-1/2 animate-pulse rounded-2xl bg-charcoal-dark/10" />
+          </div>
+          <div className="flex flex-col gap-2 items-center lg:items-start w-full">
+            <div className="h-4 sm:h-5 w-5/6 sm:w-3/4 animate-pulse rounded-full bg-charcoal-dark/10" />
+            <div className="h-4 sm:h-5 w-4/6 sm:w-2/3 animate-pulse rounded-full bg-charcoal-dark/10" />
+          </div>
+          <div className="h-14 w-40 sm:w-48 animate-pulse rounded-2xl bg-charcoal-dark/10" />
+          <div className="flex gap-2 justify-center lg:justify-start mt-2">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-2 w-2 animate-pulse rounded-full bg-charcoal-dark/10" />
+            ))}
+          </div>
+        </div>
+        <div className="relative w-full max-w-md lg:max-w-none">
+          <div className="rotate-0 lg:rotate-2 rounded-[2.5rem] bg-white p-2 lg:p-3 shadow-xl">
+            <div className="aspect-video w-full rounded-[2rem] object-cover animate-pulse bg-charcoal-dark/10" />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function Hero() {
   const [heroData, setHeroData] = useState(null)
   const [activeIndex, setActiveIndex] = useState(0)
@@ -27,7 +59,7 @@ export default function Hero() {
     }
   }, [heroData])
 
-  if (!heroData) return <div className="min-h-[420px] md:min-h-[500px] animate-pulse bg-charcoal-dark/5 rounded-[2.5rem]"></div>
+  if (!heroData) return <HeroSkeleton />
 
   if (heroData.type === 'newest') {
     const currentItem = heroData.listings[activeIndex]
@@ -63,8 +95,11 @@ export default function Hero() {
             <div className="rotate-0 lg:rotate-2 rounded-[2.5rem] bg-white p-2 lg:p-3 shadow-xl transition-transform duration-500 hover:rotate-0">
               <img
                 alt={currentItem.name}
-                className="aspect-video w-full rounded-[2rem] object-cover"
+                className="aspect-video w-full rounded-[2rem] object-cover bg-gray-100"
                 src={currentItem.image_url || "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60"}
+                fetchPriority="high"
+                loading="eager"
+                decoding="async"
               />
               <div className="absolute -bottom-4 lg:-bottom-6 -left-4 lg:-left-6 rounded-2xl border-4 border-baby-green bg-charcoal-dark p-4 lg:p-6 text-white shadow-xl max-w-[calc(100%-2rem)] md:max-w-none">
                 <p className="mb-1 text-[10px] lg:text-xs font-bold tracking-widest text-baby-green uppercase drop-shadow-[0_0_8px_rgba(198,220,186,0.8)]">
@@ -121,8 +156,11 @@ export default function Hero() {
           <div className="rotate-0 lg:rotate-2 rounded-[2.5rem] bg-white p-2 lg:p-3 shadow-xl transition-transform duration-500 hover:rotate-0">
             <img
               alt={heroData.title}
-              className="aspect-video w-full rounded-[2rem] object-cover"
+              className="aspect-video w-full rounded-[2rem] object-cover bg-gray-100"
               src={heroData.image_url || "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60"}
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
             />
           </div>
         </div>

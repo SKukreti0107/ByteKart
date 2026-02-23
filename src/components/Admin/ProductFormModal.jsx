@@ -96,6 +96,7 @@ export default function ProductFormModal({ isOpen, onClose, initialData, onSave 
             } else {
                 await api.post('/admin/listing', payload)
             }
+            api.clearCache()
             onSave()
             onClose()
         } catch (err) {
@@ -192,6 +193,7 @@ export default function ProductFormModal({ isOpen, onClose, initialData, onSave 
             } else {
                 await api.post('/admin/listing', payload)
             }
+            api.clearCache()
             onSave()
             onClose()
         } catch (err) {

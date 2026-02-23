@@ -58,6 +58,7 @@ export default function EntityManagerPage({ config }) {
         if (window.confirm(`Are you sure you want to delete this ${config.singularTitle}?`)) {
             try {
                 await api.delete(`${config.api.delete}/${id}`)
+                api.clearCache()
                 setRows((prev) => prev.filter((row) => row.id !== id))
             } catch (err) {
                 console.error(`Failed to delete ${config.singularTitle}:`, err)
@@ -93,6 +94,7 @@ export default function EntityManagerPage({ config }) {
             } else {
                 await api.post(config.api.post, formData)
             }
+            api.clearCache()
             await fetchItems()
             setIsModalOpen(false)
         } catch (err) {

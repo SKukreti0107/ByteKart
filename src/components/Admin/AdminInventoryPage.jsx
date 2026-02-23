@@ -67,6 +67,7 @@ export default function AdminInventoryPage() {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         await api.delete(`/admin/listing/${id}`);
+        api.clearCache();
         setRows((prev) => prev.filter((row) => row.id !== id));
       } catch (err) {
         console.error("Failed to delete product:", err);
