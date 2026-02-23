@@ -3,20 +3,10 @@ import ProductCard from '../ProductCard'
 export default function ProductGrid({ products }) {
     return (
         <section className="space-y-6">
-            <div className="flex items-center justify-between px-2">
-                <h2 className="flex items-center gap-3 text-3xl font-bold tracking-tight text-charcoal-dark">
-                    <span className="btn-glow rounded-lg bg-baby-green px-3 py-1 text-sm text-matcha-deep">
-                        Trending
-                    </span>
-                    Most Wanted Gear
-                </h2>
-                <a
-                    href="#"
-                    className="btn-glow flex items-center gap-2 rounded-full bg-baby-green px-4 py-2 font-bold text-charcoal-dark transition-all hover:text-white"
-                >
-                    View Catalogue
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                </a>
+            <div className="flex items-center gap-4 px-2">
+               
+                <div className="h-1 flex-1 bg-charcoal-dark/20 mt-1"></div>
+                
             </div>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

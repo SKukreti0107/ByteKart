@@ -49,7 +49,6 @@ export default function OrderSuccess() {
                             <p className="mt-2 text-lg font-medium text-charcoal-dark/70">
                                 Your order <span className="font-bold text-charcoal-dark">#{order.id.split('-')[0]}</span> is confirmed.
                             </p>
-                            <p className="text-sm text-charcoal-dark/60">A copy of your receipt has been emailed to you.</p>
                         </section>
 
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

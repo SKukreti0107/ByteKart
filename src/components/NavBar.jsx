@@ -9,7 +9,7 @@ const defaultLinks = [
   { label: 'Home', to: '/' },
   { label: 'Catalog', to: '/catalog' },
   { label: 'About Us', to: '/about' },
-  { label: 'Checkout', to: '/checkout' },
+  { label: 'Contact Us', to: '/contact' },
 ]
 
 export default function NavBar({ links = defaultLinks, title = 'ByteKart', showSearch = true }) {
@@ -56,8 +56,8 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
   }
 
   return (
-    <header className="sticky top-3 z-50 w-full md:top-6">
-      <div className="window-container flex h-auto flex-wrap items-center justify-between gap-3 px-4 py-3 md:h-28 md:flex-nowrap md:gap-6 md:px-6 md:py-0">
+    <header className="fixed bottom-2 left-2 right-2 z-50 md:sticky md:bottom-auto md:top-6 md:left-auto md:right-auto md:w-full">
+      <div className="window-container relative flex h-auto flex-wrap items-center justify-between gap-3 px-4 py-3 md:h-28 md:flex-nowrap md:gap-6 md:px-6 md:py-0">
         <Link to="/" className="flex shrink-0 cursor-pointer items-center gap-2.5 md:gap-3">
           <img src="/ByteKart_logo.png" alt="ByteKart Logo" className="h-20 w-auto object-contain sm:h-28" />
         </Link>
@@ -162,7 +162,7 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
               </button>
 
               {isProfileMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 lg:w-48 overflow-hidden rounded-xl bg-pure-white shadow-xl ring-1 ring-charcoal-dark/5">
+                <div className="absolute right-0 bottom-full mb-3 md:bottom-auto md:mb-0 md:top-full md:mt-2 lg:w-48 overflow-hidden rounded-xl bg-pure-white shadow-xl ring-1 ring-charcoal-dark/5">
                   <div className="border-b border-charcoal-dark/10 px-4 py-3">
                     <p className="truncate text-sm font-bold text-charcoal-dark">{session.user.name}</p>
                     <p className="truncate text-xs text-charcoal-dark/60">{session.user.email}</p>
@@ -206,7 +206,7 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
         </div>
 
         {isMobileMenuOpen ? (
-          <div className="w-full border-t border-baby-green/40 pt-3 xl:hidden">
+          <div className="absolute bottom-full left-0 right-0 mb-3 rounded-2xl bg-pure-white p-4 shadow-xl border border-baby-green/30 xl:hidden">
             <nav className="flex flex-col gap-2">
               {links.map((item) => (
                 <NavLink

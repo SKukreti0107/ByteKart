@@ -44,7 +44,10 @@ export default function PurchasePanel({ product, quantity, setQuantity }) {
           {displayMrp > displayPrice && (
             <p className="text-xl font-bold text-red-500 line-through">₹{displayMrp}</p>
           )}
-          <p className="text-3xl font-bold text-matcha-deep sm:text-4xl">₹{displayPrice}</p>
+          <div className="flex items-baseline gap-2">
+            <p className="text-3xl font-bold text-matcha-deep sm:text-4xl">₹{displayPrice}</p>
+            <span className="text-sm font-medium text-charcoal-dark/70">(GST inclusive)</span>
+          </div>
           <span className="rounded-full bg-baby-green px-3 py-1 text-xs font-bold uppercase tracking-wider">{product.stock_status || 'In Stock'}</span>
           {displayStock !== null && (
             <span className="rounded-full bg-off-white border border-baby-green px-3 py-1 text-xs font-bold uppercase tracking-wider text-charcoal-dark/70">
@@ -84,7 +87,7 @@ export default function PurchasePanel({ product, quantity, setQuantity }) {
         <div className="flex items-center rounded-xl bg-off-white p-1">
           <button type="button" className="px-3 py-1 text-xl font-bold" onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>-</button>
           <span className="w-10 text-center text-lg font-bold">{quantity}</span>
-          <button type="button" className="px-3 py-1 text-xl font-bold" onClick={() => setQuantity((prev) => prev + 1)}>+</button>
+          <button type="button" className="px-3 py-1 text-xl font-bold" onClick={() => setQuantity((prev) => Math.min(prev + 1, displayStock !== null ? Math.min(displayStock, 5) : 5))}>+</button>
         </div>
       </div>
 

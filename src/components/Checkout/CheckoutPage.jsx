@@ -21,6 +21,7 @@ export default function CheckoutPage() {
   const [formData, setFormData] = useState(initialForm)
   const [shippingMethod, setShippingMethod] = useState({ id: 'standard', label: 'Standard Delivery', fee: 0 })
   const [razorpayKeyId, setRazorpayKeyId] = useState('')
+  const [checkoutStep, setCheckoutStep] = useState('idle') // 'idle' | 'creating' | 'verifying'
   const navigate = useNavigate()
 
   const { cartItems, cartTotal, clearCart } = useCart()
@@ -97,6 +98,7 @@ export default function CheckoutPage() {
     }
 
     try {
+      setCheckoutStep('creating')
       // 1. Create order on backend 
       const orderDataPayload = {
         shipping_address: {
@@ -105,7 +107,8 @@ export default function CheckoutPage() {
           address: formData.address,
           city: formData.city,
           pincode: formData.pincode,
-          email: formData.email
+          email: formData.email,
+          phone: formData.phone
         },
         shipping_fee: shippingMethod.fee
       }
@@ -123,6 +126,7 @@ export default function CheckoutPage() {
         order_id: orderData.id,
         handler: async function (response) {
           // 3. Verify payment 
+          setCheckoutStep('verifying')
           try {
             const verifyResp = await api.post('/verify/payment', {
               razorpay_order_id: response.razorpay_order_id,
@@ -139,15 +143,23 @@ export default function CheckoutPage() {
                 navigate('/') // fallback if backend didn't return UUID
               }
             } else {
+              setCheckoutStep('idle')
               alert("Payment verification failed! Please contact support.")
             }
           } catch (err) {
+            setCheckoutStep('idle')
             alert("Error verifying payment: " + (err.response?.data?.detail || err.message))
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setCheckoutStep('idle')
           }
         },
         prefill: {
           name: `${formData.firstName} ${formData.lastName}`.trim(),
           email: formData.email,
+          contact: formData.phone,
         },
         theme: {
           color: "#3399cc"
@@ -155,11 +167,13 @@ export default function CheckoutPage() {
       }
       var rzp1 = new window.Razorpay(options)
       rzp1.on('payment.failed', function (response) {
+        setCheckoutStep('idle')
         alert("Payment Failed: " + response.error.description)
       })
       rzp1.open()
 
     } catch (err) {
+      setCheckoutStep('idle')
       alert("Error creating checkout order: " + (err.response?.data?.detail || err.message))
     }
   }
@@ -195,6 +209,7 @@ export default function CheckoutPage() {
             setFormData={setFormData}
             shippingMethod={shippingMethod}
             setShippingMethod={setShippingMethod}
+            disabled={checkoutStep !== 'idle'}
           />
 
           <OrderSummary
@@ -203,6 +218,7 @@ export default function CheckoutPage() {
             cartTotal={cartTotal}
             canPlaceOrder={Boolean(requiredFilled) && cartItems.length > 0}
             onPlaceOrder={handlePlaceOrder}
+            checkoutStep={checkoutStep}
           />
         </div>
 

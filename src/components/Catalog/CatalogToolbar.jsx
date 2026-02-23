@@ -2,7 +2,7 @@ export default function CatalogToolbar({ sortBy, setSortBy, view, setView, resul
   return (
     <div className="window-container mb-6 flex flex-wrap items-center justify-between gap-4 border-none px-6 py-4">
       <div>
-        <h2 className="text-2xl font-bold">Computer Parts Catalog</h2>
+        <h2 className="text-2xl font-bold">Catalog</h2>
         <p className="text-sm font-medium text-charcoal-dark/60">{resultCount} products found</p>
       </div>
 
@@ -18,7 +18,7 @@ export default function CatalogToolbar({ sortBy, setSortBy, view, setView, resul
           <option value="rating">Rating</option>
         </select>
 
-        <div className="rounded-xl bg-off-white p-1">
+        <div className="hidden sm:flex rounded-xl bg-off-white p-1">
           <button
             type="button"
             onClick={() => setView('grid')}

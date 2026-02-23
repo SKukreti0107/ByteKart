@@ -101,7 +101,7 @@ export function CartProvider({ children }) {
             const existingItem = prev.find(item => item.cartItemId === cartItemId)
 
             if (existingItem) {
-                const newQuantity = Math.min(existingItem.quantity + quantity, maxStock)
+                const newQuantity = Math.min(existingItem.quantity + quantity, Math.min(maxStock, 5))
                 return prev.map(item =>
                     item.cartItemId === cartItemId ? { ...item, quantity: newQuantity } : item
                 )
@@ -115,7 +115,7 @@ export function CartProvider({ children }) {
                 price: displayPrice,
                 mrp: displayMrp,
                 variants: selectedVariants,
-                quantity: Math.min(quantity, maxStock),
+                quantity: Math.min(quantity, Math.min(maxStock, 5)),
                 maxStock
             }]
         })
@@ -128,8 +128,8 @@ export function CartProvider({ children }) {
     const updateQuantity = (cartItemId, newQuantity) => {
         setCartItems(prev => prev.map(item => {
             if (item.cartItemId === cartItemId) {
-                // Ensure quantity is between 1 and maxStock
-                const validQuantity = Math.max(1, Math.min(newQuantity, item.maxStock))
+                // Ensure quantity is between 1 and min(maxStock, 5)
+                const validQuantity = Math.max(1, Math.min(newQuantity, Math.min(item.maxStock, 5)))
                 return { ...item, quantity: validQuantity }
             }
             return item

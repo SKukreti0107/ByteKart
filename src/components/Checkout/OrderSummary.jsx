@@ -1,4 +1,4 @@
-export default function OrderSummary({ shippingMethod, cartItems, cartTotal, onPlaceOrder, canPlaceOrder }) {
+export default function OrderSummary({ shippingMethod, cartItems, cartTotal, onPlaceOrder, canPlaceOrder, checkoutStep }) {
   const subtotal = cartTotal || 0
   const shipping = shippingMethod.fee
   const total = subtotal + shipping
@@ -32,10 +32,15 @@ export default function OrderSummary({ shippingMethod, cartItems, cartTotal, onP
       <button
         type="button"
         onClick={onPlaceOrder}
-        disabled={!canPlaceOrder}
-        className="btn-glow-dark w-full rounded-xl bg-matcha-deep px-5 py-3 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+        disabled={!canPlaceOrder || checkoutStep !== 'idle'}
+        className="btn-glow-dark flex w-full items-center justify-center gap-2 rounded-xl bg-matcha-deep px-5 py-3 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50 transition-all"
       >
-        Place Order
+        {checkoutStep !== 'idle' && (
+          <span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
+        )}
+        {checkoutStep === 'creating' ? 'Creating Order...' :
+          checkoutStep === 'verifying' ? 'Verifying Payment...' :
+            'Place Order'}
       </button>
 
       <p className="mt-3 text-xs font-medium text-charcoal-dark/60">Secure checkout with encrypted payment processing.</p>
