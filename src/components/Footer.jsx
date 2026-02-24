@@ -3,12 +3,7 @@ export default function Footer() {
         <footer className="bg-charcoal text-white pt-20 pb-12 px-6 lg:px-12 border-t-4 border-pure-black relative overflow-hidden mt-20 w-full">
             <div className="relative z-10 flex flex-col lg:flex-row justify-between gap-16 mb-20 w-full">
                 <div className="max-w-sm">
-                    <div className="flex items-center gap-4 mb-6">
-                        <h1 className="text-4xl font-black tracking-tighter uppercase font-display flex items-center gap-2">
-                            <span className="material-symbols-outlined text-4xl">terminal</span>
-                            ByteKart
-                        </h1>
-                    </div>
+                    <img src="/final_logo.png" alt="ByteKart Logo" className="h-52 w-auto object-contain" />
                     <p className="text-sm font-bold uppercase tracking-wide border-l-4 border-matcha-bg pl-4 leading-relaxed text-gray-400">
                         The premier destination for botanical gaming aesthetics and high-performance hardware.
                     </p>

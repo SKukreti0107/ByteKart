@@ -171,13 +171,12 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
   return (
     <>
       <header className="flex items-stretch justify-between h-24 border-b-4 border-pure-black bg-pure-white sticky top-0 z-50 shadow-sm">
-        <Link to="/" className="flex items-center gap-6 px-4 md:px-8 border-r-4 border-pure-black bg-matcha-bg min-w-[200px] md:min-w-[240px] hover:bg-black hover:text-matcha-bg transition-colors group">
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl md:text-3xl font-black tracking-tighter uppercase font-display leading-none flex items-center gap-2">
-              <span className="bg-black text-matcha-bg p-1 text-xl md:text-2xl material-symbols-outlined rounded-none shadow-brutal-sm group-hover:bg-matcha-bg group-hover:text-black transition-colors">terminal</span>
-              <span>ByteKart</span>
-            </h1>
-          </div>
+        <Link to="/" className="flex items-center justify-center border-r-4 border-pure-black bg-matcha-bg hover:bg-black transition-colors group overflow-hidden h-full aspect-square md:aspect-auto md:min-w-[280px]">
+          <img
+            src="/final_logo.png"
+            alt="ByteKart Logo"
+            className="w-auto h-52 object-cover"
+          />
         </Link>
 
         <nav className="hidden lg:flex flex-grow items-center justify-start px-8 gap-8 text-sm font-black tracking-widest uppercase text-pure-black h-full">
