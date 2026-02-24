@@ -144,11 +144,11 @@ export default function CheckoutPage() {
               }
             } else {
               setCheckoutStep('idle')
-              alert("Payment verification failed! Please contact support.")
+              alert("Payment verification failed! Transaction failed. Any money deducted will be reverted soon. Please contact support.")
             }
           } catch (err) {
             setCheckoutStep('idle')
-            alert("Error verifying payment: " + (err.response?.data?.detail || err.message))
+            alert("Error verifying payment: " + (err.response?.data?.detail || err.message) + ". Transaction failed. Any money deducted will be reverted soon.")
           }
         },
         modal: {
@@ -168,13 +168,13 @@ export default function CheckoutPage() {
       var rzp1 = new window.Razorpay(options)
       rzp1.on('payment.failed', function (response) {
         setCheckoutStep('idle')
-        alert("Payment Failed: " + response.error.description)
+        alert("Payment Failed: " + response.error.description + ". Transaction failed. Any money deducted will be reverted soon.")
       })
       rzp1.open()
 
     } catch (err) {
       setCheckoutStep('idle')
-      alert("Error creating checkout order: " + (err.response?.data?.detail || err.message))
+      alert("Error creating checkout order: " + (err.response?.data?.detail || err.message) + ". Transaction failed. Any money deducted will be reverted soon.")
     }
   }
 
