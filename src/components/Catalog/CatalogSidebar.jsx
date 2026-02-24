@@ -19,85 +19,105 @@ export default function CatalogSidebar({
   }
 
   return (
-    <aside className="window-container h-fit w-full border-none p-6 lg:sticky lg:top-28 lg:w-80">
-      <h3 className="mb-6 text-xl font-bold">Filters</h3>
-
-      <div className="mb-7">
-        <p className="mb-3 text-sm font-bold uppercase tracking-wider text-matcha-deep">Category</p>
-        <div className="space-y-2">
-          {categories.length > 0 ? (
-            categories.map((category) => (
-              <button
-                key={category.id}
-                type="button"
-                onClick={() => handleCategoryClick(category.name)}
-                className={`w-full rounded-xl px-4 py-2 text-left text-sm font-semibold transition ${queryCategory === category.name
-                  ? 'bg-baby-green text-matcha-deep'
-                  : 'bg-off-white text-charcoal-dark hover:bg-baby-green/60'
-                  }`}
-              >
-                {category.name}
-              </button>
-            ))
-          ) : (
-            <p className="text-sm text-charcoal-dark/60">Loading...</p>
-          )}
+    <aside className="w-full lg:w-80 flex-shrink-0">
+      <div className="bg-matcha-bg border-4 border-black p-6 shadow-brutal mb-8 lg:sticky lg:top-32">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-2xl font-black uppercase tracking-widest text-black">Filter</h3>
+          <span className="material-symbols-outlined text-2xl font-black">tune</span>
         </div>
-      </div>
 
-      {subCategories.length > 0 && (
-        <div className="mb-7">
-          <p className="mb-3 text-sm font-bold uppercase tracking-wider text-matcha-deep">Subcategory</p>
-          <div className="space-y-2">
-            {subCategories.map((subCat) => (
-              <button
-                key={subCat.id}
-                type="button"
-                onClick={() => toggleSubCategory(subCat.name)}
-                className={`w-full rounded-xl px-4 py-2 text-left text-sm font-semibold transition ${selectedSubCategories.includes(subCat.name)
-                  ? 'bg-baby-green text-matcha-deep'
-                  : 'bg-off-white text-charcoal-dark hover:bg-baby-green/60'
-                  }`}
-              >
-                {subCat.name}
-              </button>
-            ))}
+        <div className="mb-8">
+          <h4 className="text-sm font-black uppercase tracking-widest text-black mb-4 flex items-center gap-2">
+            <span className="material-symbols-outlined text-lg">category</span> Category
+          </h4>
+          <div className="space-y-3">
+            {categories.length > 0 ? (
+              categories.map((category) => {
+                const isSelected = queryCategory === category.name
+                return (
+                  <label key={category.id} className="flex items-center gap-3 cursor-pointer group" onClick={() => handleCategoryClick(category.name)}>
+                    <div className="relative w-6 h-6 border-4 border-black bg-white group-hover:bg-matcha-dark transition-colors flex items-center justify-center">
+                      <div className={`w-3 h-3 bg-black ${isSelected ? 'block' : 'hidden'}`}></div>
+                    </div>
+                    <span className="font-bold uppercase tracking-wider text-sm group-hover:underline">{category.name}</span>
+                  </label>
+                )
+              })
+            ) : (
+              <p className="text-sm font-bold uppercase tracking-wider text-charcoal">Loading...</p>
+            )}
+            {/* All option */}
+            <label className="flex items-center gap-3 cursor-pointer group" onClick={() => setSearchParams({})}>
+              <div className="relative w-6 h-6 border-4 border-black bg-white group-hover:bg-matcha-dark transition-colors flex items-center justify-center">
+                <div className={`w-3 h-3 bg-black ${!queryCategory ? 'block' : 'hidden'}`}></div>
+              </div>
+              <span className="font-bold uppercase tracking-wider text-sm group-hover:underline">All</span>
+            </label>
           </div>
         </div>
-      )}
 
-      {brands.length > 0 && (
-        <div className="mb-7">
-          <p className="mb-3 text-sm font-bold uppercase tracking-wider text-matcha-deep">Brand</p>
-          <select
-            value={selectedBrand}
-            onChange={(event) => setSelectedBrand(event.target.value)}
-            className="w-full rounded-xl border-none bg-off-white px-4 py-3 font-medium focus:ring-2 focus:ring-baby-green"
-          >
-            <option value="All">All Brands</option>
-            {brands.map((brand) => (
-              <option key={brand.id} value={brand.name}>
-                {brand.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
+        {subCategories.length > 0 && (
+          <div className="mb-8">
+            <h4 className="text-sm font-black uppercase tracking-widest text-black mb-4 flex items-center gap-2">
+              <span className="material-symbols-outlined text-lg">account_tree</span> Subcategory
+            </h4>
+            <div className="space-y-3">
+              {subCategories.map((subCat) => {
+                const isSelected = selectedSubCategories.includes(subCat.name)
+                return (
+                  <label key={subCat.id} className="flex items-center gap-3 cursor-pointer group" onClick={() => toggleSubCategory(subCat.name)}>
+                    <div className="relative w-6 h-6 border-4 border-black bg-white group-hover:bg-matcha-dark transition-colors flex items-center justify-center">
+                      <div className={`w-3 h-3 bg-black ${isSelected ? 'block' : 'hidden'}`}></div>
+                    </div>
+                    <span className="font-bold uppercase tracking-wider text-sm group-hover:underline">{subCat.name}</span>
+                  </label>
+                )
+              })}
+            </div>
+          </div>
+        )}
 
-      <div>
-        <div className="mb-3 flex items-center justify-between">
-          <p className="text-sm font-bold uppercase tracking-wider text-matcha-deep">Max Price</p>
-          <span className="rounded-full bg-baby-green px-3 py-1 text-xs font-bold">₹{priceCap.toLocaleString('en-IN')}</span>
+        {brands.length > 0 && (
+          <div className="mb-8">
+            <h4 className="text-sm font-black uppercase tracking-widest text-black mb-4 flex items-center gap-2">
+              <span className="material-symbols-outlined text-lg">branding_watermark</span> Brand
+            </h4>
+            <select
+              value={selectedBrand}
+              onChange={(event) => setSelectedBrand(event.target.value)}
+              className="w-full bg-white border-4 border-black p-3 font-bold uppercase tracking-wider text-sm outline-none focus:bg-matcha-dark transition-colors cursor-pointer appearance-none"
+            >
+              <option value="All">All Brands</option>
+              {brands.map((brand) => (
+                <option key={brand.id} value={brand.name}>
+                  {brand.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        <div>
+          <h4 className="text-sm font-black uppercase tracking-widest text-black mb-4 flex items-center gap-2">
+            <span className="material-symbols-outlined text-lg">sell</span> Max Price
+          </h4>
+          <div className="space-y-4">
+            <input
+              type="range"
+              min="100"
+              max="1000000"
+              step="1000"
+              value={priceCap}
+              onChange={(event) => setPriceCap(Number(event.target.value))}
+              className="w-full accent-black h-2 bg-white border-2 border-black appearance-none cursor-pointer"
+            />
+            <div className="flex justify-between text-xs font-black font-mono bg-white border-2 border-black px-2 py-1">
+              <span>₹100</span>
+              <span>₹{priceCap.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
         </div>
-        <input
-          type="range"
-          min="100"
-          max="1000000"
-          step="1000"
-          value={priceCap}
-          onChange={(event) => setPriceCap(Number(event.target.value))}
-          className="w-full accent-matcha-deep"
-        />
+
       </div>
     </aside>
   )

@@ -1,18 +1,10 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import StorefrontLayout from '../StorefrontLayout'
 import Hero from './Hero'
-import ProductCategories from './ProductCategories'
 import ProductGrid from './ProductsGrid'
-import ExtraCards from './ExtraCards'
 import ProductCardSkeleton from '../Loaders/ProductCardSkeleton'
 import api from '../../api'
-
-const categories = [
-    { icon: 'memory', title: 'Processors' },
-    { icon: 'videocam', title: 'Graphics' },
-    { icon: 'keyboard', title: 'Peripherals' },
-    { icon: 'headphones', title: 'Audio Gear' },
-]
 
 export default function ElectronicsHubPage() {
     const [products, setProducts] = useState([])
@@ -23,14 +15,14 @@ export default function ElectronicsHubPage() {
         const fetchListings = async () => {
             try {
                 const response = await api.getWithCache('/listings')
-                // Map backend data to frontend format
-                const mappedProducts = response.data.slice(0, 6).map(item => {
+                // Map backend data to frontend format, showing 8 products
+                const mappedProducts = response.data.slice(0, 8).map(item => {
                     const displayPrice = (item.supplier_price || 0) + (item.our_cut || 0)
                     return {
                         ...item,
                         price: `₹${displayPrice}`,
                         oldPrice: item.MRP > displayPrice ? `₹${item.MRP}` : null,
-                        image: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600&auto=format&fit=crop&q=60', // Mock image
+                        image: item.image_url || 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600&auto=format&fit=crop&q=60',
                         tags: []
                     }
                 })
@@ -45,37 +37,29 @@ export default function ElectronicsHubPage() {
         fetchListings()
     }, [])
 
-    if (loading) {
-        return (
-            <StorefrontLayout>
-                <main className="w-full space-y-8">
-                    <Hero />
-                    <ProductCategories categories={categories} />
-                    <section className="mb-12">
-                        <div className="mb-8 flex items-end justify-between">
-                            <h2 className="text-3xl font-bold text-charcoal-dark sm:text-4xl">Trending Now</h2>
-                        </div>
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                            {[1, 2, 3, 4].map((n) => (
-                                <ProductCardSkeleton key={n} />
-                            ))}
-                        </div>
-                    </section>
-                    <ExtraCards />
-                </main>
-            </StorefrontLayout>
-        )
-    }
-
-    if (error) return <StorefrontLayout><div className="p-8 text-center text-red-500">{error}</div></StorefrontLayout>
-
     return (
         <StorefrontLayout>
-            <main className="w-full space-y-8">
+            <main className="w-full">
                 <Hero />
-                <ProductCategories categories={categories} />
-                <ProductGrid products={products} />
-                <ExtraCards />
+                <section className="bg-matcha-bg py-16 px-6 lg:px-12 border-b-4 border-pure-black">
+                    <div className="w-full">
+                        <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-12">
+                            <h3 className="text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-black" style={{ textShadow: '3px 3px 0px #FFF' }}>Latest Arrivals</h3>
+                            <Link to="/catalog" className="text-base md:text-lg font-bold border-b-4 border-black hover:bg-black hover:text-white px-2 transition-all w-fit">View All</Link>
+                        </div>
+                        {loading ? (
+                            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+                                {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+                                    <ProductCardSkeleton key={n} />
+                                ))}
+                            </div>
+                        ) : error ? (
+                            <div className="text-center font-bold text-red-500 uppercase">{error}</div>
+                        ) : (
+                            <ProductGrid products={products} />
+                        )}
+                    </div>
+                </section>
             </main>
         </StorefrontLayout>
     )

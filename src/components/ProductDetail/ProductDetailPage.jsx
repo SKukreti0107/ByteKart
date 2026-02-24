@@ -7,8 +7,6 @@ import PurchasePanel from './PurchasePanel'
 import ProductDetailSkeleton from '../Loaders/ProductDetailSkeleton'
 import api from '../../api'
 
-
-
 export default function ProductDetailPage() {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
@@ -64,7 +62,7 @@ export default function ProductDetailPage() {
   if (error) {
     return (
       <StorefrontLayout>
-        <div className="p-8 text-center text-red-500">{error}</div>
+        <div className="p-8 text-center text-red-500 font-bold uppercase">{error}</div>
       </StorefrontLayout>
     )
   }
@@ -74,14 +72,16 @@ export default function ProductDetailPage() {
 
   return (
     <StorefrontLayout>
-      <main className="w-full space-y-8">
-        <div className="window-container break-words border-none px-4 py-4 text-sm font-semibold text-charcoal-dark/70 sm:px-6">
-          <Link to="/" className="hover:text-matcha-deep transition-colors">Home</Link> /
-          <Link to="/catalog" className="hover:text-matcha-deep transition-colors ml-1">Catalog</Link> /
-          <span className="text-matcha-deep ml-1">{product?.name}</span>
+      <main className="w-full space-y-16 px-6 lg:px-12 py-8">
+        <div className="flex flex-wrap items-center gap-2 text-[10px] md:text-sm font-black uppercase tracking-widest">
+          <Link to="/" className="bg-charcoal/10 px-2 py-1 text-black hover:bg-black hover:text-white transition-colors">Home</Link>
+          <span className="text-black/30">/</span>
+          <Link to="/catalog" className="bg-charcoal/10 px-2 py-1 text-black hover:bg-black hover:text-white transition-colors">Catalog</Link>
+          <span className="text-black/30">/</span>
+          <span className="bg-black text-white px-2 py-1">{product?.name}</span>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <div className="grid grid-cols-1 gap-12 xl:grid-cols-2">
           <ProductGallery selectedImage={displayImage} />
           <PurchasePanel
             product={product}
@@ -90,24 +90,25 @@ export default function ProductDetailPage() {
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-          <div className="xl:col-span-2">
-            <section className="window-container border-none p-6 text-charcoal-dark h-full">
-              <h2 className="text-xl font-bold mb-4">Description</h2>
-              <p className="whitespace-pre-wrap">{product?.description || 'No description available for this product.'}</p>
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-3 pt-8">
+          <div className="xl:col-span-3">
+            <section className="text-black h-full border-4 border-black bg-white p-8 md:p-12 shadow-brutal relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-black text-white px-4 py-1 text-[10px] font-black uppercase tracking-[0.2em] shadow-brutal-sm">Technical_Specs</div>
+              <h2 className="text-2xl md:text-3xl font-black uppercase tracking-widest mb-8 border-b-4 border-black pb-4 inline-block">Description</h2>
+              <p className="whitespace-pre-wrap font-bold text-base leading-relaxed max-w-5xl">{product?.description || 'No description available for this product.'}</p>
             </section>
           </div>
         </div>
 
-        <section className="space-y-5">
-          <h2 className="text-3xl font-bold">Related Gear</h2>
+        <section className="space-y-8 pt-8 border-t-4 border-black">
+          <h2 className="text-2xl font-black uppercase tracking-widest">Related Gear</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {relatedProducts.length > 0 ? (
               relatedProducts.map((item) => (
                 <ProductCard key={item.id} product={item} actionLabel="Open" />
               ))
             ) : (
-              <p className="text-sm font-medium text-charcoal-dark/70">No related products found.</p>
+              <p className="text-sm font-bold uppercase tracking-widest text-gray-700">No related products found.</p>
             )}
           </div>
         </section>

@@ -1,62 +1,53 @@
 export default function ExtraCards() {
     return (
-        <div className="space-y-8">
-            <section className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-                <div className="window-container group relative overflow-hidden border-0 bg-white p-6 shadow-lg md:p-10">
-                    <div className="absolute top-0 right-0 -mt-10 -mr-10 h-64 w-64 rounded-bl-[10rem] bg-baby-green/20 transition-transform group-hover:scale-110" />
-                    <div className="relative z-10">
-                        <p className="mb-4 text-xs font-bold tracking-widest text-matcha-deep uppercase">
-                            Sustainability First
-                        </p>
-                        <h3 className="mb-4 text-3xl font-bold text-charcoal-dark md:text-4xl">Carbon-Zero Hardware</h3>
-                        <p className="mb-8 max-w-sm font-medium text-charcoal-dark/70">
-                            Every purchase includes a donation to global reforestation efforts. Build green, play green.
-                        </p>
-                        <button className="btn-glow-dark rounded-xl bg-charcoal-dark px-6 py-3 font-bold text-white transition-all hover:bg-matcha-deep md:px-8">
-                            Learn Our Mission
-                        </button>
-                    </div>
-                </div>
-
-                <div className="window-container relative flex flex-col items-start justify-center overflow-hidden border-0 bg-white p-6 shadow-lg md:p-10">
-                    <div className="absolute inset-0 bg-baby-green/10" />
-                    <div className="relative z-10">
-                        <div className="mb-4 inline-block rounded-lg bg-red-100 px-3 py-1 text-xs font-bold text-red-600">
-                            FLASH SALE: 24h LEFT
-                        </div>
-                        <h3 className="mb-4 text-3xl font-bold text-charcoal-dark md:text-4xl">Matcha Bundle 40% OFF</h3>
-                        <p className="mb-8 max-w-sm font-medium text-charcoal-dark/70">
-                            Get the keyboard, mouse, and headset in our signature Matcha theme for a fraction of the price.
-                        </p>
-                        <button className="btn-glow-dark rounded-xl bg-matcha-deep px-6 py-3 font-bold text-white shadow-md transition-all hover:shadow-lg md:px-8">
-                            Claim Bundle
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <section className="flex flex-col items-start gap-10 rounded-squish border-[4px] border-white/40 bg-charcoal-dark p-10 text-white shadow-window-sep md:p-14 lg:flex-row lg:items-center lg:justify-between">
-                <div className="flex-1 space-y-6">
-                    <h2 className="text-3xl leading-tight font-bold sm:text-4xl md:text-5xl">
-                        Join the <span className="text-baby-green drop-shadow-[0_0_15px_rgba(198,220,186,0.35)]">Green Tech</span> Revolution.
-                    </h2>
-                    <p className="max-w-lg text-lg font-medium text-white/70">
-                        Sign up for early access to limited edition colorways and exclusive member discounts on future drops.
+        <section className="grid grid-cols-1 lg:grid-cols-2 border-b-4 border-pure-black">
+            <div className="bg-matcha-bg p-8 md:p-12 lg:p-24 border-b-4 lg:border-b-0 lg:border-r-4 border-pure-black flex flex-col justify-center">
+                <div className="bg-white border-4 border-black p-8 md:p-10 shadow-brutal mb-12 transform -rotate-1">
+                    <h3 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-charcoal mb-6 uppercase tracking-tight leading-[0.9]">
+                        System<br />Inquiry
+                    </h3>
+                    <p className="text-charcoal text-lg md:text-xl font-bold leading-relaxed">
+                        Need a custom build? We replace organic guesswork with mathematical certainty.
                     </p>
                 </div>
-                <div className="w-full rounded-3xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm lg:w-auto">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                        <input
-                            type="email"
-                            placeholder="your.email@tech.com"
-                            className="w-full min-w-0 rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-white placeholder:text-white/40 focus:border-baby-green focus:ring-2 focus:ring-baby-green sm:min-w-[320px]"
-                        />
-                        <button className="btn-glow rounded-2xl bg-baby-green px-8 py-4 font-bold whitespace-nowrap text-charcoal-dark transition-all hover:bg-white">
-                            Subscribe
-                        </button>
+
+                <div className="grid grid-cols-2 gap-4 md:gap-8 hover:*:shadow-none hover:*:translate-x-1 hover:*:translate-y-1">
+                    <div className="bg-pure-black p-4 md:p-6 text-pure-white sharp-panel aspect-square flex flex-col justify-between border-4 border-transparent hover:border-white shadow-brutal transition-all cursor-pointer">
+                        <span className="text-3xl md:text-4xl font-black opacity-30">01</span>
+                        <div>
+                            <span className="block text-xs uppercase tracking-widest mb-1 text-matcha-bg">Builds</span>
+                            <span className="block text-xl md:text-2xl font-black font-display uppercase">Custom</span>
+                        </div>
+                    </div>
+                    <div className="bg-pure-white p-4 md:p-6 text-charcoal border-4 border-charcoal sharp-panel aspect-square flex flex-col justify-between shadow-brutal transition-all cursor-pointer">
+                        <span className="text-3xl md:text-4xl font-black opacity-20">02</span>
+                        <div>
+                            <span className="block text-xs uppercase tracking-widest mb-1">Support</span>
+                            <span className="block text-xl md:text-2xl font-black font-display uppercase">24/7</span>
+                        </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+
+            <div className="relative bg-pure-white p-8 md:p-12 lg:p-24 flex items-center justify-center">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,#000_2px,transparent_0)] [background-size:20px_20px] opacity-10"></div>
+
+                <div className="w-full bg-pure-white border-4 border-charcoal shadow-brutal p-6 md:p-8 lg:p-12 relative z-10 hover:-rotate-1 transition-transform">
+                    <form className="space-y-6 md:space-y-8" onSubmit={(e) => { e.preventDefault(); alert("Request submitted."); }}>
+                        <div className="space-y-2">
+                            <label className="text-[10px] md:text-xs font-black uppercase tracking-widest bg-black text-white px-2 py-1 inline-block">Project ID</label>
+                            <input className="w-full bg-white px-4 py-3 md:py-4 text-charcoal font-bold text-base md:text-lg focus:ring-0 focus:bg-matcha-bg/20 placeholder:text-black/20 outline-none" placeholder="ID_000" type="text" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] md:text-xs font-black uppercase tracking-widest bg-black text-white px-2 py-1 inline-block">Contact</label>
+                            <input className="w-full bg-white px-4 py-3 md:py-4 text-charcoal font-bold text-base md:text-lg focus:ring-0 focus:bg-matcha-bg/20 placeholder:text-black/20 outline-none" placeholder="USER@DOMAIN.COM" type="email" />
+                        </div>
+                        <button className="w-full bg-pure-black text-pure-white py-4 md:py-6 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] font-black hover:bg-white hover:text-black transition-all shadow-brutal border-4 border-black hover:shadow-none hover:translate-x-1 hover:translate-y-1 block outline-none" type="submit">
+                            Initialize Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
     )
 }

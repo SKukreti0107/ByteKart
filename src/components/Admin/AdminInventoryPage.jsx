@@ -22,9 +22,21 @@ export default function AdminInventoryPage() {
   const fetchListings = async () => {
     try {
       setLoading(true)
-      const response = await api.get('/admin/listings')
-      const mappedRows = response.data.map(item => ({
+      const [listingsRes, categoriesRes] = await Promise.all([
+        api.get('/admin/listings'),
+        api.get('/categories')
+      ])
+
+      const categoriesMap = categoriesRes.data.reduce((acc, cat) => {
+        acc[cat.id] = cat.name
+        return acc
+      }, {})
+
+      const mappedRows = listingsRes.data.map(item => ({
         ...item,
+        category: categoriesMap[item.category_id] || 'General',
+        stock: item.variant_combinations?.reduce((sum, v) => sum + (v.stock || 0), 0) || 0,
+        status: item.stock_status,
         price: (item.supplier_price || 0) + (item.our_cut || 0)
       }))
       setRows(mappedRows)
@@ -42,7 +54,8 @@ export default function AdminInventoryPage() {
 
   const filteredRows = useMemo(() => {
     return rows.filter((row) => {
-      const matchesQuery = row.name.toLowerCase().includes(query.toLowerCase()) || row.category.toLowerCase().includes(query.toLowerCase())
+      const matchesQuery = row.name.toLowerCase().includes(query.toLowerCase()) ||
+        (row.category || '').toLowerCase().includes(query.toLowerCase())
       const matchesStatus = statusFilter === 'all' ? true : row.stock_status === statusFilter
       return matchesQuery && matchesStatus
     })
@@ -81,45 +94,54 @@ export default function AdminInventoryPage() {
     setIsModalOpen(true)
   }
 
-  // if (loading) return <div className="p-8 text-center">Loading inventory...</div>
-  if (error) return <div className="p-8 text-center text-red-500">{error}</div>
+  if (error) return <div className="p-8 text-center text-red-500 font-bold uppercase">{error}</div>
 
   return (
-    <div
-      className="min-h-screen bg-matcha-bg text-charcoal-dark font-['Fredoka',sans-serif]"
-    >
+    <div className="min-h-screen bg-pure-white text-black font-['Inter',sans-serif]">
       <NavBar showSearch={false} />
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-6 p-4 md:p-6 lg:grid-cols-[280px_1fr] lg:p-8">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-8 lg:mt-12 px-6 lg:px-12 mb-20 w-full">
         <AdminSidebar />
 
-        <main className="space-y-6">
-          <section className="window-container border-none p-5">
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-xs font-bold tracking-widest text-matcha-deep uppercase">Inventory Dashboard</p>
-                <h1 className="text-3xl font-bold">Admin Control</h1>
-              </div>
-              <button onClick={handleAddProduct} className="rounded-xl bg-matcha-deep px-4 py-2 font-bold text-white">+ Add Product</button>
+        <main className="flex-grow">
+          <div className="mb-8 border-b-4 border-black pb-6 flex justify-between items-end flex-wrap gap-4">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-black" style={{ textShadow: '3px 3px 0px #C6DCBA' }}>Inventory</h1>
+              <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mt-2">Manage Products</p>
             </div>
+            <button onClick={handleAddProduct} className="bg-black text-matcha-bg px-6 py-3 font-black uppercase tracking-widest text-sm border-4 border-black shadow-brutal-sm hover:shadow-none hover:translate-y-1 hover:bg-white hover:text-black transition-all flex items-center">
+              <span className="material-symbols-outlined mr-2">add</span> Add Product
+            </button>
+          </div>
 
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-              <div className="rounded-xl bg-off-white p-4"><p className="text-xs font-bold uppercase text-matcha-deep">Total SKUs</p><p className="text-3xl font-bold">{kpi.totalSku}</p></div>
-              <div className="rounded-xl bg-off-white p-4"><p className="text-xs font-bold uppercase text-matcha-deep">In Stock</p><p className="text-3xl font-bold">{kpi.inStock}</p></div>
-              <div className="rounded-xl bg-off-white p-4"><p className="text-xs font-bold uppercase text-matcha-deep">Low Stock</p><p className="text-3xl font-bold">{kpi.lowStock}</p></div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+              <p className="text-sm font-black uppercase tracking-widest text-black mb-4">Total SKUs</p>
+              <p className="text-4xl font-black text-black">{kpi.totalSku}</p>
             </div>
-          </section>
+            <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+              <p className="text-sm font-black uppercase tracking-widest text-black mb-4">In Stock</p>
+              <p className="text-4xl font-black text-black">{kpi.inStock}</p>
+            </div>
+            <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+              <p className="text-sm font-black uppercase tracking-widest text-black mb-4">Low Stock</p>
+              <p className="text-4xl font-black text-red-600">{kpi.lowStock}</p>
+            </div>
+          </div>
 
-          <section className="window-container border-none p-5">
-            <div className="flex flex-wrap items-center gap-3">
+          <div className="bg-white border-4 border-black p-4 mb-8 flex flex-col sm:flex-row gap-4 shadow-brutal-sm">
+            <div className="relative flex-grow">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">search</span>
               <input
                 value={query}
                 onChange={(event) => {
                   setPage(1)
                   setQuery(event.target.value)
                 }}
-                placeholder="Search products"
-                className="w-full rounded-xl border-none bg-off-white px-4 py-2.5 sm:min-w-[260px] sm:flex-1"
+                placeholder="Search products..."
+                className="w-full bg-[#f9f9f9] border-4 border-black pl-12 pr-4 py-3 font-bold text-black outline-none focus:bg-white transition-colors placeholder:font-bold placeholder:text-gray-400"
               />
+            </div>
+            <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 hide-scrollbar">
               {['all', 'in-stock', 'low-stock'].map((item) => (
                 <button
                   key={item}
@@ -128,16 +150,16 @@ export default function AdminInventoryPage() {
                     setPage(1)
                     setStatusFilter(item)
                   }}
-                  className={`rounded-full px-4 py-2 text-sm font-bold uppercase ${statusFilter === item
-                    ? 'bg-matcha-deep text-white'
-                    : 'bg-off-white text-charcoal-dark'
+                  className={`px-4 py-3 font-black uppercase tracking-widest text-xs border-4 border-black whitespace-nowrap transition-colors ${statusFilter === item
+                    ? 'bg-black text-matcha-bg'
+                    : 'bg-white text-black hover:bg-black hover:text-matcha-bg'
                     }`}
                 >
                   {item}
                 </button>
               ))}
             </div>
-          </section>
+          </div>
 
           {loading ? (
             <InventoryTableSkeleton />

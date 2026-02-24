@@ -34,57 +34,61 @@ export default function ProductCard({ product, actionLabel = 'Quick Add', onActi
     }
 
     return (
-        <div className={`product-card flex flex-row sm:flex-col rounded-squish p-3 sm:p-4 shadow-md gap-3 sm:gap-0 items-center sm:items-stretch ${isOutOfStock ? 'opacity-60 grayscale' : ''}`}>
-            <Link to={`/product/${product.id}`} className={`group relative shrink-0 h-28 w-28 sm:h-auto sm:w-full sm:mb-4 aspect-square overflow-hidden rounded-2xl bg-off-white block ${isOutOfStock ? 'pointer-events-none' : ''}`}>
+        <div className={`bg-pure-white border-4 border-pure-black p-6 shadow-brutal flex flex-col group hover:-translate-y-2 transition-transform duration-300 ${isOutOfStock ? 'opacity-75' : ''} h-full`}>
+            <Link to={`/product/${product.id}`} className={`block aspect-square mb-6 border-4 ${isOutOfStock ? 'border-gray-100 bg-gray-50 grayscale' : 'border-black bg-[#f9f9f9]'} relative overflow-hidden flex items-center justify-center p-4 shrink-0 ${isOutOfStock ? 'pointer-events-none' : ''}`}>
                 <img
                     src={product.image_url || product.image || 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60'}
                     alt={product.name}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
                 />
+
                 {product.tags?.length ? (
-                    <div className="absolute top-3 left-3 flex flex-col gap-2">
+                    <div className="absolute top-2 left-2 flex flex-col gap-1 z-10 w-3/4 pointer-events-none">
                         {product.tags.map((tag) => (
                             <span
                                 key={`${product.name}-${tag}`}
-                                className="rounded-md bg-charcoal-dark px-2 py-1 text-[10px] font-bold tracking-wider text-white uppercase"
+                                className="bg-black text-white text-[10px] font-black px-2 py-1 uppercase tracking-wider border-2 border-black truncate block w-fit max-w-full"
                             >
                                 {tag}
                             </span>
                         ))}
                     </div>
                 ) : null}
+
+                {discountPercentage > 0 && !isOutOfStock && (
+                    <span className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-black px-2 py-1 uppercase tracking-tighter border-2 border-black z-10 transform rotate-2">
+                        {discountPercentage}% OFF
+                    </span>
+                )}
             </Link>
-            <div className="flex flex-1 flex-col sm:px-1 h-full sm:h-auto justify-between sm:justify-start py-1 sm:py-0 w-full">
+
+            <div className="flex flex-col flex-grow justify-between">
                 <div>
                     <Link to={`/product/${product.id}`} className="block">
-                        <h3 className="mb-1 text-base sm:text-xl line-clamp-2 sm:line-clamp-none font-bold text-charcoal-dark hover:text-matcha-deep transition-colors">{product.name}</h3>
+                        <h4 className="text-lg sm:text-xl font-black uppercase mb-2 leading-tight min-h-[3rem] hover:text-matcha-dark transition-colors line-clamp-2">{product.name}</h4>
                     </Link>
-                    <div className="mb-3 sm:mb-4 flex items-center gap-2 flex-wrap">
-                        <span className="text-lg sm:text-2xl font-bold text-matcha-deep">{product.price}</span>
+
+                    <div className="flex items-baseline gap-2 mb-6 flex-wrap">
+                        <span className={`text-2xl font-black ${isOutOfStock ? 'text-charcoal' : 'text-matcha-dark'}`}>{product.price}</span>
                         {product.oldPrice ? (
-                            <>
-                                <span className="text-xs sm:text-sm font-medium text-red-500 line-through flex-shrink-0">{product.oldPrice}</span>
-                                {discountPercentage > 0 && (
-                                    <span className="text-[10px] sm:text-xs font-bold text-white bg-red-500 px-2 py-0.5 rounded-full flex-shrink-0 shadow-sm">
-                                        {discountPercentage}% OFF
-                                    </span>
-                                )}
-                            </>
+                            <span className="text-sm text-gray-400 line-through font-mono decoration-2">{product.oldPrice}</span>
                         ) : null}
                     </div>
                 </div>
+
                 <button
                     onClick={handleAction}
                     disabled={isOutOfStock}
-                    className={`flex w-full items-center justify-center gap-2 rounded-xl border py-2 sm:py-3 font-bold mt-auto sm:mt-0 transition-all ${isOutOfStock
-                        ? 'border-gray-300 bg-gray-200 text-gray-500 cursor-not-allowed'
-                        : 'border-baby-green/50 bg-off-white text-charcoal-dark hover:bg-baby-green'
+                    className={`w-full mt-auto py-3 md:py-4 border-4 font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 
+                    ${isOutOfStock
+                            ? 'bg-gray-200 text-gray-500 border-gray-400 cursor-not-allowed'
+                            : 'bg-[#E8EFE5] text-black border-black hover:bg-black hover:text-matcha-bg shadow-brutal-sm hover:shadow-none hover:translate-x-1 hover:translate-y-1'
                         }`}
                 >
-                    <span className="material-symbols-outlined text-base sm:text-lg">
+                    <span className="material-symbols-outlined text-lg">
                         {isOutOfStock ? 'block' : 'add_shopping_cart'}
                     </span>
-                    <span className="text-sm sm:text-base">
+                    <span className="text-sm">
                         {isOutOfStock ? 'Out of Stock' : actionLabel}
                     </span>
                 </button>

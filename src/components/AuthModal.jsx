@@ -59,40 +59,40 @@ export default function AuthModal({ isOpen, onClose }) {
     }
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-charcoal-dark/50 p-4 backdrop-blur-sm">
-            <div className="relative w-full max-w-md rounded-2xl bg-pure-white p-8 shadow-2xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+            <div className="relative w-full max-w-md border-4 border-black bg-pure-white p-8 shadow-brutal">
                 <button
                     onClick={handleClose}
-                    className="absolute right-4 top-4 text-charcoal-dark/50 hover:text-charcoal-dark"
+                    className="absolute -right-4 -top-4 w-10 h-10 bg-white border-4 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors z-20 shadow-brutal-sm"
                     aria-label="Close modal"
                 >
-                    <span className="material-symbols-outlined text-2xl">close</span>
+                    <span className="material-symbols-outlined text-xl">close</span>
                 </button>
 
-                <div className="mb-8 text-center">
-                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-baby-green text-matcha-deep">
-                        <span className="material-symbols-outlined text-3xl">bolt</span>
+                <div className="mb-10 text-center">
+                    <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center border-4 border-black bg-matcha-bg shadow-brutal-sm">
+                        <span className="material-symbols-outlined text-4xl text-black">terminal</span>
                     </div>
-                    <h2 className="text-2xl font-bold text-charcoal-dark">
-                        {isLogin ? 'Welcome back' : 'Create an account'}
+                    <h2 className="text-3xl font-black uppercase tracking-tighter text-black">
+                        {isLogin ? 'Welcome Back' : 'Create Account'}
                     </h2>
-                    <p className="mt-2 text-sm text-charcoal-dark/60">
+                    <p className="mt-2 text-xs font-black uppercase tracking-[0.2em] text-gray-500">
                         {isLogin
-                            ? 'Enter your details to access your gear.'
-                            : 'Join us and start shopping premium tech.'}
+                            ? 'Login'
+                            : 'Register'}
                     </p>
                 </div>
 
                 {error && (
-                    <div className="mb-4 rounded-xl bg-red-50 p-3 text-sm font-semibold text-red-500">
+                    <div className="mb-6 border-4 border-black bg-red-100 p-4 text-xs font-black uppercase tracking-widest text-red-600">
                         {error}
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     {!isLogin && (
                         <div>
-                            <label className="mb-1 block text-sm font-bold text-charcoal-dark" htmlFor="name">
+                            <label className="mb-2 block text-xs font-black uppercase tracking-widest text-black/50" htmlFor="name">
                                 Full Name
                             </label>
                             <input
@@ -101,15 +101,15 @@ export default function AuthModal({ isOpen, onClose }) {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required={!isLogin}
-                                className="w-full rounded-xl border-none bg-off-white px-4 py-3 font-medium focus:ring-2 focus:ring-baby-green"
-                                placeholder="John Doe"
+                                className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
+                                placeholder="IDENTIFY YOURSELF"
                             />
                         </div>
                     )}
 
                     <div>
-                        <label className="mb-1 block text-sm font-bold text-charcoal-dark" htmlFor="email">
-                            Email
+                        <label className="mb-2 block text-xs font-black uppercase tracking-widest text-black/50" htmlFor="email">
+                            Email address
                         </label>
                         <input
                             id="email"
@@ -117,14 +117,14 @@ export default function AuthModal({ isOpen, onClose }) {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full rounded-xl border-none bg-off-white px-4 py-3 font-medium focus:ring-2 focus:ring-baby-green"
-                            placeholder="you@example.com"
+                            className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
+                            placeholder="USER@HUB.COM"
                         />
                     </div>
 
                     <div>
-                        <label className="mb-1 block text-sm font-bold text-charcoal-dark" htmlFor="password">
-                            Password
+                        <label className="mb-2 block text-xs font-black uppercase tracking-widest text-black/50" htmlFor="password">
+                            Password key
                         </label>
                         <input
                             id="password"
@@ -133,7 +133,7 @@ export default function AuthModal({ isOpen, onClose }) {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             minLength={8}
-                            className="w-full rounded-xl border-none bg-off-white px-4 py-3 font-medium focus:ring-2 focus:ring-baby-green"
+                            className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
                             placeholder="••••••••"
                         />
                     </div>
@@ -141,22 +141,22 @@ export default function AuthModal({ isOpen, onClose }) {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full rounded-xl bg-matcha-deep py-3 font-bold text-white transition-all hover:bg-opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
+                        className="w-full border-4 border-black bg-black py-5 font-black uppercase tracking-widest text-white shadow-brutal hover:bg-white hover:text-black transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Sign Up'}
+                        {loading ? 'Processing...' : isLogin ? 'Authenticate' : 'Establish Record'}
                     </button>
                 </form>
 
-                <div className="mt-6 text-center text-sm">
-                    <span className="text-charcoal-dark/60">
-                        {isLogin ? "Don't have an account? " : "Already have an account? "}
-                    </span>
+                <div className="mt-10 text-center">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4 leading-relaxed">
+                        Secure terminal access. All credentials encrypted.
+                    </p>
                     <button
                         type="button"
                         onClick={toggleMode}
-                        className="font-bold text-matcha-deep hover:underline"
+                        className="text-xs font-black uppercase tracking-widest text-black underline underline-offset-4 hover:bg-black hover:text-white transition-colors px-2 py-1"
                     >
-                        {isLogin ? 'Sign up' : 'Log in'}
+                        {isLogin ? 'Sign up' : 'Existing user? Login'}
                     </button>
                 </div>
             </div>

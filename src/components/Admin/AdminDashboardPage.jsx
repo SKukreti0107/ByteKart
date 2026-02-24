@@ -23,90 +23,90 @@ export default function AdminDashboardPage() {
     }, [])
 
     return (
-        <div className="min-h-screen bg-matcha-bg text-charcoal-dark font-['Fredoka',sans-serif]">
+        <div className="min-h-screen bg-pure-white text-black font-['Inter',sans-serif]">
             <NavBar showSearch={false} />
-            <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-6 p-4 md:p-6 lg:grid-cols-[280px_1fr] lg:p-8">
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-8 lg:mt-12 px-6 lg:px-12 max-w-[1600px] mx-auto mb-20">
                 <AdminSidebar />
 
-                <main className="space-y-6">
-                    <section className="window-container border-none p-5">
-                        <div className="mb-5">
-                            <p className="text-xs font-bold tracking-widest text-matcha-deep uppercase">ByteKart Overview</p>
-                            <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+                <main className="flex-grow">
+                    <div className="mb-8 border-b-4 border-black pb-6 flex justify-between items-end">
+                        <div>
+                            <h1 className="text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-black" style={{ textShadow: '3px 3px 0px #C6DCBA' }}>Overview</h1>
+                            <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mt-2">System Status: Online</p>
                         </div>
+                    </div>
 
-                        {/* Phase 1: High-Level Overview Cards */}
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                            {loading ? (
-                                Array.from({ length: 4 }).map((_, idx) => (
-                                    <div key={idx} className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
-                                        <div className="mb-2 flex items-center justify-between text-matcha-deep">
-                                            <Skeleton className="h-4 w-24" />
-                                            <Skeleton className="h-6 w-6 rounded-full" />
-                                        </div>
-                                        <Skeleton className="h-8 w-16 mt-2" />
+                    {/* Phase 1: High-Level Overview Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
+                        {loading ? (
+                            Array.from({ length: 4 }).map((_, idx) => (
+                                <div key={idx} className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform">
+                                    <div className="mb-4 flex items-start justify-between">
+                                        <Skeleton className="h-4 w-24 bg-gray-200" />
+                                        <Skeleton className="h-8 w-8 rounded-none bg-gray-200" />
                                     </div>
-                                ))
-                            ) : kpi ? (
-                                <>
-                                    <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
-                                        <div className="mb-2 flex items-center justify-between text-matcha-deep">
-                                            <p className="text-xs font-bold uppercase tracking-wider">Total Products</p>
-                                            <span className="material-symbols-outlined text-xl">inventory_2</span>
-                                        </div>
-                                        <p className="text-3xl font-bold">{kpi.totalProducts}</p>
+                                    <Skeleton className="h-10 w-20 mt-2 bg-gray-200" />
+                                </div>
+                            ))
+                        ) : kpi ? (
+                            <>
+                                <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <p className="text-sm font-black uppercase tracking-widest text-black">Total Products</p>
+                                        <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">inventory_2</span>
                                     </div>
+                                    <p className="text-4xl font-black text-black">{kpi.totalProducts}</p>
+                                </div>
 
-                                    <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
-                                        <div className="mb-2 flex items-center justify-between text-matcha-deep">
-                                            <p className="text-xs font-bold uppercase tracking-wider">Total Orders</p>
-                                            <span className="material-symbols-outlined text-xl">local_shipping</span>
-                                        </div>
-                                        <p className="text-3xl font-bold">{kpi.totalOrders}</p>
+                                <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <p className="text-sm font-black uppercase tracking-widest text-black">Total Orders</p>
+                                        <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">local_shipping</span>
                                     </div>
+                                    <p className="text-4xl font-black text-black">{kpi.totalOrders}</p>
+                                </div>
 
-                                    <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
-                                        <div className="mb-2 flex items-center justify-between text-matcha-deep">
-                                            <p className="text-xs font-bold uppercase tracking-wider">Revenue</p>
-                                            <span className="material-symbols-outlined text-xl">payments</span>
-                                        </div>
-                                        <p className="text-3xl font-bold">₹{(kpi.revenue || 0).toLocaleString()}</p>
+                                <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <p className="text-sm font-black uppercase tracking-widest text-black">Revenue</p>
+                                        <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">payments</span>
                                     </div>
+                                    <p className="text-4xl font-black text-black">₹{(kpi.revenue || 0).toLocaleString()}</p>
+                                </div>
 
-                                    <div className="rounded-xl border border-baby-green/30 bg-pure-white p-5 shadow-sm">
-                                        <div className="mb-2 flex items-center justify-between text-matcha-deep">
-                                            <p className="text-xs font-bold uppercase tracking-wider">Pending Requests</p>
-                                            <span className="material-symbols-outlined text-xl">pending_actions</span>
-                                        </div>
-                                        <p className="text-3xl font-bold">{kpi.pendingRequests}</p>
+                                <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <p className="text-sm font-black uppercase tracking-widest text-black">Pending Requests</p>
+                                        <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">pending_actions</span>
                                     </div>
-                                </>
-                            ) : null}
-                        </div>
-                    </section>
+                                    <p className="text-4xl font-black text-black">{kpi.pendingRequests}</p>
+                                </div>
+                            </>
+                        ) : null}
+                    </div>
 
                     {/* Phase 2: Analytics Placeholders */}
-                    <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                        <div className="window-container col-span-1 border-none p-5 lg:col-span-2">
-                            <div className="mb-4 flex items-center justify-between">
-                                <h2 className="text-lg font-bold">Revenue Trends</h2>
-                                <span className="rounded-full bg-baby-green/40 px-3 py-1 text-xs font-bold text-matcha-deep">Coming Soon</span>
+                    <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="bg-white border-4 border-black shadow-brutal hover:-translate-y-1 transition-transform group p-6">
+                            <div className="mb-6 flex justify-between items-center border-b-4 border-black pb-4">
+                                <h2 className="text-2xl font-black uppercase tracking-widest text-black">Revenue Trends</h2>
+                                <span className="bg-black text-matcha-bg px-2 py-1 text-[10px] font-black uppercase tracking-widest border-2 border-black">Coming Soon</span>
                             </div>
-                            <div className="flex h-64 items-center justify-center rounded-xl bg-off-white/50 text-charcoal-dark/40 border border-dashed border-baby-green">
-                                <p className="flex items-center gap-2 font-semibold">
+                            <div className="flex h-64 items-center justify-center border-4 border-dashed border-gray-300 bg-[#f9f9f9]">
+                                <p className="flex items-center gap-2 font-black uppercase tracking-widest text-gray-400 text-sm">
                                     <span className="material-symbols-outlined">bar_chart</span>
                                     Analytics Module Reservation
                                 </p>
                             </div>
                         </div>
 
-                        <div className="window-container col-span-1 border-none p-5">
-                            <div className="mb-4 flex items-center justify-between">
-                                <h2 className="text-lg font-bold">Top-Selling Products</h2>
-                                <span className="rounded-full bg-baby-green/40 px-3 py-1 text-xs font-bold text-matcha-deep">Coming Soon</span>
+                        <div className="bg-white border-4 border-black shadow-brutal hover:-translate-y-1 transition-transform group p-6">
+                            <div className="mb-6 flex justify-between items-center border-b-4 border-black pb-4">
+                                <h2 className="text-2xl font-black uppercase tracking-widest text-black">Top-Selling Products</h2>
+                                <span className="bg-black text-matcha-bg px-2 py-1 text-[10px] font-black uppercase tracking-widest border-2 border-black">Coming Soon</span>
                             </div>
-                            <div className="flex h-64 items-center justify-center rounded-xl bg-off-white/50 text-charcoal-dark/40 border border-dashed border-baby-green">
-                                <p className="flex items-center gap-2 font-semibold">
+                            <div className="flex h-64 items-center justify-center border-4 border-dashed border-gray-300 bg-[#f9f9f9]">
+                                <p className="flex items-center gap-2 font-black uppercase tracking-widest text-gray-400 text-sm">
                                     <span className="material-symbols-outlined">insights</span>
                                     Analytics Module Reservation
                                 </p>

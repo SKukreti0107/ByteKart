@@ -40,41 +40,43 @@ export default function PurchasePanel({ product, quantity, setQuantity }) {
   }
 
   return (
-    <section className="window-container border-none p-4 sm:p-6 flex flex-col justify-between">
+    <section className="flex flex-col justify-start pt-4 sm:pt-8 w-full max-w-xl">
       <div>
-        <p className="text-xs font-bold tracking-widest text-matcha-deep uppercase">Product Detail</p>
-        <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{product.name}</h1>
+        <p className="text-sm font-black tracking-widest text-black uppercase">Product Detail</p>
+        <h1 className="mt-2 text-4xl font-display font-black uppercase tracking-tighter text-black sm:text-5xl">{product.name}</h1>
 
-        <div className="mt-8 flex flex-wrap items-center gap-3">
+        <div className="mt-6 flex flex-wrap items-baseline gap-4">
           {displayMrp > displayPrice && (
-            <p className="text-xl font-bold text-red-500 line-through">₹{displayMrp}</p>
+            <p className="text-2xl font-black text-red-500 line-through">₹{displayMrp}</p>
           )}
           <div className="flex items-baseline gap-2">
-            <p className="text-3xl font-bold text-matcha-deep sm:text-4xl">₹{displayPrice}</p>
-            <span className="text-sm font-medium text-charcoal-dark/70">(GST inclusive)</span>
+            <p className="text-4xl font-black text-black sm:text-5xl">₹{displayPrice}</p>
+            <span className="text-sm font-bold text-gray-700 uppercase">(GST inclusive)</span>
           </div>
-          <span className="rounded-full bg-baby-green px-3 py-1 text-xs font-bold uppercase tracking-wider">{product.stock_status || 'In Stock'}</span>
+          <span className="bg-black text-white px-3 py-1 text-xs font-black uppercase tracking-widest border-2 border-black">
+            {product.stock_status || 'In Stock'}
+          </span>
           {displayStock !== null && (
-            <span className="rounded-full bg-off-white border border-baby-green px-3 py-1 text-xs font-bold uppercase tracking-wider text-charcoal-dark/70">
+            <span className="bg-white text-black border-2 border-black px-3 py-1 text-xs font-black uppercase tracking-widest">
               {displayStock > 0 ? `${displayStock} Available` : 'Out of Stock'}
             </span>
           )}
         </div>
 
         {product.variants && product.variants.length > 0 && (
-          <div className="mt-6 flex flex-col gap-4">
+          <div className="mt-8 flex flex-col gap-6">
             {product.variants.map((variant, idx) => (
               <div key={idx}>
-                <p className="mb-2 text-sm font-bold uppercase tracking-wider text-matcha-deep">{variant.name}</p>
-                <div className="flex flex-wrap gap-2">
+                <p className="mb-3 text-sm font-black uppercase tracking-widest text-black">{variant.name}</p>
+                <div className="flex flex-wrap gap-3">
                   {variant.values.map(val => (
                     <button
                       key={val}
                       type="button"
                       onClick={() => handleVariantChange(variant.name, val)}
-                      className={`rounded-xl px-4 py-2 text-sm font-bold transition-colors ${selectedVariants[variant.name] === val
-                        ? 'bg-matcha-deep text-white'
-                        : 'bg-off-white text-charcoal-dark hover:bg-baby-green/60'
+                      className={`px-5 py-2 text-sm font-black uppercase tracking-wider border-4 transition-all ${selectedVariants[variant.name] === val
+                        ? 'bg-black text-white border-black shadow-brutal-sm translate-x-1 translate-y-1'
+                        : 'bg-white text-black border-black shadow-brutal hover:bg-black hover:text-white hover:translate-x-1 hover:translate-y-1 hover:shadow-none'
                         }`}
                     >
                       {val}
@@ -87,24 +89,24 @@ export default function PurchasePanel({ product, quantity, setQuantity }) {
         )}
       </div>
 
-      <div className="mt-10 flex flex-wrap items-center gap-4">
-        <p className="text-sm font-bold uppercase tracking-wider text-matcha-deep">Quantity</p>
-        <div className="flex items-center rounded-xl bg-off-white p-1">
-          <button type="button" disabled={isOutOfStock} className={`px-3 py-1 text-xl font-bold ${isOutOfStock ? 'text-gray-400 cursor-not-allowed' : ''}`} onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>-</button>
-          <span className={`w-10 text-center text-lg font-bold ${isOutOfStock ? 'text-gray-400' : ''}`}>{quantity}</span>
-          <button type="button" disabled={isOutOfStock} className={`px-3 py-1 text-xl font-bold ${isOutOfStock ? 'text-gray-400 cursor-not-allowed' : ''}`} onClick={() => setQuantity((prev) => Math.min(prev + 1, displayStock !== null ? Math.min(displayStock, 5) : 5))}>+</button>
+      <div className="mt-10 flex flex-wrap items-center gap-6">
+        <p className="text-sm font-black uppercase tracking-widest text-black">Quantity</p>
+        <div className="flex items-center">
+          <button type="button" disabled={isOutOfStock} className={`w-10 h-10 border-4 border-black flex items-center justify-center text-xl font-black transition-colors ${isOutOfStock ? 'bg-gray-200 text-gray-400 cursor-not-allowed border-gray-400' : 'bg-white hover:bg-black hover:text-white'}`} onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>-</button>
+          <span className={`w-14 h-10 border-y-4 border-black flex items-center justify-center text-lg font-black bg-white ${isOutOfStock ? 'text-gray-400 border-gray-400' : 'text-black'}`}>{quantity}</span>
+          <button type="button" disabled={isOutOfStock} className={`w-10 h-10 border-4 border-black flex items-center justify-center text-xl font-black transition-colors ${isOutOfStock ? 'bg-gray-200 text-gray-400 cursor-not-allowed border-gray-400' : 'bg-white hover:bg-black hover:text-white'}`} onClick={() => setQuantity((prev) => Math.min(prev + 1, displayStock !== null ? Math.min(displayStock, 5) : 5))}>+</button>
         </div>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
         <button
           onClick={() => {
             if (!isOutOfStock) addToCart(product, matchedSku, selectedVariants, quantity);
           }}
           disabled={isOutOfStock}
-          className={`rounded-xl px-6 py-3 font-bold transition-all ${isOutOfStock
-            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            : 'btn-glow-dark bg-matcha-deep text-white hover:bg-charcoal-dark'
+          className={`px-6 py-4 font-black uppercase tracking-widest text-sm border-4 transition-all shadow-brutal hover:shadow-none hover:translate-y-1 hover:translate-x-1 ${isOutOfStock
+            ? 'bg-gray-200 text-gray-400 border-gray-400 cursor-not-allowed shadow-none'
+            : 'bg-white border-black text-black'
             }`}
         >
           {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
@@ -112,9 +114,9 @@ export default function PurchasePanel({ product, quantity, setQuantity }) {
         <button
           onClick={handleBuyNow}
           disabled={isOutOfStock}
-          className={`rounded-xl px-6 py-3 font-bold transition-colors ${isOutOfStock
-            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            : 'bg-off-white hover:bg-baby-green text-charcoal-dark'
+          className={`px-6 py-4 font-black uppercase tracking-widest text-sm border-4 transition-all shadow-brutal hover:shadow-none hover:translate-y-1 hover:translate-x-1 ${isOutOfStock
+            ? 'bg-gray-200 text-gray-400 border-gray-400 cursor-not-allowed shadow-none'
+            : 'bg-black border-black text-white'
             }`}
         >
           Buy Now

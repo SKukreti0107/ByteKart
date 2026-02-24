@@ -24,78 +24,81 @@ export default function OrdersPage() {
 
     return (
         <StorefrontLayout>
-            <main className="mx-auto max-w-5xl space-y-6 px-4 py-8">
-                <h1 className="text-3xl font-black text-charcoal-dark">Order History</h1>
+            <main className="w-full space-y-12 px-6 lg:px-12 py-12 mb-20">
+                <h1 className="text-4xl md:text-5xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-4">Order History</h1>
 
                 {loading ? (
                     <div className="flex h-64 items-center justify-center">
-                        <div className="h-10 w-10 animate-spin rounded-full border-4 border-baby-green border-t-matcha-deep"></div>
+                        <div className="h-12 w-12 animate-spin border-4 border-black border-t-transparent"></div>
                     </div>
                 ) : error ? (
-                    <div className="rounded-2xl border-2 border-red-500/20 bg-red-500/10 p-8 text-center text-red-700">
-                        <p className="font-bold">{error}</p>
+                    <div className="border-4 border-black bg-white p-8 text-center shadow-brutal">
+                        <p className="font-black uppercase tracking-widest text-red-600">{error}</p>
                     </div>
                 ) : orders.length === 0 ? (
-                    <div className="window-container flex flex-col items-center justify-center border-none p-12 text-center">
-                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-baby-green/30 text-matcha-deep">
-                            <span className="material-symbols-outlined text-3xl">receipt_long</span>
+                    <div className="border-4 border-black bg-white p-12 text-center shadow-brutal flex flex-col items-center justify-center">
+                        <div className="mb-6 flex h-20 w-20 items-center justify-center border-4 border-black bg-matcha-bg shadow-brutal-sm text-black">
+                            <span className="material-symbols-outlined text-4xl">receipt_long</span>
                         </div>
-                        <h2 className="text-xl font-bold">No orders found</h2>
-                        <p className="mt-2 text-charcoal-dark/70">Looks like you haven't placed an order yet.</p>
-                        <Link to="/catalog" className="btn-glow-dark mt-6 rounded-xl bg-charcoal-dark px-6 py-2.5 font-bold text-white hover:bg-black">
+                        <h2 className="text-2xl font-black uppercase tracking-widest text-black">No orders found</h2>
+                        <p className="mt-4 font-bold uppercase tracking-widest text-gray-500">Looks like you haven't placed an order yet.</p>
+                        <Link to="/catalog" className="mt-8 inline-block border-4 border-black bg-black px-8 py-3 font-black uppercase tracking-widest text-white hover:bg-white hover:text-black transition-colors shadow-brutal-sm hover:translate-y-1 hover:shadow-none">
                             Start Shopping
                         </Link>
                     </div>
                 ) : (
-                    <div className="space-y-6">
+                    <div className="space-y-12">
                         {orders.map((order) => (
-                            <div key={order.id} className="window-container overflow-hidden border-none transition-shadow hover:shadow-lg">
-                                <div className="flex flex-col gap-4 border-b border-baby-green/20 bg-baby-green/5 p-5 md:flex-row md:items-center md:justify-between">
-                                    <div className="flex flex-wrap gap-x-8 gap-y-2 text-sm">
+                            <div key={order.id} className="border-4 border-black bg-white shadow-brutal overflow-hidden">
+                                <div className="flex flex-col gap-6 border-b-4 border-black bg-matcha-bg p-6 md:flex-row md:items-center md:justify-between">
+                                    <div className="flex flex-wrap gap-x-12 gap-y-4 text-[10px] md:text-xs">
                                         <div>
-                                            <p className="font-semibold text-charcoal-dark/60 uppercase">Order Placed</p>
-                                            <p className="font-bold">{new Date(order.created_at).toLocaleDateString()}</p>
+                                            <p className="font-black uppercase tracking-widest text-black/60 mb-1">Order Placed</p>
+                                            <p className="font-black uppercase text-black">{new Date(order.created_at).toLocaleDateString()}</p>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-charcoal-dark/60 uppercase">Total</p>
-                                            <p className="font-bold text-matcha-deep">₹{order.total_amount.toFixed(2)}</p>
+                                            <p className="font-black uppercase tracking-widest text-black/60 mb-1">Total</p>
+                                            <p className="font-black uppercase text-black text-lg">₹{order.total_amount.toFixed(2)}</p>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-charcoal-dark/60 uppercase">Order ID</p>
-                                            <p className="font-bold">#{order.id.split('-')[0]}</p>
+                                            <p className="font-black uppercase tracking-widest text-black/60 mb-1">Order ID</p>
+                                            <p className="font-black uppercase text-black">#{order.id.split('-')[0]}</p>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className="rounded-full bg-charcoal-dark px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">
+                                    <div className="flex items-center gap-6">
+                                        <span className="border-2 border-black bg-black px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">
                                             {order.status}
                                         </span>
                                         <Link
                                             to={`/order-success/${order.id}`}
-                                            className="text-sm font-bold text-matcha-deep underline hover:text-black"
+                                            className="text-xs font-black uppercase tracking-widest text-black underline underline-offset-4 hover:bg-black hover:text-white transition-colors px-2 py-1"
                                         >
                                             View Details
                                         </Link>
                                     </div>
                                 </div>
 
-                                <div className="p-5">
-                                    <div className="flex flex-wrap gap-4">
+                                <div className="p-6">
+                                    <div className="flex flex-col gap-6">
                                         {order.items.map((item, idx) => (
-                                            <div key={idx} className="flex gap-4 sm:w-80">
+                                            <div key={idx} className="flex gap-6 items-center pb-6 border-b-2 border-black border-dashed last:border-0 last:pb-0">
                                                 {item.image_url ? (
-                                                    <div className="h-16 w-16 shrink-0 rounded-lg bg-off-white">
-                                                        <img src={item.image_url} alt={item.name} className="h-full w-full object-contain p-2" />
+                                                    <div className="h-20 w-20 shrink-0 border-4 border-black bg-white p-2">
+                                                        <img src={item.image_url} alt={item.name} className="h-full w-full object-contain" />
                                                     </div>
                                                 ) : (
-                                                    <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-baby-green/30 text-matcha-deep/50">
-                                                        <span className="material-symbols-outlined">image</span>
+                                                    <div className="flex h-20 w-20 shrink-0 items-center justify-center border-4 border-black bg-gray-50 text-gray-300">
+                                                        <span className="material-symbols-outlined text-3xl">image</span>
                                                     </div>
                                                 )}
-                                                <div className="flex flex-col justify-center">
-                                                    <Link to={`/product/${item.product_id || ''}`} className="font-bold line-clamp-1 hover:text-matcha-deep hover:underline">
+                                                <div className="flex flex-grow flex-col justify-center">
+                                                    <Link to={`/product/${item.product_id || ''}`} className="font-black uppercase tracking-widest text-black text-sm md:text-base hover:underline line-clamp-1">
                                                         {item.name}
                                                     </Link>
-                                                    <p className="text-sm text-charcoal-dark/70">Qty: {item.quantity}</p>
+                                                    <div className="flex gap-4 mt-2">
+                                                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Qty: {item.quantity}</p>
+                                                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Price: ₹{item.price}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         ))}

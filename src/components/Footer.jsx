@@ -1,42 +1,49 @@
 export default function Footer() {
     return (
-        <footer className="mt-32 bg-charcoal-dark text-baby-green pt-20 pb-12 w-full">
-            <div className="max-w-[1440px] mx-auto px-6 lg:px-20 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-                <div className="space-y-6">
-                    <div className="flex items-center gap-3">
-                        <img src="/ByteKart_logo.png" alt="ByteKart Logo" className="h-32 w-auto object-contain" />
+        <footer className="bg-charcoal text-white pt-20 pb-12 px-6 lg:px-12 border-t-4 border-pure-black relative overflow-hidden mt-20 w-full">
+            <div className="relative z-10 flex flex-col lg:flex-row justify-between gap-16 mb-20 w-full">
+                <div className="max-w-sm">
+                    <div className="flex items-center gap-4 mb-6">
+                        <h1 className="text-4xl font-black tracking-tighter uppercase font-display flex items-center gap-2">
+                            <span className="material-symbols-outlined text-4xl">terminal</span>
+                            ByteKart
+                        </h1>
                     </div>
-                    <p className="text-baby-green/60 text-sm font-medium leading-relaxed">The premier destination for botanical gaming aesthetics and high-performance hardware.</p>
+                    <p className="text-sm font-bold uppercase tracking-wide border-l-4 border-matcha-bg pl-4 leading-relaxed text-gray-400">
+                        The premier destination for botanical gaming aesthetics and high-performance hardware.
+                    </p>
                 </div>
-                <div>
-                    <h4 className="font-black text-xs uppercase tracking-widest mb-8 text-white">Inventory</h4>
-                    <ul className="space-y-4 text-sm font-bold">
-                        <li><a className="hover:text-white transition-colors" href="#">Latest CPUs</a></li>
-                        <li><a className="hover:text-white transition-colors" href="#">Gaming Consoles</a></li>
-                        <li><a className="hover:text-white transition-colors" href="#">Physical Media</a></li>
-                        <li><a className="hover:text-white transition-colors" href="#">Limited Bundles</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 className="font-black text-xs uppercase tracking-widest mb-8 text-white">Community</h4>
-                    <ul className="space-y-4 text-sm font-bold">
-                        <li><a className="hover:text-white transition-colors" href="#">Review Board</a></li>
-                        <li><a className="hover:text-white transition-colors" href="#">Build Guides</a></li>
-                        <li><a className="hover:text-white transition-colors" href="#">Matcha Meetups</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 className="font-black text-xs uppercase tracking-widest mb-8 text-white">Join the Hub</h4>
-                    <div className="flex gap-2">
-                        <input className="bg-baby-green/10 border-none rounded-full px-4 py-3 text-sm flex-1 focus:ring-1 focus:ring-baby-green text-white placeholder:text-baby-green/40 outline-none" placeholder="your@email.com" type="email" />
-                        <button className="bg-baby-green p-3 rounded-full text-charcoal-dark hover:scale-105 transition-transform btn-glow">
-                            <span className="material-symbols-outlined">mail</span>
-                        </button>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-12 lg:gap-16 w-full lg:w-auto">
+                    <div className="flex flex-col gap-6">
+                        <h5 className="text-xs font-black uppercase tracking-widest text-white">Inventory</h5>
+                        <ul className="text-xs space-y-4 font-bold uppercase tracking-widest text-gray-400">
+                            <li><a className="hover:text-matcha-bg transition-colors" href="#">Latest CPUs</a></li>
+                            <li><a className="hover:text-matcha-bg transition-colors" href="#">Gaming Consoles</a></li>
+                            <li><a className="hover:text-white transition-colors" href="#">Physical Media</a></li>
+                            <li><a className="hover:text-white transition-colors" href="#">Limited Bundles</a></li>
+                        </ul>
+                    </div>
+                    <div className="flex flex-col gap-6">
+                        <h5 className="text-xs font-black uppercase tracking-widest text-white">Community</h5>
+                        <ul className="text-xs space-y-4 font-bold uppercase tracking-widest text-gray-400">
+                            <li><a className="hover:text-matcha-bg transition-colors" href="#">Review Board</a></li>
+                            <li><a className="hover:text-matcha-bg transition-colors" href="#">Build Guides</a></li>
+                            <li><a className="hover:text-matcha-bg transition-colors" href="#">Matcha Meetups</a></li>
+                        </ul>
+                    </div>
+                    <div className="flex flex-col gap-6 col-span-2">
+                        <h5 className="text-xs font-black uppercase tracking-widest text-white">Join the Hub</h5>
+                        <div className="flex items-center gap-0">
+                            <input className="h-12 bg-[#2A2A2A] border-4 border-[#2A2A2A] border-r-0 rounded-none px-6 text-sm text-white placeholder-gray-500 focus:ring-0 focus:border-matcha-bg w-full min-w-[200px] outline-none" placeholder="your@email.com" type="email" />
+                            <button className="h-12 w-12 bg-matcha-bg border-4 border-matcha-bg rounded-none flex items-center justify-center hover:bg-white transition-colors group outline-none">
+                                <span className="material-symbols-outlined text-black group-hover:text-black">mail</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className="max-w-[1440px] mx-auto px-6 lg:px-20 pt-8 border-t border-baby-green/10 text-center">
-                <p className="text-[10px] font-black text-baby-green/30 uppercase tracking-[0.4em]">© 2024 ByteKart. All Parts Sourced Sustainably. Built with Matcha Love.</p>
+            <div className="relative z-10 flex flex-col md:flex-row justify-center items-center pt-8 border-t-2 border-white/10 w-full">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">© 2024 BYTEKART. All parts sourced sustainably. Built with Matcha Love.</p>
             </div>
         </footer>
     )

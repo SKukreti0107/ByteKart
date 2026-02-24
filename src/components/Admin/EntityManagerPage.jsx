@@ -106,90 +106,93 @@ export default function EntityManagerPage({ config }) {
     }
 
     return (
-        <div className="min-h-screen bg-matcha-bg text-charcoal-dark font-['Fredoka',sans-serif]">
+        <div className="min-h-screen bg-pure-white text-black font-['Inter',sans-serif]">
             <NavBar showSearch={false} />
-            <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-6 p-4 md:p-6 lg:grid-cols-[280px_1fr] lg:p-8">
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-8 lg:mt-12 px-6 lg:px-12 max-w-[1600px] mx-auto mb-20">
                 <AdminSidebar />
-                <main className="space-y-6">
-                    <section className="window-container border-none p-5">
-                        <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div>
-                                <p className="text-xs font-bold tracking-widest text-matcha-deep uppercase">Entity Management</p>
-                                <h1 className="text-3xl font-bold">{config.title}</h1>
-                            </div>
-                            <button onClick={handleAdd} className="rounded-xl bg-matcha-deep px-4 py-2 font-bold text-white">+ Add {config.singularTitle}</button>
+                <main className="flex-grow">
+                    <div className="mb-8 border-b-4 border-black pb-6 flex justify-between items-end flex-wrap gap-4">
+                        <div>
+                            <h1 className="text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-black" style={{ textShadow: '3px 3px 0px #C6DCBA' }}>{config.title}</h1>
+                            <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mt-2">{config.singularTitle} Management</p>
                         </div>
-                    </section>
+                        <button onClick={handleAdd} className="bg-black text-matcha-bg px-6 py-3 font-black uppercase tracking-widest text-sm border-4 border-black shadow-brutal-sm hover:shadow-none hover:translate-y-1 hover:bg-white hover:text-black transition-all flex items-center">
+                            <span className="material-symbols-outlined mr-2">add</span> Add {config.singularTitle}
+                        </button>
+                    </div>
 
                     {loading ? (
                         <InventoryTableSkeleton />
                     ) : error ? (
-                        <div className="p-8 text-center text-red-500">{error}</div>
+                        <div className="p-8 text-center text-red-500 font-bold uppercase">{error}</div>
                     ) : (
-                        <section className="window-container border-none p-5">
+                        <div className="bg-white border-4 border-black shadow-brutal overflow-hidden mb-12">
                             <div className="overflow-x-auto">
-                                <table className="w-full text-left">
+                                <table className="w-full text-left border-collapse min-w-[760px]">
                                     <thead>
-                                        <tr className="border-b border-baby-green/50 text-xs font-bold tracking-wider text-matcha-deep uppercase">
+                                        <tr className="border-b-4 border-black bg-gray-50">
                                             {config.columns.map(col => (
-                                                <th key={col.key} className="px-3 py-3">{col.label}</th>
+                                                <th key={col.key} className="p-4 text-xs font-black uppercase tracking-widest text-black border-r-4 border-black last:border-r-0">{col.label}</th>
                                             ))}
-                                            <th className="px-3 py-3 w-32">Action</th>
+                                            <th className="p-4 text-xs font-black uppercase tracking-widest text-black w-32 border-l-4 border-black">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {rows.map((row) => (
-                                            <tr key={row.id} className="border-b border-off-white last:border-none">
-                                                {config.columns.map(col => (
-                                                    <td key={col.key} className="px-3 py-3 font-medium text-sm">
+                                        {rows.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={config.columns.length + 1} className="p-8 text-center font-black uppercase tracking-widest text-gray-400 border-b-4 border-black">No records found.</td>
+                                            </tr>
+                                        ) : rows.map((row) => (
+                                            <tr key={row.id} className="border-b-4 border-black hover:bg-gray-50 transition-colors last:border-b-0">
+                                                {config.columns.map((col, idx) => (
+                                                    <td key={col.key} className={`p-4 font-bold text-sm uppercase ${idx !== config.columns.length - 1 ? 'border-r-4 border-black' : ''}`}>
                                                         {col.render ? col.render(row[col.key], row) : row[col.key] || '-'}
                                                     </td>
                                                 ))}
-                                                <td className="px-3 py-3">
+                                                <td className="p-4 border-l-4 border-black">
                                                     <div className="flex gap-2">
                                                         <button
                                                             onClick={() => handleEdit(row)}
-                                                            className="rounded-lg bg-baby-green/30 px-3 py-1.5 text-xs font-bold text-matcha-deep transition-colors hover:bg-baby-green"
+                                                            className="w-8 h-8 bg-black text-white border-2 border-black flex items-center justify-center hover:bg-matcha-bg hover:text-black transition-colors"
+                                                            title="Edit"
                                                         >
-                                                            Edit
+                                                            <span className="material-symbols-outlined text-sm">edit</span>
                                                         </button>
                                                         <button
                                                             onClick={() => handleDelete(row.id)}
-                                                            className="rounded-lg bg-red-100 px-3 py-1.5 text-xs font-bold text-red-600 transition-colors hover:bg-red-200"
+                                                            className="w-8 h-8 bg-white text-red-600 border-2 border-black flex items-center justify-center hover:bg-red-600 hover:text-white transition-colors"
+                                                            title="Delete"
                                                         >
-                                                            Delete
+                                                            <span className="material-symbols-outlined text-sm">delete</span>
                                                         </button>
                                                     </div>
                                                 </td>
                                             </tr>
                                         ))}
-                                        {rows.length === 0 && (
-                                            <tr><td colSpan={config.columns.length + 1} className="p-4 text-center">No records found.</td></tr>
-                                        )}
                                     </tbody>
                                 </table>
                             </div>
-                        </section>
+                        </div>
                     )}
                 </main>
             </div>
 
             {isModalOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-charcoal-dark/40 p-4 sm:p-6 backdrop-blur-sm">
-                    <div className="relative w-full max-w-[95vw] sm:max-w-[80vw] lg:max-w-4xl overflow-y-auto rounded-3xl border border-pure-white/20 bg-pure-white/80 p-6 shadow-2xl backdrop-blur-2xl md:p-8 max-h-[95vh] sm:max-h-[90vh]">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4 sm:p-6 backdrop-blur-sm">
+                    <div className="relative w-full max-w-[95vw] sm:max-w-[80vw] lg:max-w-xl overflow-y-auto bg-white border-4 border-black p-6 shadow-brutal md:p-8 max-h-[95vh] sm:max-h-[90vh]">
                         <button
                             onClick={() => setIsModalOpen(false)}
-                            className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-off-white text-charcoal-dark transition-colors hover:bg-baby-green"
+                            className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center bg-white border-2 border-black font-black hover:bg-black hover:text-matcha-bg transition-colors"
                         >
                             <span className="material-symbols-outlined text-xl">close</span>
                         </button>
-                        <h2 className="mb-6 text-2xl font-bold text-charcoal-dark font-['Fredoka',sans-serif]">
+                        <h2 className="mb-6 text-3xl font-black uppercase tracking-widest text-black">
                             {editingItem ? `Edit ${config.singularTitle}` : `Add ${config.singularTitle}`}
                         </h2>
-                        <form onSubmit={handleSubmit} className="flex flex-col gap-4 font-['Fredoka',sans-serif]">
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                             {config.fields.map(field => (
-                                <div key={field.name} className="flex flex-col gap-1.5">
-                                    <label className="text-sm font-bold text-charcoal-dark">{field.label} {field.required && '*'}</label>
+                                <div key={field.name} className="flex flex-col gap-2">
+                                    <label className="text-sm font-black uppercase tracking-widest text-black">{field.label} {field.required && '*'}</label>
                                     {(field.type === 'text' || field.type === 'number') && (
                                         <input
                                             type={field.type}
@@ -197,7 +200,7 @@ export default function EntityManagerPage({ config }) {
                                             name={field.name}
                                             value={formData[field.name] ?? ''}
                                             onChange={handleChange}
-                                            className="rounded-xl border border-baby-green/50 bg-off-white px-4 py-2.5 text-charcoal-dark focus:border-baby-green focus:ring-0"
+                                            className="w-full bg-[#f9f9f9] border-4 border-black p-3 font-bold text-black outline-none focus:bg-white transition-colors"
                                         />
                                     )}
                                     {field.type === 'checkbox' && (
@@ -206,7 +209,7 @@ export default function EntityManagerPage({ config }) {
                                             name={field.name}
                                             checked={!!formData[field.name]}
                                             onChange={handleChange}
-                                            className="h-5 w-5 rounded border-baby-green/50 text-matcha-deep focus:ring-matcha-deep"
+                                            className="h-6 w-6 border-4 border-black accent-black appearance-none cursor-pointer checked:bg-black relative after:content-[''] after:absolute after:hidden checked:after:block after:left-1.5 after:top-0.5 after:w-2 after:h-3 after:border-white after:border-r-2 after:border-b-2 after:rotate-45"
                                         />
                                     )}
                                     {field.type === 'select' && (
@@ -215,7 +218,7 @@ export default function EntityManagerPage({ config }) {
                                             name={field.name}
                                             value={formData[field.name] || ''}
                                             onChange={handleChange}
-                                            className="rounded-xl border border-baby-green/50 bg-off-white px-4 py-2.5 text-charcoal-dark focus:border-baby-green focus:ring-0"
+                                            className="w-full bg-[#f9f9f9] border-4 border-black p-3 font-bold text-black outline-none focus:bg-white transition-colors appearance-none"
                                         >
                                             <option value="" disabled>Select {field.label}</option>
                                             {(dependencies[field.name] || []).map(opt => (
@@ -228,7 +231,7 @@ export default function EntityManagerPage({ config }) {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="mt-2 w-full rounded-xl bg-matcha-deep py-3 font-bold text-white transition-all hover:bg-matcha-deep/90 disabled:opacity-50"
+                                className="mt-4 bg-black text-matcha-bg px-6 py-4 font-black uppercase tracking-widest text-lg border-4 border-black shadow-brutal-sm hover:shadow-none hover:translate-y-1 hover:bg-matcha-bg hover:text-black transition-all disabled:opacity-50"
                             >
                                 {isSubmitting ? 'Saving...' : 'Save'}
                             </button>

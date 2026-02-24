@@ -1,23 +1,30 @@
 @import "tailwindcss";
 
 @theme {
-  --color-matcha-bg: #95BD86;
-  --color-baby-green: #C6DCBA;
-  --color-matcha-deep: #5D7B43;
-  --color-charcoal-dark: #1A1C1A;
-  --color-off-white: #E6EDD9;
-  --color-pure-white: #F1F5EB;
-  --color-white: #F1F5EB;
+  --color-primary: #364536;
+  --color-matcha-bg: #C6DCBA;
+  --color-matcha-dark: #4A5D44;
+  --color-charcoal: #1A1A1A;
+  --color-pure-black: #000000;
+  --color-pure-white: #FFFFFF;
 
-  --radius-squish: 2rem;
-  --radius-bubble: 9999px;
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
 
-  --shadow-window-sep: 0 25px 50px -12px rgba(26, 28, 26, 0.15);
-  --shadow-card-pop: 0 15px 30px -5px rgba(26, 28, 26, 0.1), inset 0 -4px 0 rgba(0, 0, 0, 0.05);
-  --shadow-neon-glow: 0 0 15px 2px rgba(198, 220, 186, 0.6), 0 0 30px 5px rgba(198, 220, 186, 0.4);
+  --radius-none: 0;
+  --radius-DEFAULT: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-full: 0;
+  --radius-pill: 9999px;
+
+  --shadow-brutal: 8px 8px 0px 0px #000000;
+  --shadow-brutal-sm: 4px 4px 0px 0px #000000;
+  --shadow-brutal-hover: 2px 2px 0px 0px #000000;
 }
 
 :root {
+  --matcha: #C6DCBA;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -29,47 +36,42 @@
 body {
   margin: 0;
   min-width: 320px;
+  background-color: var(--matcha);
+  color: #000000;
+  font-family: var(--font-sans);
 }
 
-.window-container {
-  background-color: var(--color-pure-white);
-  border-radius: var(--radius-squish);
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
-  border: 4px solid rgba(255, 255, 255, 0.4);
+.border-thick {
+  border-width: 4px;
+  border-color: #000000;
 }
 
-.product-card {
-  background: var(--color-pure-white);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid var(--color-pure-white);
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
 }
 
-.product-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-  border-color: var(--color-baby-green);
+input, select, textarea, button {
+  border-radius: 0 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-transform: uppercase;
+}
+
+.pill-search, .search-pill-input {
+  border-radius: 9999px !important;
+}
+
+.sharp-panel {
+  border-radius: 0 !important;
+}
+
+.nav-link {
+  position: relative;
+  transition: all 0.2s ease;
 }
 
 .nav-link:hover {
-  color: var(--color-matcha-deep);
-  background-color: var(--color-baby-green);
-  box-shadow: 0 0 12px rgba(198, 220, 186, 0.5);
-}
-
-.btn-glow {
-  box-shadow: 0 0 20px rgba(198, 220, 186, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.5);
-  transition: box-shadow 0.3s ease;
-}
-
-.btn-glow:hover {
-  box-shadow: 0 0 30px rgba(198, 220, 186, 0.9), 0 0 10px rgba(198, 220, 186, 0.8),
-    inset 0 0 5px rgba(255, 255, 255, 0.8);
-}
-
-.btn-glow-dark {
-  box-shadow: 0 0 15px rgba(93, 123, 67, 0.4);
-}
-
-.btn-glow-dark:hover {
-  box-shadow: 0 0 25px rgba(93, 123, 67, 0.6);
+  background: #000000;
+  color: var(--color-matcha-bg);
 }

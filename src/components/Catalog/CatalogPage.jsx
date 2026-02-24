@@ -172,9 +172,11 @@ export default function CatalogPage() {
   return (
     <StorefrontLayout>
       <main className="w-full">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[320px_1fr]">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-8 lg:mt-12 px-6 lg:px-12 mb-20 w-full">
           {categories.length === 0 && loading ? (
-            <CatalogSidebarSkeleton />
+            <div className="w-full lg:w-80 flex-shrink-0">
+              <CatalogSidebarSkeleton />
+            </div>
           ) : (
             <CatalogSidebar
               selectedSubCategories={selectedSubCategories}
@@ -190,14 +192,14 @@ export default function CatalogPage() {
             />
           )}
 
-          <div>
+          <div className="flex-grow">
             {loading ? (
               <>
-                <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-xl bg-off-white p-4">
-                  <div className="h-6 w-32 animate-pulse rounded bg-gray-200" />
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-4 border-black bg-white p-4 shadow-brutal-sm">
+                  <div className="h-8 w-32 animate-pulse bg-charcoal/10" />
                   <div className="flex gap-4">
-                    <div className="h-10 w-40 animate-pulse rounded-xl bg-gray-200" />
-                    <div className="h-10 w-24 animate-pulse rounded-xl bg-gray-200" />
+                    <div className="h-12 w-40 animate-pulse bg-charcoal/10" />
+                    <div className="h-12 w-24 animate-pulse bg-charcoal/10 hidden sm:block" />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -205,7 +207,7 @@ export default function CatalogPage() {
                 </div>
               </>
             ) : error ? (
-              <div className="p-8 text-center text-red-500">{error}</div>
+              <div className="p-8 text-center text-red-500 font-bold uppercase">{error}</div>
             ) : (
               <>
                 <CatalogToolbar sortBy={sortBy} setSortBy={setSortBy} view={view} setView={setView} resultCount={filteredProducts.length} />

@@ -1,7 +1,7 @@
 export default function ProductGallery({ selectedImage }) {
   return (
-    <section className="window-container border-none p-4 sm:p-6">
-      <img src={selectedImage} alt="Product" className="h-[240px] w-full rounded-2xl object-cover sm:h-[320px] md:h-[380px]" />
-    </section>
+    <div className="bg-white border-4 border-black p-8 sm:p-12 shadow-brutal flex items-center justify-center">
+      <img src={selectedImage} alt="Product" className="max-h-[500px] w-auto object-contain mix-blend-multiply transition-transform hover:scale-105 duration-500" />
+    </div>
   )
 }

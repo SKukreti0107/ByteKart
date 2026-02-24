@@ -162,7 +162,7 @@ export default function CheckoutPage() {
           contact: formData.phone,
         },
         theme: {
-          color: "#3399cc"
+          color: "#000000"
         }
       }
       var rzp1 = new window.Razorpay(options)
@@ -183,27 +183,34 @@ export default function CheckoutPage() {
 
   return (
     <StorefrontLayout>
-      <main className="w-full space-y-6">
-        <section className="window-container border-none px-6 py-4">
-          <h1 className="text-2xl font-bold sm:text-3xl">Checkout</h1>
-          <div className="mt-4 flex flex-wrap gap-3">
+      <main className="w-full space-y-12 pb-20">
+        <section className="px-6 lg:px-12 border-b-4 border-black pb-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-widest text-black">Checkout</h1>
+            <div className="bg-matcha-bg border-4 border-black px-4 py-2 shadow-brutal-sm flex items-center gap-2 animate-pulse">
+              <span className="material-symbols-outlined font-black">local_shipping</span>
+              <span className="text-xs font-black uppercase tracking-widest">Notice: Shipping only in India</span>
+            </div>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-8 items-center border-b-2 border-transparent pb-4">
             {steps.map((step, index) => {
               const stepNumber = index + 1
               const active = stepNumber <= currentStep
               return (
                 <div
                   key={step}
-                  className={`rounded-full px-4 py-2 text-sm font-bold ${active ? 'bg-baby-green text-matcha-deep' : 'bg-off-white text-charcoal-dark/50'
+                  className={`text-sm font-black transition-colors uppercase tracking-widest ${active ? 'text-black' : 'text-gray-400'
                     }`}
                 >
-                  {stepNumber}. {step}
+                  <span className={`inline-flex items-center justify-center w-8 h-8 border-4 border-black mr-2 ${active ? 'bg-black text-white' : 'bg-white text-gray-400'}`}>{stepNumber}</span>
+                  {step}
                 </div>
               )
             })}
           </div>
         </section>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px] xl:grid-cols-[1fr_360px]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_380px] px-6 lg:px-12">
           <CheckoutForm
             formData={formData}
             setFormData={setFormData}

@@ -26,85 +26,95 @@ export default function OrderSuccess() {
 
     return (
         <StorefrontLayout>
-            <main className="mx-auto max-w-3xl space-y-6 px-4 py-8">
+            <main className="w-full space-y-12 px-6 lg:px-12 py-12 mb-20">
                 {loading ? (
                     <div className="flex h-64 items-center justify-center">
-                        <div className="h-10 w-10 animate-spin rounded-full border-4 border-baby-green border-t-matcha-deep"></div>
+                        <div className="h-12 w-12 animate-spin border-4 border-black border-t-transparent"></div>
                     </div>
                 ) : error ? (
-                    <div className="rounded-2xl border-2 border-red-500/20 bg-red-500/10 p-8 text-center text-red-700">
-                        <h1 className="text-2xl font-bold">Oops!</h1>
-                        <p className="mt-2">{error}</p>
-                        <Link to="/" className="mt-6 inline-block font-bold underline hover:text-red-900">Return Home</Link>
+                    <div className="border-4 border-black bg-white p-12 text-center shadow-brutal">
+                        <h1 className="text-4xl font-black uppercase tracking-widest text-black">Oops!</h1>
+                        <p className="mt-4 font-bold text-red-600 uppercase tracking-widest">{error}</p>
+                        <Link to="/" className="mt-8 inline-block border-4 border-black bg-black px-8 py-3 font-black uppercase tracking-widest text-white hover:bg-white hover:text-black transition-colors shadow-brutal-sm hover:translate-y-1 hover:shadow-none">Return Home</Link>
                     </div>
                 ) : !order ? (
-                    <div className="text-center font-medium">Order not found.</div>
+                    <div className="text-center font-black uppercase tracking-widest text-black">Order not found.</div>
                 ) : (
                     <>
-                        <section className="window-container flex flex-col items-center border-none bg-baby-green/20 p-8 text-center">
-                            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-matcha-deep text-white">
-                                <span className="material-symbols-outlined text-3xl">check</span>
+                        <section className="border-4 border-black bg-white p-12 text-center shadow-brutal flex flex-col items-center">
+                            <div className="mb-6 flex h-20 w-20 items-center justify-center border-4 border-black bg-matcha-bg shadow-brutal-sm">
+                                <span className="material-symbols-outlined text-4xl font-black text-black">check</span>
                             </div>
-                            <h1 className="text-3xl font-black text-matcha-deep">Payment Successful!</h1>
-                            <p className="mt-2 text-lg font-medium text-charcoal-dark/70">
-                                Your order <span className="font-bold text-charcoal-dark">#{order.id.split('-')[0]}</span> is confirmed.
+                            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-widest text-black">Payment Successful!</h1>
+                            <p className="mt-4 text-lg font-black uppercase tracking-widest text-gray-500">
+                                Your order <span className="text-black">#{order.id.split('-')[0]}</span> is confirmed.
                             </p>
                         </section>
 
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                            <section className="window-container border-none p-6">
-                                <h2 className="mb-4 text-xl font-bold">Shipping Details</h2>
-                                <div className="space-y-1 text-sm text-charcoal-dark/80">
-                                    <p className="font-bold text-charcoal-dark">{order.shipping_address.firstName} {order.shipping_address.lastName}</p>
-                                    <p>{order.shipping_address.address}</p>
-                                    <p>{order.shipping_address.city}, {order.shipping_address.pincode}</p>
-                                    <p className="mt-2 text-xs text-charcoal-dark/60">Phone: {order.shipping_address.phone || 'N/A'}</p>
+                        <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+                            <section className="border-4 border-black bg-white p-8 shadow-brutal">
+                                <h2 className="mb-6 text-xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-2 inline-block">Shipping Details</h2>
+                                <div className="space-y-2 text-sm">
+                                    <p className="font-black uppercase tracking-widest text-black">{order.shipping_address.firstName} {order.shipping_address.lastName}</p>
+                                    <p className="font-bold uppercase text-gray-600">{order.shipping_address.address}</p>
+                                    <p className="font-bold uppercase text-gray-600">{order.shipping_address.city}, {order.shipping_address.pincode}</p>
+                                    <div className="mt-4 pt-4 border-t-2 border-black border-dashed">
+                                        <p className="text-xs font-black uppercase tracking-widest text-black">Phone: {order.shipping_address.phone || 'N/A'}</p>
+                                    </div>
                                 </div>
                             </section>
 
-                            <section className="window-container border-none p-6">
-                                <h2 className="mb-4 text-xl font-bold">Payment Setup</h2>
-                                <div className="space-y-1 text-sm text-charcoal-dark/80">
-                                    <p><span className="font-medium">Total Paid:</span> <span className="font-bold text-matcha-deep">₹{order.total_amount.toFixed(2)}</span></p>
-                                    <p><span className="font-medium">Status:</span> <span className="rounded-full bg-black px-2 py-0.5 text-xs font-bold text-white uppercase">{order.status}</span></p>
-                                    <p className="mt-2 text-xs text-charcoal-dark/60 uppercase">Txn ID: {order.razorpay_payment_id}</p>
+                            <section className="border-4 border-black bg-white p-8 shadow-brutal">
+                                <h2 className="mb-6 text-xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-2 inline-block">Order Summary</h2>
+                                <div className="space-y-4 text-sm">
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-black uppercase tracking-widest text-gray-500">Total Paid:</span>
+                                        <span className="font-black text-xl text-black">₹{order.total_amount.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-black uppercase tracking-widest text-gray-500">Status:</span>
+                                        <span className="border-2 border-black bg-black px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">{order.status}</span>
+                                    </div>
+                                    <div className="mt-4 pt-4 border-t-2 border-black border-dashed">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 break-all">TXN ID: {order.razorpay_payment_id}</p>
+                                    </div>
                                 </div>
                             </section>
                         </div>
 
-                        <section className="window-container border-none p-6">
-                            <h2 className="mb-4 text-xl font-bold">Order Items</h2>
-                            <div className="divide-y divide-baby-green/30">
+                        <section className="border-4 border-black bg-white p-8 shadow-brutal">
+                            <h2 className="mb-8 text-xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-2 inline-block">Order Items</h2>
+                            <div className="space-y-6">
                                 {order.items.map((item, idx) => (
-                                    <div key={idx} className="flex items-center justify-between py-3">
-                                        <div className="flex items-center gap-4">
+                                    <div key={idx} className="flex items-center justify-between pb-6 border-b-2 border-black border-dashed last:border-0 last:pb-0">
+                                        <div className="flex items-center gap-6">
                                             {item.image_url ? (
-                                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-off-white object-cover">
-                                                    <img src={item.image_url} alt={item.name} className="h-full w-full object-contain p-1" />
+                                                <div className="flex h-20 w-20 shrink-0 items-center justify-center border-4 border-black bg-white p-2">
+                                                    <img src={item.image_url} alt={item.name} className="h-full w-full object-contain" />
                                                 </div>
                                             ) : (
-                                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-baby-green/30 text-matcha-deep/50">
-                                                    <span className="material-symbols-outlined">image</span>
+                                                <div className="flex h-20 w-20 shrink-0 items-center justify-center border-4 border-black bg-gray-50 text-gray-300">
+                                                    <span className="material-symbols-outlined text-4xl">image</span>
                                                 </div>
                                             )}
                                             <div>
-                                                <p className="font-bold line-clamp-1">{item.name}</p>
-                                                <p className="text-xs font-semibold text-charcoal-dark/60 uppercase">
-                                                    {item.variants ? Object.values(item.variants).join(' • ') : 'Standard'}
+                                                <p className="font-black uppercase tracking-widest text-black text-sm md:text-base line-clamp-1">{item.name}</p>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mt-1">
+                                                    {item.variants ? Object.values(item.variants).join(' • ') : 'Standard Edition'}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <p className="font-bold">₹{item.price * item.quantity}</p>
-                                            <p className="text-xs font-medium text-charcoal-dark/60">Qty: {item.quantity}</p>
+                                            <p className="font-black text-black whitespace-nowrap">₹{item.price * item.quantity}</p>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mt-1">Qty: {item.quantity}</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </section>
 
-                        <div className="flex justify-center pt-4">
-                            <Link to="/catalog" className="btn-glow-dark rounded-xl bg-charcoal-dark px-8 py-3 font-bold text-white transition hover:bg-black">
+                        <div className="flex justify-center pt-8">
+                            <Link to="/catalog" className="w-full md:w-auto text-center border-4 border-black bg-black px-12 py-4 font-black uppercase tracking-widest text-white hover:bg-white hover:text-black transition-all shadow-brutal-sm hover:translate-y-1 hover:shadow-none">
                                 Continue Shopping
                             </Link>
                         </div>
