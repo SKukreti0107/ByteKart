@@ -25,11 +25,16 @@ export default function PurchasePanel({ product, quantity, setQuantity }) {
   const displayMrp = matchedSku ? matchedSku.MRP : product.MRP
   const displayStock = matchedSku ? matchedSku.stock : null
 
+  const isOutOfStock = displayStock !== null
+    ? displayStock <= 0
+    : (product.stock_status === 'out-of-stock' || product.stock === 0)
+
   const handleVariantChange = (name, value) => {
     setSelectedVariants(prev => ({ ...prev, [name]: value }))
   }
 
   const handleBuyNow = () => {
+    if (isOutOfStock) return;
     addToCart(product, matchedSku, selectedVariants, quantity)
     navigate('/checkout')
   }
@@ -85,22 +90,32 @@ export default function PurchasePanel({ product, quantity, setQuantity }) {
       <div className="mt-10 flex flex-wrap items-center gap-4">
         <p className="text-sm font-bold uppercase tracking-wider text-matcha-deep">Quantity</p>
         <div className="flex items-center rounded-xl bg-off-white p-1">
-          <button type="button" className="px-3 py-1 text-xl font-bold" onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>-</button>
-          <span className="w-10 text-center text-lg font-bold">{quantity}</span>
-          <button type="button" className="px-3 py-1 text-xl font-bold" onClick={() => setQuantity((prev) => Math.min(prev + 1, displayStock !== null ? Math.min(displayStock, 5) : 5))}>+</button>
+          <button type="button" disabled={isOutOfStock} className={`px-3 py-1 text-xl font-bold ${isOutOfStock ? 'text-gray-400 cursor-not-allowed' : ''}`} onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>-</button>
+          <span className={`w-10 text-center text-lg font-bold ${isOutOfStock ? 'text-gray-400' : ''}`}>{quantity}</span>
+          <button type="button" disabled={isOutOfStock} className={`px-3 py-1 text-xl font-bold ${isOutOfStock ? 'text-gray-400 cursor-not-allowed' : ''}`} onClick={() => setQuantity((prev) => Math.min(prev + 1, displayStock !== null ? Math.min(displayStock, 5) : 5))}>+</button>
         </div>
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <button
-          onClick={() => addToCart(product, matchedSku, selectedVariants, quantity)}
-          className="btn-glow-dark rounded-xl bg-matcha-deep px-6 py-3 font-bold text-white transition-all hover:bg-charcoal-dark"
+          onClick={() => {
+            if (!isOutOfStock) addToCart(product, matchedSku, selectedVariants, quantity);
+          }}
+          disabled={isOutOfStock}
+          className={`rounded-xl px-6 py-3 font-bold transition-all ${isOutOfStock
+            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            : 'btn-glow-dark bg-matcha-deep text-white hover:bg-charcoal-dark'
+            }`}
         >
-          Add to Cart
+          {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
         </button>
         <button
           onClick={handleBuyNow}
-          className="rounded-xl bg-off-white px-6 py-3 font-bold hover:bg-baby-green transition-colors"
+          disabled={isOutOfStock}
+          className={`rounded-xl px-6 py-3 font-bold transition-colors ${isOutOfStock
+            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            : 'bg-off-white hover:bg-baby-green text-charcoal-dark'
+            }`}
         >
           Buy Now
         </button>

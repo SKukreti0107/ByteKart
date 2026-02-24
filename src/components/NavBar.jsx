@@ -67,6 +67,7 @@ const SearchDropdown = ({ results, isSearching, onResultClick, show, direction =
 
 export default function NavBar({ links = defaultLinks, title = 'ByteKart', showSearch = true }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isNavbarExpanded, setIsNavbarExpanded] = useState(false)
   const [categories, setCategories] = useState([])
   const [isHoveringCatalog, setIsHoveringCatalog] = useState(false)
   const [hasFetchedCategories, setHasFetchedCategories] = useState(false)
@@ -135,6 +136,7 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
   const handleResultClick = () => {
     setShowDropdown(false)
     setIsMobileMenuOpen(false)
+    setIsNavbarExpanded(false)
     setSearchQuery('')
   }
 
@@ -169,8 +171,25 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
   }
 
   return (
-    <header className="fixed bottom-2 left-2 right-2 z-50 md:sticky md:bottom-auto md:top-6 md:left-auto md:right-auto md:w-full">
-      <div className="window-container relative flex h-auto flex-wrap items-center justify-between gap-3 px-4 py-3 md:h-28 md:flex-nowrap md:gap-6 md:px-6 md:py-0">
+    <header className={`fixed z-50 transition-all duration-300 ${!isNavbarExpanded ? 'bottom-4 right-4 md:bottom-2 md:left-2 md:right-2 md:sticky md:bottom-auto md:top-6 md:left-auto md:right-auto md:w-full' : 'bottom-2 left-2 right-2 md:sticky md:bottom-auto md:top-6 md:left-auto md:right-auto md:w-full'}`}>
+
+      {/* Collapsed Mobile Button */}
+      {!isNavbarExpanded && (
+        <button
+          onClick={() => setIsNavbarExpanded(true)}
+          className="relative flex md:hidden h-14 w-14 items-center justify-center rounded-full bg-baby-green text-charcoal-dark shadow-xl hover:bg-matcha-deep hover:text-white transition-all transform hover:scale-105"
+        >
+          <span className="material-symbols-outlined text-3xl">menu</span>
+          {cartCount > 0 && (
+            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 font-bold text-white text-[10px]">
+              {cartCount}
+            </span>
+          )}
+        </button>
+      )}
+
+      {/* Expanded Navbar */}
+      <div className={`window-container relative h-auto flex-wrap items-center justify-between gap-3 px-4 py-3 md:flex md:h-28 md:flex-nowrap md:gap-6 md:px-6 md:py-0 ${isNavbarExpanded ? 'flex' : 'hidden md:flex'}`}>
         <Link to="/" className="flex shrink-0 cursor-pointer items-center gap-2.5 md:gap-3">
           <img src="/ByteKart_logo.png" alt="ByteKart Logo" className="h-20 w-auto object-contain sm:h-28" />
         </Link>
@@ -244,6 +263,19 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
         )}
 
         <div className="flex shrink-0 items-center gap-2.5 md:gap-3 relative">
+          {/* Collapse Navbar Button (Mobile only) */}
+          <button
+            type="button"
+            onClick={() => {
+              setIsNavbarExpanded(false);
+              setIsMobileMenuOpen(false);
+            }}
+            className="btn-glow flex h-10 w-10 items-center justify-center rounded-full bg-off-white text-charcoal-dark transition-all hover:bg-baby-green md:hidden"
+            aria-label="Collapse navbar"
+          >
+            <span className="material-symbols-outlined text-xl">keyboard_arrow_down</span>
+          </button>
+
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}

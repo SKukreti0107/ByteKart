@@ -17,9 +17,13 @@ export default function ProductCard({ product, actionLabel = 'Quick Add', onActi
         discountPercentage = Math.round(((oldPriceNum - currentPriceNum) / oldPriceNum) * 100);
     }
 
+    const isOutOfStock = product.stock_status === 'out-of-stock' || product.stock === 0;
+
     const handleAction = (e) => {
         e.preventDefault()
         e.stopPropagation()
+
+        if (isOutOfStock) return;
 
         if (onAction) {
             onAction(product)
@@ -30,8 +34,8 @@ export default function ProductCard({ product, actionLabel = 'Quick Add', onActi
     }
 
     return (
-        <div className="product-card flex flex-row sm:flex-col rounded-squish p-3 sm:p-4 shadow-md gap-3 sm:gap-0 items-center sm:items-stretch">
-            <Link to={`/product/${product.id}`} className="group relative shrink-0 h-28 w-28 sm:h-auto sm:w-full sm:mb-4 aspect-square overflow-hidden rounded-2xl bg-off-white block">
+        <div className={`product-card flex flex-row sm:flex-col rounded-squish p-3 sm:p-4 shadow-md gap-3 sm:gap-0 items-center sm:items-stretch ${isOutOfStock ? 'opacity-60 grayscale' : ''}`}>
+            <Link to={`/product/${product.id}`} className={`group relative shrink-0 h-28 w-28 sm:h-auto sm:w-full sm:mb-4 aspect-square overflow-hidden rounded-2xl bg-off-white block ${isOutOfStock ? 'pointer-events-none' : ''}`}>
                 <img
                     src={product.image_url || product.image || 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60'}
                     alt={product.name}
@@ -71,10 +75,18 @@ export default function ProductCard({ product, actionLabel = 'Quick Add', onActi
                 </div>
                 <button
                     onClick={handleAction}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-baby-green/50 bg-off-white py-2 sm:py-3 font-bold text-charcoal-dark transition-all hover:bg-baby-green mt-auto sm:mt-0"
+                    disabled={isOutOfStock}
+                    className={`flex w-full items-center justify-center gap-2 rounded-xl border py-2 sm:py-3 font-bold mt-auto sm:mt-0 transition-all ${isOutOfStock
+                        ? 'border-gray-300 bg-gray-200 text-gray-500 cursor-not-allowed'
+                        : 'border-baby-green/50 bg-off-white text-charcoal-dark hover:bg-baby-green'
+                        }`}
                 >
-                    <span className="material-symbols-outlined text-base sm:text-lg">add_shopping_cart</span>
-                    <span className="text-sm sm:text-base">{actionLabel}</span>
+                    <span className="material-symbols-outlined text-base sm:text-lg">
+                        {isOutOfStock ? 'block' : 'add_shopping_cart'}
+                    </span>
+                    <span className="text-sm sm:text-base">
+                        {isOutOfStock ? 'Out of Stock' : actionLabel}
+                    </span>
                 </button>
             </div>
         </div>
