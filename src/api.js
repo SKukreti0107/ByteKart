@@ -2,7 +2,7 @@ import axios from 'axios';
 import { authClient } from './auth-client';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://byte-kart-be.vercel.app',
+  baseURL: import.meta.env.VITE_API_URL || 'https://api.bytekart.co.in',
 });
 
 api.interceptors.request.use(
