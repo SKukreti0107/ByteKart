@@ -28,7 +28,8 @@ export function CartProvider({ children }) {
             if (!session?.user?.id) return
 
             try {
-                const response = await api.get('/cart')
+                const timestamp = Date.now()
+                const response = await api.get(`/cart?t=${timestamp}`)
                 const dbCartItems = response.data.items || []
 
                 // Merge DB cart with current LocalStorage guest cart
@@ -38,10 +39,10 @@ export function CartProvider({ children }) {
                     cartItems.forEach(localItem => {
                         const existingIdx = mergedCart.findIndex(dbItem => dbItem.cartItemId === localItem.cartItemId)
                         if (existingIdx >= 0) {
-                            // Combine quantities
+                            // Combine quantities using Math.max to prevent refresh doubling
                             const maxStock = mergedCart[existingIdx].maxStock
-                            const combinedQty = Math.min(mergedCart[existingIdx].quantity + localItem.quantity, maxStock)
-                            mergedCart[existingIdx].quantity = combinedQty
+                            const combinedQty = Math.max(mergedCart[existingIdx].quantity, localItem.quantity)
+                            mergedCart[existingIdx].quantity = Math.min(combinedQty, maxStock)
                         } else {
                             mergedCart.push(localItem)
                         }

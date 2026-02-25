@@ -171,11 +171,11 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
   return (
     <>
       <header className="flex items-stretch justify-between h-24 border-b-4 border-pure-black bg-pure-white sticky top-0 z-50 shadow-sm">
-        <Link to="/" className="flex items-center justify-center border-r-4 border-pure-black bg-matcha-bg hover:bg-black transition-colors group overflow-hidden h-full aspect-square md:aspect-auto md:min-w-[280px]">
+        <Link to="/" className="flex items-center justify-center border-r-4 border-pure-black bg-matcha-bg hover:bg-black transition-colors group overflow-hidden h-full min-w-[120px] md:min-w-[280px]">
           <img
             src="/final_logo.png"
             alt="ByteKart Logo"
-            className="w-auto h-52 object-cover"
+            className="w-full h-52 object-contain"
           />
         </Link>
 
