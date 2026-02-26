@@ -10,6 +10,7 @@ const navItems = [
   { label: 'Brands', to: '/admin/brands' },
   { label: 'Orders', to: '/admin/orders' },
   { label: 'Returns', to: '/admin/returns' },
+  { label: 'Support', to: '/admin/support' },
   { label: 'Customers', to: '/admin/customers' },
 ]
 

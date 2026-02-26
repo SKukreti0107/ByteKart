@@ -14,6 +14,7 @@ const OrdersPage = lazy(() => import('./pages/OrdersPage'))
 const CartPage = lazy(() => import('./pages/CartPage'))
 const ContactUs = lazy(() => import('./pages/ContactUs'))
 const AboutUs = lazy(() => import('./pages/AboutUs'))
+const FAQ = lazy(() => import('./pages/FAQ'))
 
 // Admin Pages
 const AdminInventory = lazy(() => import('./pages/AdminInventory'))
@@ -25,6 +26,7 @@ const AdminBrands = lazy(() => import('./pages/AdminBrands'))
 const AdminHero = lazy(() => import('./pages/AdminHero'))
 const AdminNotice = lazy(() => import('./pages/AdminNotice'))
 const AdminReturns = lazy(() => import('./pages/AdminReturns'))
+const AdminSupport = lazy(() => import('./pages/AdminSupport'))
 
 // Fallback Loader for Suspense boundaries
 const PageFallbackLoader = () => (
@@ -44,6 +46,7 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/about" element={<AboutUs />} />
+            <Route path="/faq" element={<FAQ />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-success/:id" element={<OrderSuccess />} />
@@ -110,6 +113,14 @@ function App() {
               element={
                 <ProtectedRoute requireAdmin={true}>
                   <AdminReturns />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/support"
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminSupport />
                 </ProtectedRoute>
               }
             />

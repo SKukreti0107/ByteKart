@@ -10,7 +10,7 @@ export default function AboutUs() {
                         About Us
                     </h1>
                     <p className="text-lg font-bold uppercase tracking-widest text-gray-500 max-w-2xl border-l-4 border-black pl-4">
-                        We're ByteKart — a no-nonsense electronics store that believes great tech shouldn't come with a premium markup.
+                        We're ByteKart — students who believe genuine tech shouldn't be a gamble.
                     </p>
                 </section>
 
@@ -26,7 +26,7 @@ export default function AboutUs() {
                                 <span className="text-matcha-dark">Quality Tech</span>
                             </h2>
                             <p className="text-base md:text-lg font-bold leading-relaxed text-black/80 max-w-3xl">
-                                ByteKart was born from a simple frustration: why does buying electronics in India feel like navigating a maze of inflated prices and questionable sellers? We cut the noise. Every product on our platform is sourced directly, priced transparently, and delivered with care.
+                                ByteKart was founded by college students tired of sketchy social media ads. We interact directly with trusted suppliers to ensure you get the best deals and guaranteed delivery right from the supplier to your doorstep. We also provide easy returns.
                             </p>
                         </div>
                     </div>
@@ -50,7 +50,7 @@ export default function AboutUs() {
                             <span className="material-symbols-outlined text-4xl mb-4 group-hover:scale-110 transition-transform">payments</span>
                             <h3 className="text-xl font-black uppercase tracking-widest mb-4">Fair Pricing</h3>
                             <p className="text-sm font-bold uppercase tracking-wider text-gray-400 group-hover:text-black/60 leading-relaxed">
-                                We show you what we pay and what our cut is. Transparent margins, no hidden fees. You see exactly where your money goes.
+                                We try our utmost to fetch the best possible deal for our customers, beating the prices of other platforms .
                             </p>
                         </div>
 
@@ -72,20 +72,20 @@ export default function AboutUs() {
                                 Origin_Story
                             </div>
                             <h2 className="text-3xl font-black uppercase tracking-tighter mb-6">
-                                Built by Enthusiasts,<br />
-                                <span className="text-matcha-dark">For Enthusiasts</span>
+                                Built by Students,<br />
+                                <span className="text-matcha-dark">For the Community</span>
                             </h2>
                             <p className="text-sm font-bold leading-relaxed text-black/70 mb-4">
-                                We started as a group of tech enthusiasts frustrated by the Indian electronics market. Overpriced components, unreliable sellers, and zero transparency were the norm.
+                                During our college years, we strived to get the best possible deals for tech parts. Instagram ads promised cheap prices, but they always seemed sketchy and unreliable.
                             </p>
                             <p className="text-sm font-bold leading-relaxed text-black/70">
-                                ByteKart is our answer to that. A clean, no-nonsense platform where you can find the latest tech at prices that make sense. We're building the store we always wished existed.
+                                We decided to change that by making our own platform to help our fellow students. We directly interact with trusted suppliers and monitor the entire journey to your doorstep to ensure quality and trust.
                             </p>
                         </div>
                         <div className="border-4 border-black p-8 bg-matcha-bg shadow-brutal flex flex-col items-center justify-center min-h-[300px]">
                             <img src="/final_logo.png" alt="ByteKart Logo" className="h-52 w-auto object-contain mb-6" />
                             <p className="text-xs font-black uppercase tracking-[0.3em] text-black/60 text-center">
-                                Est. 2024 — Bengaluru, India
+                                Greater Noida, India — 2026
                             </p>
                         </div>
                     </div>
@@ -93,16 +93,17 @@ export default function AboutUs() {
 
                 {/* Stats Banner */}
                 <section className="px-6 lg:px-12 py-16 bg-matcha-bg border-b-4 border-pure-black">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto text-center">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-6xl mx-auto text-center">
                         {[
-                            { num: '500+', label: 'Products' },
-                            { num: '10K+', label: 'Happy Customers' },
-                            { num: '24hr', label: 'Avg. Ship Time' },
-                            { num: '100%', label: 'Genuine Products' },
+                            { label: 'Getting the best deals', icon: 'payments' },
+                            { label: 'Ready to serve customers', icon: 'support_agent' },
+                            { label: 'Hassle-free shipping', icon: 'local_shipping' },
+                            { label: 'Genuine products', icon: 'verified' },
+                            { label: 'Occasional goodies', icon: 'redeem' },
                         ].map((stat) => (
-                            <div key={stat.label} className="border-4 border-black bg-white p-6 shadow-brutal-sm hover:-translate-y-1 transition-transform">
-                                <p className="text-3xl md:text-4xl font-black text-matcha-dark">{stat.num}</p>
-                                <p className="text-[10px] md:text-xs font-black uppercase tracking-widest mt-2 text-black/60">{stat.label}</p>
+                            <div key={stat.label} className="border-4 border-black bg-white p-6 shadow-brutal-sm hover:-translate-y-1 transition-transform flex flex-col items-center justify-center">
+                                <span className="material-symbols-outlined text-4xl mb-3 text-matcha-dark">{stat.icon}</span>
+                                <p className="text-[10px] md:text-xs font-black uppercase tracking-widest text-black">{stat.label}</p>
                             </div>
                         ))}
                     </div>
@@ -114,7 +115,7 @@ export default function AboutUs() {
                         Ready to <span className="text-matcha-bg">Upgrade</span>?
                     </h2>
                     <p className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-10 max-w-xl mx-auto">
-                        Browse our curated collection of tech essentials. No fluff, no markup — just the gear you need.
+                        Browse our curated collection of tech essentials. For more on how we work, check our <a href="/faq" className="text-matcha-bg underline decoration-2 underline-offset-4 hover:text-white transition-colors">FAQs</a>.
                     </p>
                     <a
                         href="/catalog"

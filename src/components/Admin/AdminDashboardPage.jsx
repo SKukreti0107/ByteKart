@@ -39,7 +39,7 @@ export default function AdminDashboardPage() {
                     {/* Phase 1: High-Level Overview Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
                         {loading ? (
-                            Array.from({ length: 4 }).map((_, idx) => (
+                            Array.from({ length: 5 }).map((_, idx) => (
                                 <div key={idx} className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform">
                                     <div className="mb-4 flex items-start justify-between">
                                         <Skeleton className="h-4 w-24 bg-gray-200" />
@@ -80,6 +80,14 @@ export default function AdminDashboardPage() {
                                         <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">pending_actions</span>
                                     </div>
                                     <p className="text-4xl font-black text-black">{kpi.pendingRequests}</p>
+                                </div>
+
+                                <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <p className="text-sm font-black uppercase tracking-widest text-black">Open Tickets</p>
+                                        <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">support_agent</span>
+                                    </div>
+                                    <p className="text-4xl font-black text-black">{kpi.openTickets || 0}</p>
                                 </div>
                             </>
                         ) : null}
