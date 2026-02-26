@@ -9,6 +9,7 @@ const navItems = [
   { label: 'Subcategories', to: '/admin/subcategories' },
   { label: 'Brands', to: '/admin/brands' },
   { label: 'Orders', to: '/admin/orders' },
+  { label: 'Returns', to: '/admin/returns' },
   { label: 'Customers', to: '/admin/customers' },
 ]
 

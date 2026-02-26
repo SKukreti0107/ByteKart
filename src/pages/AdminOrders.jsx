@@ -111,7 +111,9 @@ export default function AdminOrders() {
                                                                 order.status === 'paid' ? 'border-blue-400 bg-blue-50 text-blue-700 focus:border-blue-500' :
                                                                     order.status === 'shipped' ? 'border-indigo-400 bg-indigo-50 text-indigo-700 focus:border-indigo-500' :
                                                                         order.status === 'delivered' ? 'border-matcha-deep bg-baby-green/30 text-matcha-deep focus:border-matcha-deep' :
-                                                                            'border-red-400 bg-red-50 text-red-700 focus:border-red-500'
+                                                                            order.status === 'return_requested' ? 'border-orange-400 bg-orange-50 text-orange-700 focus:border-orange-500' :
+                                                                                order.status === 'returned' ? 'border-purple-400 bg-purple-50 text-purple-700 focus:border-purple-500' :
+                                                                                    'border-red-400 bg-red-50 text-red-700 focus:border-red-500'
                                                                 }`}
                                                             value={order.status}
                                                             disabled={processingId === order.id}
@@ -121,6 +123,8 @@ export default function AdminOrders() {
                                                             <option value="paid">Paid</option>
                                                             <option value="shipped">Shipped</option>
                                                             <option value="delivered">Delivered</option>
+                                                            <option value="return_requested">Return Requested</option>
+                                                            <option value="returned">Returned</option>
                                                             <option value="failed">Failed</option>
                                                         </select>
                                                         {processingId === order.id && (

@@ -24,6 +24,7 @@ const AdminSubcategories = lazy(() => import('./pages/AdminSubcategories'))
 const AdminBrands = lazy(() => import('./pages/AdminBrands'))
 const AdminHero = lazy(() => import('./pages/AdminHero'))
 const AdminNotice = lazy(() => import('./pages/AdminNotice'))
+const AdminReturns = lazy(() => import('./pages/AdminReturns'))
 
 // Fallback Loader for Suspense boundaries
 const PageFallbackLoader = () => (
@@ -101,6 +102,14 @@ function App() {
               element={
                 <ProtectedRoute requireAdmin={true}>
                   <AdminNotice />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/returns"
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminReturns />
                 </ProtectedRoute>
               }
             />
