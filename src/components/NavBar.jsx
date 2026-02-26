@@ -139,8 +139,15 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
   }
 
   const handleSignOut = async () => {
-    await authClient.signOut()
-    setIsProfileMenuOpen(false)
+    try {
+      await authClient.signOut()
+      setIsProfileMenuOpen(false)
+      window.location.href = '/'
+    } catch (err) {
+      console.error('Sign out failed:', err)
+      // Force reload even if signOut API fails
+      window.location.href = '/'
+    }
   }
 
   // Fetch categories on mount with session storage caching

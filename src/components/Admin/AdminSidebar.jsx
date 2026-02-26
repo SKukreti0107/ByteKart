@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 const navItems = [
   { label: 'Dashboard', to: '/admin' },
   { label: 'Campaigns', to: '/admin/hero' },
+  { label: 'Notices', to: '/admin/notice' },
   { label: 'Inventory', to: '/admin/inventory' },
   { label: 'Categories', to: '/admin/categories' },
   { label: 'Subcategories', to: '/admin/subcategories' },

@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 
 export default function ProductCard({ product, actionLabel = 'Quick Add', onAction }) {
     const { addToCart } = useCart()
+    const [isAdded, setIsAdded] = useState(false)
 
     const parsePrice = (priceStr) => {
         if (!priceStr) return 0;
@@ -23,7 +25,7 @@ export default function ProductCard({ product, actionLabel = 'Quick Add', onActi
         e.preventDefault()
         e.stopPropagation()
 
-        if (isOutOfStock) return;
+        if (isOutOfStock || isAdded) return;
 
         if (onAction) {
             onAction(product)
@@ -31,6 +33,9 @@ export default function ProductCard({ product, actionLabel = 'Quick Add', onActi
             // Default Quick Add behavior
             addToCart(product, null, {}, 1)
         }
+
+        setIsAdded(true)
+        setTimeout(() => setIsAdded(false), 1500)
     }
 
     return (
@@ -80,16 +85,18 @@ export default function ProductCard({ product, actionLabel = 'Quick Add', onActi
                     onClick={handleAction}
                     disabled={isOutOfStock}
                     className={`w-full mt-auto py-3 md:py-4 border-4 font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 
-                    ${isOutOfStock
-                            ? 'bg-gray-200 text-gray-500 border-gray-400 cursor-not-allowed'
-                            : 'bg-[#E8EFE5] text-black border-black hover:bg-black hover:text-matcha-bg shadow-brutal-sm hover:shadow-none hover:translate-x-1 hover:translate-y-1'
+                    ${isAdded
+                            ? 'bg-matcha-dark text-white border-black cursor-default translate-x-1 translate-y-1'
+                            : isOutOfStock
+                                ? 'bg-gray-200 text-gray-500 border-gray-400 cursor-not-allowed'
+                                : 'bg-[#E8EFE5] text-black border-black hover:bg-black hover:text-matcha-bg shadow-brutal-sm hover:shadow-none hover:translate-x-1 hover:translate-y-1'
                         }`}
                 >
                     <span className="material-symbols-outlined text-lg">
-                        {isOutOfStock ? 'block' : 'add_shopping_cart'}
+                        {isAdded ? 'check_circle' : isOutOfStock ? 'block' : 'add_shopping_cart'}
                     </span>
                     <span className="text-sm">
-                        {isOutOfStock ? 'Out of Stock' : actionLabel}
+                        {isAdded ? 'Added ✓' : isOutOfStock ? 'Out of Stock' : actionLabel}
                     </span>
                 </button>
             </div>

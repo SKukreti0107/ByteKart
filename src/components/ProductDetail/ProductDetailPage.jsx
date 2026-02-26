@@ -67,8 +67,18 @@ export default function ProductDetailPage() {
     )
   }
 
-  // Fallback to a single placeholder if the product lacks an image
-  const displayImage = product?.image_url || 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60'
+  // Build deduplicated image list: primary image_url first, then any extras from image_urls
+  const images = (() => {
+    const all = []
+    const fallback = 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60'
+    if (product?.image_url) all.push(product.image_url)
+    if (product?.image_urls && Array.isArray(product.image_urls)) {
+      for (const url of product.image_urls) {
+        if (url && !all.includes(url)) all.push(url)
+      }
+    }
+    return all.length > 0 ? all : [fallback]
+  })()
 
   return (
     <StorefrontLayout>
@@ -82,7 +92,7 @@ export default function ProductDetailPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-12 xl:grid-cols-2">
-          <ProductGallery selectedImage={displayImage} />
+          <ProductGallery images={images} />
           <PurchasePanel
             product={product}
             quantity={quantity}
@@ -95,7 +105,9 @@ export default function ProductDetailPage() {
             <section className="text-black h-full border-4 border-black bg-white p-8 md:p-12 shadow-brutal relative overflow-hidden">
               <div className="absolute top-0 right-0 bg-black text-white px-4 py-1 text-[10px] font-black uppercase tracking-[0.2em] shadow-brutal-sm">Technical_Specs</div>
               <h2 className="text-2xl md:text-3xl font-black uppercase tracking-widest mb-8 border-b-4 border-black pb-4 inline-block">Description</h2>
-              <p className="whitespace-pre-wrap font-bold text-base leading-relaxed max-w-5xl">{product?.description || 'No description available for this product.'}</p>
+              <div className="max-h-96 overflow-y-auto pr-2">
+                <p className="whitespace-pre-wrap font-bold text-base leading-relaxed max-w-5xl">{product?.description || 'No description available for this product.'}</p>
+              </div>
             </section>
           </div>
         </div>

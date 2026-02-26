@@ -74,6 +74,7 @@ export default function CatalogPage() {
           }
         }
 
+        params.append('limit', '100')
         const url = `/listings${params.toString() ? `?${params.toString()}` : ''}`
         const response = await api.getWithCache(url)
 

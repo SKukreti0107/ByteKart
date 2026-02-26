@@ -6,16 +6,24 @@ import ProductGrid from './ProductsGrid'
 import ProductCardSkeleton from '../Loaders/ProductCardSkeleton'
 import api from '../../api'
 
+const noticeStyles = {
+    info: 'bg-blue-600 text-white',
+    warning: 'bg-yellow-400 text-black',
+    promo: 'bg-matcha-dark text-white',
+    urgent: 'bg-red-600 text-white',
+}
+
 export default function ElectronicsHubPage() {
     const [products, setProducts] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [notice, setNotice] = useState(null)
+    const [noticeDismissed, setNoticeDismissed] = useState(false)
 
     useEffect(() => {
         const fetchListings = async () => {
             try {
                 const response = await api.getWithCache('/listings')
-                // Map backend data to frontend format, showing 8 products
                 const mappedProducts = response.data.slice(0, 8).map(item => {
                     const displayPrice = (item.supplier_price || 0) + (item.our_cut || 0)
                     return {
@@ -34,12 +42,43 @@ export default function ElectronicsHubPage() {
                 setLoading(false)
             }
         }
+
+        const fetchNotice = async () => {
+            try {
+                const response = await api.getWithCache('/notice', {}, 60000)
+                if (response.data) {
+                    setNotice(response.data)
+                }
+            } catch (err) {
+                console.error("Failed to fetch notice:", err)
+            }
+        }
+
         fetchListings()
+        fetchNotice()
     }, [])
 
     return (
         <StorefrontLayout>
             <main className="w-full">
+                {/* Global Notice Banner */}
+                {notice && !noticeDismissed && (
+                    <div className={`w-full px-4 py-3 flex items-center justify-center gap-4 border-b-4 border-pure-black ${noticeStyles[notice.type] || noticeStyles.info}`}>
+                        <span className="material-symbols-outlined text-lg">
+                            {notice.type === 'urgent' ? 'warning' : notice.type === 'promo' ? 'local_offer' : notice.type === 'warning' ? 'info' : 'campaign'}
+                        </span>
+                        <p className="text-sm font-black uppercase tracking-wider text-center flex-1">
+                            {notice.message}
+                        </p>
+                        <button
+                            onClick={() => setNoticeDismissed(true)}
+                            className="font-black text-lg hover:opacity-70 transition-opacity"
+                        >
+                            ✕
+                        </button>
+                    </div>
+                )}
+
                 <Hero />
                 <section className="bg-matcha-bg py-16 px-6 lg:px-12 border-b-4 border-pure-black">
                     <div className="w-full">
