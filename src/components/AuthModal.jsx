@@ -59,37 +59,35 @@ export default function AuthModal({ isOpen, onClose }) {
     }
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-            <div className="relative w-full max-w-md border-4 border-black bg-pure-white p-8 shadow-brutal">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-3 sm:p-4 backdrop-blur-sm overflow-y-auto">
+            <div className="relative w-full max-w-md border-4 border-black bg-pure-white p-5 sm:p-8 shadow-brutal my-auto">
                 <button
                     onClick={handleClose}
-                    className="absolute -right-4 -top-4 w-10 h-10 bg-white border-4 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors z-20 shadow-brutal-sm"
+                    className="absolute -right-3 -top-3 sm:-right-4 sm:-top-4 w-9 h-9 sm:w-10 sm:h-10 bg-white border-4 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors z-20 shadow-brutal-sm"
                     aria-label="Close modal"
                 >
-                    <span className="material-symbols-outlined text-xl">close</span>
+                    <span className="material-symbols-outlined text-lg sm:text-xl">close</span>
                 </button>
 
-                <div className="mb-10 text-center">
-                    <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center border-4 border-black bg-matcha-bg shadow-brutal-sm">
-                        <span className="material-symbols-outlined text-4xl text-black">terminal</span>
+                <div className="mb-5 sm:mb-10 text-center">
+                    <div className="mx-auto mb-4 sm:mb-6 flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center border-4 border-black bg-matcha-bg shadow-brutal-sm">
+                        <span className="material-symbols-outlined text-2xl sm:text-4xl text-black">terminal</span>
                     </div>
-                    <h2 className="text-3xl font-black uppercase tracking-tighter text-black">
+                    <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tighter text-black">
                         {isLogin ? 'Welcome Back' : 'Create Account'}
                     </h2>
-                    <p className="mt-2 text-xs font-black uppercase tracking-[0.2em] text-gray-500">
-                        {isLogin
-                            ? 'Login'
-                            : 'Register'}
+                    <p className="mt-1 sm:mt-2 text-xs font-black uppercase tracking-[0.2em] text-gray-500">
+                        {isLogin ? 'Login' : 'Register'}
                     </p>
                 </div>
 
                 {error && (
-                    <div className="mb-6 border-4 border-black bg-red-100 p-4 text-xs font-black uppercase tracking-widest text-red-600">
+                    <div className="mb-4 sm:mb-6 border-4 border-black bg-red-100 p-3 sm:p-4 text-xs font-black uppercase tracking-widest text-red-600">
                         {error}
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                     {!isLogin && (
                         <div>
                             <label className="mb-2 block text-xs font-black uppercase tracking-widest text-black/50" htmlFor="name">
@@ -101,7 +99,7 @@ export default function AuthModal({ isOpen, onClose }) {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required={!isLogin}
-                                className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
+                                className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-2 sm:py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
                                 placeholder="IDENTIFY YOURSELF"
                             />
                         </div>
@@ -117,7 +115,7 @@ export default function AuthModal({ isOpen, onClose }) {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
+                            className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-2 sm:py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
                             placeholder="USER@HUB.COM"
                         />
                     </div>
@@ -133,7 +131,7 @@ export default function AuthModal({ isOpen, onClose }) {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             minLength={8}
-                            className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
+                            className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-2 sm:py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
                             placeholder="••••••••"
                         />
                     </div>
@@ -141,14 +139,14 @@ export default function AuthModal({ isOpen, onClose }) {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full border-4 border-black bg-black py-5 font-black uppercase tracking-widest text-white shadow-brutal hover:bg-white hover:text-black transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none disabled:cursor-not-allowed disabled:opacity-50"
+                        className="w-full border-4 border-black bg-black py-3 sm:py-5 font-black uppercase tracking-widest text-white shadow-brutal hover:bg-white hover:text-black transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         {loading ? 'Processing...' : isLogin ? 'Authenticate' : 'Establish Record'}
                     </button>
                 </form>
 
-                <div className="mt-10 text-center">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4 leading-relaxed">
+                <div className="mt-6 sm:mt-10 text-center">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 sm:mb-4 leading-relaxed">
                         Secure terminal access. All credentials encrypted.
                     </p>
                     <button
