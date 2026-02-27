@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import ProtectedRoute from './components/ProtectedRoute'
 import { CartProvider } from './context/CartContext'
+import { Analytics } from "@vercel/analytics/next"
 
 // Lazy-loaded routes for Code Splitting (Reduces initial JS bundle)
 const Home = lazy(() => import('./pages/Home'))
@@ -39,6 +40,7 @@ const PageFallbackLoader = () => (
 function App() {
   return (
     <CartProvider>
+      <Analytics />
       <BrowserRouter>
         <Suspense fallback={<PageFallbackLoader />}>
           <Routes>
