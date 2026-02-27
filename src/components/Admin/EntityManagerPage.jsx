@@ -179,7 +179,7 @@ export default function EntityManagerPage({ config }) {
 
             {isModalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4 sm:p-6 backdrop-blur-sm">
-                    <div className="relative w-full max-w-[95vw] sm:max-w-[80vw] lg:max-w-xl overflow-y-auto bg-white border-4 border-black p-6 shadow-brutal md:p-8 max-h-[95vh] sm:max-h-[90vh]">
+                    <div className="relative w-full max-w-[90vw] overflow-y-auto bg-white border-4 border-black p-6 shadow-brutal md:p-8 max-h-[95vh] sm:max-h-[90vh]">
                         <button
                             onClick={() => setIsModalOpen(false)}
                             className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center bg-white border-2 border-black font-black hover:bg-black hover:text-matcha-bg transition-colors"

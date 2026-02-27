@@ -186,7 +186,7 @@ export default function AdminSupport() {
             {/* Reply Modal */}
             {replyModalTicket && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-                    <div className="w-full max-w-lg border-4 border-black bg-white shadow-brutal">
+                    <div className="w-full max-w-[90vw] border-4 border-black bg-white shadow-brutal">
                         <div className="border-b-4 border-black bg-matcha-bg px-6 py-4 flex items-center justify-between">
                             <h3 className="text-lg font-black uppercase tracking-widest">Reply to Ticket</h3>
                             <button onClick={() => setReplyModalTicket(null)} className="text-2xl font-black hover:text-red-600 transition">×</button>
@@ -237,7 +237,7 @@ export default function AdminSupport() {
             {/* View Ticket Modal */}
             {viewTicket && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-                    <div className="w-full max-w-lg border-4 border-black bg-white shadow-brutal max-h-[80vh] overflow-y-auto">
+                    <div className="w-full max-w-[90vw] border-4 border-black bg-white shadow-brutal max-h-[80vh] overflow-y-auto">
                         <div className="border-b-4 border-black bg-matcha-bg px-6 py-4 flex items-center justify-between sticky top-0">
                             <h3 className="text-lg font-black uppercase tracking-widest">Ticket Details</h3>
                             <button onClick={() => setViewTicket(null)} className="text-2xl font-black hover:text-red-600 transition">×</button>

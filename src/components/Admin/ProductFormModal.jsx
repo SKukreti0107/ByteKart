@@ -186,7 +186,7 @@ export default function ProductFormModal({ isOpen, onClose, initialData, onSave 
 
     return (
         <div className="fixed inset-0 z-[100] flex items-start justify-center bg-black/60 p-4 sm:p-6 backdrop-blur-sm overflow-y-auto">
-            <div className="relative w-full max-w-4xl bg-[#F7F5EE] border-4 border-black shadow-brutal my-8 mx-auto">
+            <div className="relative w-full max-w-[90vw] bg-[#F7F5EE] border-4 border-black shadow-brutal my-8 mx-auto">
                 {/* Modal Header */}
                 <div className="bg-black text-matcha-bg px-8 py-5 flex items-center justify-between border-b-4 border-black">
                     <h2 className="text-2xl font-black uppercase tracking-widest">

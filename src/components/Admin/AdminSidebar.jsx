@@ -11,6 +11,7 @@ const navItems = [
   { label: 'Orders', to: '/admin/orders' },
   { label: 'Returns', to: '/admin/returns' },
   { label: 'Support', to: '/admin/support' },
+  { label: 'Redeem Codes', to: '/admin/redeem-codes' },
   { label: 'Customers', to: '/admin/customers' },
 ]
 

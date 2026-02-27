@@ -1,7 +1,36 @@
-export default function OrderSummary({ shippingMethod, cartItems, cartTotal, onPlaceOrder, canPlaceOrder, checkoutStep }) {
+import { useState } from 'react'
+import api from '../../api'
+
+export default function OrderSummary({ shippingMethod, cartItems, cartTotal, onPlaceOrder, canPlaceOrder, checkoutStep, appliedCode, setAppliedCode, discount }) {
   const subtotal = cartTotal || 0
   const shipping = shippingMethod.fee
-  const total = subtotal + shipping
+  const total = Math.max(subtotal - (discount || 0) + shipping, 0)
+
+  const [codeInput, setCodeInput] = useState('')
+  const [codeLoading, setCodeLoading] = useState(false)
+  const [codeError, setCodeError] = useState('')
+
+  const handleApplyCode = async () => {
+    if (!codeInput.trim()) return
+    setCodeLoading(true)
+    setCodeError('')
+    try {
+      const res = await api.post('/redeem-code/validate', { code: codeInput.trim() })
+      setAppliedCode(res.data)
+      setCodeError('')
+    } catch (err) {
+      setCodeError(err.response?.data?.detail || 'Invalid code')
+      setAppliedCode(null)
+    } finally {
+      setCodeLoading(false)
+    }
+  }
+
+  const handleRemoveCode = () => {
+    setAppliedCode(null)
+    setCodeInput('')
+    setCodeError('')
+  }
 
   return (
     <aside className="border-none p-0 lg:sticky lg:top-28">
@@ -23,7 +52,57 @@ export default function OrderSummary({ shippingMethod, cartItems, cartTotal, onP
           </div>
         </div>
 
-        <div className="mb-8">
+        {/* Redeem Code Section */}
+        <div className="mb-6 border-b-4 border-black pb-6">
+          <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-3">Redeem Code</p>
+          {appliedCode ? (
+            <div className="flex items-center justify-between bg-matcha-bg border-4 border-black p-3">
+              <div>
+                <span className="font-mono font-black tracking-widest text-sm">{appliedCode.code}</span>
+                <span className="ml-2 text-xs font-bold text-green-700">
+                  −{appliedCode.discount_type === 'percentage' ? `${appliedCode.discount_value}%` : `₹${appliedCode.discount_value}`}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={handleRemoveCode}
+                className="text-xs font-black uppercase tracking-widest text-red-600 hover:text-red-800 transition-colors"
+              >
+                Remove
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={codeInput}
+                onChange={e => setCodeInput(e.target.value.toUpperCase())}
+                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleApplyCode() } }}
+                placeholder="ENTER CODE"
+                className="flex-1 border-4 border-black px-3 py-2 text-sm font-black uppercase tracking-widest outline-none focus:border-matcha-dark transition-colors"
+              />
+              <button
+                type="button"
+                onClick={handleApplyCode}
+                disabled={codeLoading || !codeInput.trim()}
+                className="px-4 py-2 border-4 border-black bg-black text-white font-black uppercase tracking-widest text-xs hover:bg-white hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {codeLoading ? '...' : 'Apply'}
+              </button>
+            </div>
+          )}
+          {codeError && (
+            <p className="mt-2 text-xs font-black uppercase tracking-widest text-red-600">{codeError}</p>
+          )}
+        </div>
+
+        <div className="mb-8 space-y-2">
+          {discount > 0 && (
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-bold uppercase tracking-widest text-green-700">Discount</span>
+              <span className="font-black text-green-700">−₹{discount}</span>
+            </div>
+          )}
           <div className="flex items-center justify-between text-xl font-bold">
             <span className="font-black uppercase tracking-widest text-lg">Total</span>
             <span className="text-black font-black text-2xl">₹{total}</span>

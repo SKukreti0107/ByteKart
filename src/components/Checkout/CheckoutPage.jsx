@@ -22,6 +22,8 @@ export default function CheckoutPage() {
   const [shippingMethod, setShippingMethod] = useState({ id: 'standard', label: 'Standard Delivery', fee: 0 })
   const [razorpayKeyId, setRazorpayKeyId] = useState('')
   const [checkoutStep, setCheckoutStep] = useState('idle') // 'idle' | 'creating' | 'verifying'
+  const [appliedCode, setAppliedCode] = useState(null) // { code, discount_type, discount_value }
+  const [discount, setDiscount] = useState(0)
   const navigate = useNavigate()
 
   const { cartItems, cartTotal, clearCart } = useCart()
@@ -80,6 +82,20 @@ export default function CheckoutPage() {
     }
   }, [])
 
+  // Recalculate discount when cart changes
+  useEffect(() => {
+    if (appliedCode) {
+      const subtotal = cartTotal || 0
+      if (appliedCode.discount_type === 'percentage') {
+        setDiscount(Math.round(subtotal * (appliedCode.discount_value / 100)))
+      } else {
+        setDiscount(Math.min(appliedCode.discount_value, subtotal))
+      }
+    } else {
+      setDiscount(0)
+    }
+  }, [appliedCode, cartTotal])
+
   const requiredFilled = useMemo(() => {
     return Boolean(
       formData.firstName &&
@@ -110,7 +126,8 @@ export default function CheckoutPage() {
           email: formData.email,
           phone: formData.phone
         },
-        shipping_fee: shippingMethod.fee
+        shipping_fee: shippingMethod.fee,
+        redeem_code: appliedCode?.code || null
       }
 
       const orderResp = await api.post('/orders', orderDataPayload)
@@ -226,6 +243,9 @@ export default function CheckoutPage() {
             canPlaceOrder={Boolean(requiredFilled) && cartItems.length > 0}
             onPlaceOrder={handlePlaceOrder}
             checkoutStep={checkoutStep}
+            appliedCode={appliedCode}
+            setAppliedCode={setAppliedCode}
+            discount={discount}
           />
         </div>
 
@@ -233,3 +253,4 @@ export default function CheckoutPage() {
     </StorefrontLayout>
   )
 }
+

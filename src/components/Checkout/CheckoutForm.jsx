@@ -21,25 +21,9 @@ export default function CheckoutForm({ formData, setFormData, shippingMethod, se
 
       <div className="bg-white border-4 border-black p-6 shadow-brutal">
         <h2 className="mb-6 text-xl font-black uppercase tracking-widest text-black">Shipping Method</h2>
-        <div className="flex flex-col gap-4">
-          {[
-            { id: 'standard', label: 'Standard Delivery', eta: '3-5 days', fee: 0 },
-            { id: 'express', label: 'Express Delivery', eta: '1-2 days', fee: 19 },
-          ].map((method) => (
-            <button
-              key={method.id}
-              type="button"
-              disabled={disabled}
-              onClick={() => setShippingMethod(method)}
-              className={`px-4 py-4 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${shippingMethod.id === method.id
-                ? 'border-4 border-black bg-black text-white shadow-brutal-sm'
-                : 'border-4 border-black bg-white text-black hover:bg-gray-50'
-                }`}
-            >
-              <p className="font-black text-sm uppercase tracking-widest">{method.label}</p>
-              <p className="text-xs mt-1 font-bold">{method.eta} • {method.fee ? `₹${method.fee}` : 'Free'}</p>
-            </button>
-          ))}
+        <div className="px-4 py-4 border-4 border-black bg-black text-white shadow-brutal-sm">
+          <p className="font-black text-sm uppercase tracking-widest">Free Delivery</p>
+          <p className="text-xs mt-1 font-bold">3-5 business days • Free</p>
         </div>
       </div>
     </section>
