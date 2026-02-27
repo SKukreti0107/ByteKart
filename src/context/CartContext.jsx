@@ -85,8 +85,8 @@ export function CartProvider({ children }) {
     const addToCart = (product, matchedSku, selectedVariants, quantity) => {
         setCartItems(prev => {
             const displayPrice = matchedSku
-                ? (matchedSku.supplier_price || 0) + (matchedSku.our_cut || 0)
-                : (product.supplier_price || 0) + (product.our_cut || 0)
+                ? (parseFloat(matchedSku.supplier_price) || 0) + (parseFloat(matchedSku.our_cut) || 0)
+                : (parseFloat(product.supplier_price) || 0) + (parseFloat(product.our_cut) || 0)
 
             const displayMrp = matchedSku ? matchedSku.MRP : product.MRP
             const maxStock = matchedSku ? matchedSku.stock : 999

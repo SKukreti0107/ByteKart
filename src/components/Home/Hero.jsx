@@ -71,7 +71,7 @@ export default function Hero() {
             </p>
 
             <Link to={`/product/${currentItem.id}`} className="bg-matcha-bg text-black px-8 md:px-12 py-4 md:py-5 font-black uppercase tracking-widest text-base md:text-lg border-4 border-black shadow-brutal hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all inline-flex items-center justify-center gap-3 group w-fit">
-              Shop Now - ₹{(currentItem.supplier_price || 0) + (currentItem.our_cut || 0)}
+              Shop Now - ₹{(parseFloat(currentItem.supplier_price) || 0) + (parseFloat(currentItem.our_cut) || 0)}
               <span className="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </Link>
 

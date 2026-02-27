@@ -19,8 +19,8 @@ export default function PurchasePanel({ product, quantity, setQuantity }) {
   })
 
   const displayPrice = matchedSku
-    ? (matchedSku.supplier_price || 0) + (matchedSku.our_cut || 0)
-    : (product.supplier_price || 0) + (product.our_cut || 0)
+    ? (parseFloat(matchedSku.supplier_price) || 0) + (parseFloat(matchedSku.our_cut) || 0)
+    : (parseFloat(product.supplier_price) || 0) + (parseFloat(product.our_cut) || 0)
 
   const displayMrp = matchedSku ? matchedSku.MRP : product.MRP
   const displayStock = matchedSku ? matchedSku.stock : null

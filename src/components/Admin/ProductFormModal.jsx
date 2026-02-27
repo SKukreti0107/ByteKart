@@ -132,7 +132,7 @@ export default function ProductFormModal({ isOpen, onClose, initialData, onSave 
                 return Object.keys(combo).every(k => c.attributes && c.attributes[k] === combo[k])
             })
             if (existing) return existing
-            return { attributes: combo, MRP: formData.MRP || 0, supplier_price: formData.supplier_price || 0, our_cut: formData.our_cut || 0, stock: 10 }
+            return { attributes: combo, MRP: parseFloat(formData.MRP) || 0, supplier_price: parseFloat(formData.supplier_price) || 0, our_cut: parseFloat(formData.our_cut) || 0, stock: 10 }
         })
 
         setFormData(prev => ({ ...prev, variant_combinations: newCombinations }))

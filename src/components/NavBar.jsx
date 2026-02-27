@@ -42,7 +42,7 @@ const SearchDropdown = ({ results, isSearching, onResultClick, show, direction =
   return (
     <div className={`${positionClasses} bg-pure-white py-2 shadow-brutal border-4 border-pure-black z-50 max-h-80 overflow-y-auto w-full`}>
       {results.map(product => {
-        const p = (product.supplier_price || 0) + (product.our_cut || 0);
+        const p = (parseFloat(product.supplier_price) || 0) + (parseFloat(product.our_cut) || 0);
         return (
           <Link
             key={product.id}

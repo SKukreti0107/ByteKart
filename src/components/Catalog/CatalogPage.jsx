@@ -80,7 +80,7 @@ export default function CatalogPage() {
 
         // Map backend data to frontend format
         const mappedProducts = response.data.map(item => {
-          const displayPrice = (item.supplier_price || 0) + (item.our_cut || 0)
+          const displayPrice = (parseFloat(item.supplier_price) || 0) + (parseFloat(item.our_cut) || 0)
           return {
             ...item,
             priceValue: displayPrice,

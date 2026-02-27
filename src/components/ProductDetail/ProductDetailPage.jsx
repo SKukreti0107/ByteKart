@@ -29,7 +29,7 @@ export default function ProductDetailPage() {
           const filteredRelated = relatedRes.data
             .filter(p => p.id !== fetchedProduct.id)
             .map(item => {
-              const displayPrice = (item.supplier_price || 0) + (item.our_cut || 0)
+              const displayPrice = (parseFloat(item.supplier_price) || 0) + (parseFloat(item.our_cut) || 0)
               return {
                 ...item,
                 price: `₹${displayPrice}`,

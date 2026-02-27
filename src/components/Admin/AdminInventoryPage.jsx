@@ -37,7 +37,7 @@ export default function AdminInventoryPage() {
         category: categoriesMap[item.category_id] || 'General',
         stock: item.variant_combinations?.reduce((sum, v) => sum + (v.stock || 0), 0) || 0,
         status: item.stock_status,
-        price: (item.supplier_price || 0) + (item.our_cut || 0)
+        price: (parseFloat(item.supplier_price) || 0) + (parseFloat(item.our_cut) || 0)
       }))
       setRows(mappedRows)
     } catch (err) {
