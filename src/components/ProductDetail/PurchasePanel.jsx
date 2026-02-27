@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
 
-export default function PurchasePanel({ product, quantity, setQuantity }) {
+export default function PurchasePanel({ product, quantity, setQuantity, onVariantImageChange }) {
   const navigate = useNavigate()
   // Initialize first choice for each variant
   const initialVariants = {}
@@ -30,7 +30,16 @@ export default function PurchasePanel({ product, quantity, setQuantity }) {
     : (product.stock_status === 'out-of-stock' || product.stock === 0)
 
   const handleVariantChange = (name, value) => {
-    setSelectedVariants(prev => ({ ...prev, [name]: value }))
+    const next = { ...selectedVariants, [name]: value }
+    setSelectedVariants(next)
+
+    // Jump gallery to matching variant's image
+    if (onVariantImageChange) {
+      const sku = product.variant_combinations?.find(combo =>
+        Object.entries(next).every(([k, v]) => combo.attributes[k] === v)
+      )
+      if (sku?.image_url) onVariantImageChange(sku.image_url)
+    }
   }
 
   const handleBuyNow = () => {

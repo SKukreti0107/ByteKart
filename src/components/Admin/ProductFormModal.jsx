@@ -132,7 +132,7 @@ export default function ProductFormModal({ isOpen, onClose, initialData, onSave 
                 return Object.keys(combo).every(k => c.attributes && c.attributes[k] === combo[k])
             })
             if (existing) return existing
-            return { attributes: combo, MRP: parseFloat(formData.MRP) || 0, supplier_price: parseFloat(formData.supplier_price) || 0, our_cut: parseFloat(formData.our_cut) || 0, stock: 10 }
+            return { attributes: combo, MRP: parseFloat(formData.MRP) || 0, supplier_price: parseFloat(formData.supplier_price) || 0, our_cut: parseFloat(formData.our_cut) || 0, stock: 10, image_url: '' }
         })
 
         setFormData(prev => ({ ...prev, variant_combinations: newCombinations }))
@@ -141,7 +141,11 @@ export default function ProductFormModal({ isOpen, onClose, initialData, onSave 
     const handleSKUChange = (index, field, value) => {
         setFormData(prev => {
             const newCombos = [...(prev.variant_combinations || [])]
-            newCombos[index][field] = value === '' ? '' : parseFloat(value) || 0
+            if (field === 'image_url') {
+                newCombos[index][field] = value
+            } else {
+                newCombos[index][field] = value === '' ? '' : parseFloat(value) || 0
+            }
             return { ...prev, variant_combinations: newCombos }
         })
     }
@@ -418,6 +422,7 @@ export default function ProductFormModal({ isOpen, onClose, initialData, onSave 
                                     <thead>
                                         <tr className="bg-black text-matcha-bg">
                                             <th className="px-4 py-3 text-[10px] font-black uppercase tracking-widest border-r-4 border-matcha-dark/30">Variant</th>
+                                            <th className="px-4 py-3 text-[10px] font-black uppercase tracking-widest border-r-4 border-matcha-dark/30">Image</th>
                                             <th className="px-4 py-3 text-[10px] font-black uppercase tracking-widest border-r-4 border-matcha-dark/30">MRP</th>
                                             <th className="px-4 py-3 text-[10px] font-black uppercase tracking-widest border-r-4 border-matcha-dark/30">Supplier</th>
                                             <th className="px-4 py-3 text-[10px] font-black uppercase tracking-widest border-r-4 border-matcha-dark/30">Our Cut</th>
@@ -429,6 +434,16 @@ export default function ProductFormModal({ isOpen, onClose, initialData, onSave 
                                             <tr key={idx} className="border-b-4 border-black last:border-b-0 hover:bg-matcha-bg/20 transition-colors">
                                                 <td className="px-4 py-3 font-black text-xs uppercase border-r-4 border-black whitespace-nowrap">
                                                     {Object.values(sku.attributes).join(' / ')}
+                                                </td>
+                                                <td className="px-4 py-3 border-r-4 border-black">
+                                                    <div className="flex items-center gap-2">
+                                                        {sku.image_url && (
+                                                            <div className="w-10 h-10 border-2 border-black flex-shrink-0 overflow-hidden bg-white flex items-center justify-center">
+                                                                <img src={sku.image_url} alt="" className="w-full h-full object-contain mix-blend-multiply" onError={e => { e.target.style.display = 'none' }} />
+                                                            </div>
+                                                        )}
+                                                        <input type="text" value={sku.image_url || ''} onChange={e => handleSKUChange(idx, 'image_url', e.target.value)} className="w-full border-2 border-black px-2 py-1 text-sm font-bold outline-none focus:border-matcha-dark" placeholder="Image URL" />
+                                                    </div>
                                                 </td>
                                                 <td className="px-4 py-3 border-r-4 border-black">
                                                     <input type="number" step="0.01" min="0" value={sku.MRP} onChange={e => handleSKUChange(idx, 'MRP', e.target.value)} className="w-full border-2 border-black px-2 py-1 text-sm font-bold outline-none focus:border-matcha-dark" />

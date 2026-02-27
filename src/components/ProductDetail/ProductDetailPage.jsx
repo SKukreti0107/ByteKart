@@ -15,6 +15,7 @@ export default function ProductDetailPage() {
   const [error, setError] = useState(null)
 
   const [quantity, setQuantity] = useState(1)
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -67,18 +68,35 @@ export default function ProductDetailPage() {
     )
   }
 
-  // Build deduplicated image list: primary image_url first, then any extras from image_urls
+  // Build deduplicated image list: primary image_url → variant combo images → gallery image_urls
   const images = (() => {
     const all = []
+    const seen = new Set()
+    const addUnique = (url) => { if (url && !seen.has(url)) { seen.add(url); all.push(url) } }
     const fallback = 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60'
-    if (product?.image_url) all.push(product.image_url)
-    if (product?.image_urls && Array.isArray(product.image_urls)) {
-      for (const url of product.image_urls) {
-        if (url && !all.includes(url)) all.push(url)
+
+    if (product?.image_url) addUnique(product.image_url)
+
+    // Insert variant-combo images so they appear in the gallery
+    if (product?.variant_combinations && Array.isArray(product.variant_combinations)) {
+      for (const combo of product.variant_combinations) {
+        if (combo.image_url) addUnique(combo.image_url)
       }
     }
+
+    if (product?.image_urls && Array.isArray(product.image_urls)) {
+      for (const url of product.image_urls) addUnique(url)
+    }
+
     return all.length > 0 ? all : [fallback]
   })()
+
+  // When a variant is selected, jump the gallery to its image
+  const handleVariantImageChange = (imageUrl) => {
+    if (!imageUrl) return
+    const idx = images.indexOf(imageUrl)
+    if (idx !== -1) setSelectedImageIndex(idx)
+  }
 
   return (
     <StorefrontLayout>
@@ -92,13 +110,15 @@ export default function ProductDetailPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-12 xl:grid-cols-2">
-          <ProductGallery images={images} />
+          <ProductGallery images={images} selectedIndex={selectedImageIndex} />
           <PurchasePanel
             product={product}
             quantity={quantity}
             setQuantity={setQuantity}
+            onVariantImageChange={handleVariantImageChange}
           />
         </div>
+
 
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-3 pt-8">
           <div className="xl:col-span-3">

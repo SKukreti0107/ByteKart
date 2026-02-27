@@ -1,11 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const FALLBACK = 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60'
 
-export default function ProductGallery({ images = [] }) {
+export default function ProductGallery({ images = [], selectedIndex }) {
   const displayImages = images.length > 0 ? images : [FALLBACK]
   const [selected, setSelected] = useState(0)
 
+  // Sync with parent-driven index (e.g. variant selection)
+  useEffect(() => {
+    if (selectedIndex !== undefined && selectedIndex !== null && selectedIndex !== selected) {
+      setSelected(selectedIndex)
+    }
+  }, [selectedIndex])
   return (
     <div className="flex flex-col-reverse sm:flex-row gap-4">
       {/* Thumbnail Strip — only shown when there are multiple images */}
@@ -16,8 +22,8 @@ export default function ProductGallery({ images = [] }) {
               key={idx}
               onClick={() => setSelected(idx)}
               className={`flex-shrink-0 w-20 h-20 sm:w-full sm:h-20 border-4 p-1 transition-all overflow-hidden ${selected === idx
-                  ? 'border-black shadow-brutal-sm'
-                  : 'border-black/20 hover:border-black/60'
+                ? 'border-black shadow-brutal-sm'
+                : 'border-black/20 hover:border-black/60'
                 }`}
             >
               <img
