@@ -8,7 +8,7 @@ import ProductCardSkeleton from '../Loaders/ProductCardSkeleton'
 import CatalogSidebarSkeleton from '../Loaders/CatalogSidebarSkeleton'
 import api from '../../api'
 
-const perPage = 6
+const perPage = 8
 
 export default function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -16,6 +16,7 @@ export default function CatalogPage() {
   const [categories, setCategories] = useState([])
 
   const [catalogProducts, setCatalogProducts] = useState([])
+  const [totalItems, setTotalItems] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -74,12 +75,15 @@ export default function CatalogPage() {
           }
         }
 
-        params.append('limit', '100')
+        // Server-side pagination params
+        params.append('limit', String(perPage))
+        params.append('skip', String((page - 1) * perPage))
+
         const url = `/listings${params.toString() ? `?${params.toString()}` : ''}`
-        const response = await api.getWithCache(url)
+        const response = await api.get(url)
 
         // Map backend data to frontend format
-        const mappedProducts = response.data.map(item => {
+        const mappedProducts = response.data.data.map(item => {
           const displayPrice = (parseFloat(item.supplier_price) || 0) + (parseFloat(item.our_cut) || 0)
           return {
             ...item,
@@ -92,6 +96,7 @@ export default function CatalogPage() {
           }
         })
         setCatalogProducts(mappedProducts)
+        setTotalItems(response.data.total)
       } catch (err) {
         console.error("Failed to fetch listings:", err)
         setError("Failed to load catalog.")
@@ -100,7 +105,7 @@ export default function CatalogPage() {
       }
     }
     fetchListings()
-  }, [categories, queryCategory, selectedSubCategories, selectedBrand, subCategories, brands, searchParams])
+  }, [categories, queryCategory, selectedSubCategories, selectedBrand, subCategories, brands, searchParams, page])
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -161,9 +166,8 @@ export default function CatalogPage() {
     return sorted
   }, [catalogProducts, priceCap, selectedBrand, selectedSubCategories, sortBy])
 
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / perPage))
+  const totalPages = Math.max(1, Math.ceil(totalItems / perPage))
   const safePage = Math.min(page, totalPages)
-  const paginatedProducts = filteredProducts.slice((safePage - 1) * perPage, safePage * perPage)
 
   const toggleSubCategory = (value) => {
     setPage(1)
@@ -211,8 +215,8 @@ export default function CatalogPage() {
               <div className="p-8 text-center text-red-500 font-bold uppercase">{error}</div>
             ) : (
               <>
-                <CatalogToolbar sortBy={sortBy} setSortBy={setSortBy} view={view} setView={setView} resultCount={filteredProducts.length} />
-                <CatalogResults products={paginatedProducts} view={view} page={safePage} setPage={setPage} totalPages={totalPages} />
+                <CatalogToolbar sortBy={sortBy} setSortBy={setSortBy} view={view} setView={setView} resultCount={totalItems} />
+                <CatalogResults products={filteredProducts} view={view} page={safePage} setPage={setPage} totalPages={totalPages} />
               </>
             )}
           </div>

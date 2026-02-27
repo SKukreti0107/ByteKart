@@ -27,7 +27,7 @@ export default function ProductDetailPage() {
 
         try {
           const relatedRes = await api.getWithCache(`/listings?category_id=${fetchedProduct.category_id}`)
-          const filteredRelated = relatedRes.data
+          const filteredRelated = relatedRes.data.data
             .filter(p => p.id !== fetchedProduct.id)
             .map(item => {
               const displayPrice = (parseFloat(item.supplier_price) || 0) + (parseFloat(item.our_cut) || 0)

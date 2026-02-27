@@ -24,7 +24,7 @@ export default function ElectronicsHubPage() {
         const fetchListings = async () => {
             try {
                 const response = await api.getWithCache('/listings')
-                const mappedProducts = response.data.slice(0, 8).map(item => {
+                const mappedProducts = response.data.data.slice(0, 8).map(item => {
                     const displayPrice = (parseFloat(item.supplier_price) || 0) + (parseFloat(item.our_cut) || 0)
                     return {
                         ...item,

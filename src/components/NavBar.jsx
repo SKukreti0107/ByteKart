@@ -109,7 +109,7 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
         setShowDropdown(true)
         api.getWithCache(`/listings?search=${encodeURIComponent(searchQuery.trim())}&limit=5`)
           .then(res => {
-            setSearchResults(res.data)
+            setSearchResults(res.data.data)
           })
           .catch(err => console.error("Search fetch failed", err))
           .finally(() => setIsSearching(false))
