@@ -16,6 +16,10 @@ const CartPage = lazy(() => import('./pages/CartPage'))
 const ContactUs = lazy(() => import('./pages/ContactUs'))
 const AboutUs = lazy(() => import('./pages/AboutUs'))
 const FAQ = lazy(() => import('./pages/FAQ'))
+const TermsConditions = lazy(() => import('./pages/TermsConditions'))
+const RefundPolicy = lazy(() => import('./pages/RefundPolicy'))
+const ShippingPolicy = lazy(() => import('./pages/ShippingPolicy'))
+const RequestsPage = lazy(() => import('./pages/RequestsPage'))
 
 // Admin Pages
 const AdminInventory = lazy(() => import('./pages/AdminInventory'))
@@ -50,9 +54,13 @@ function App() {
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/terms" element={<TermsConditions />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-success/:id" element={<OrderSuccess />} />
+            <Route path="/requests" element={<ProtectedRoute><RequestsPage /></ProtectedRoute>} />
             <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
             <Route path="/admin/orders" element={<ProtectedRoute requireAdmin={true}><AdminOrders /></ProtectedRoute>} />
             <Route

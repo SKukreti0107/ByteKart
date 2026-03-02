@@ -122,9 +122,7 @@ export default function OrderSummary({ shippingMethod, cartItems, cartTotal, onP
             {checkoutStep !== 'idle' && (
               <span className="material-symbols-outlined animate-spin text-[18px] mr-2 align-middle">progress_activity</span>
             )}
-            {checkoutStep === 'creating' ? 'Creating Order...' :
-              checkoutStep === 'verifying' ? 'Verifying Payment...' :
-                'Place Order'}
+            {checkoutStep === 'creating' ? 'Submitting Request...' : 'Submit Booking Request'}
           </span>
         </button>
 

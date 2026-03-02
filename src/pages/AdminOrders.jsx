@@ -107,19 +107,23 @@ export default function AdminOrders() {
                                                 <td className="px-5 py-4 text-center">
                                                     <div className="flex items-center justify-center gap-2">
                                                         <select
-                                                            className={`rounded-full px-3 py-1 text-xs font-bold uppercase cursor-pointer border-2 transition-colors ${order.status === 'pending' ? 'border-yellow-400 bg-yellow-50 text-yellow-700 focus:border-yellow-500' :
-                                                                order.status === 'paid' ? 'border-blue-400 bg-blue-50 text-blue-700 focus:border-blue-500' :
-                                                                    order.status === 'shipped' ? 'border-indigo-400 bg-indigo-50 text-indigo-700 focus:border-indigo-500' :
-                                                                        order.status === 'delivered' ? 'border-matcha-deep bg-baby-green/30 text-matcha-deep focus:border-matcha-deep' :
-                                                                            order.status === 'return_requested' ? 'border-orange-400 bg-orange-50 text-orange-700 focus:border-orange-500' :
-                                                                                order.status === 'returned' ? 'border-purple-400 bg-purple-50 text-purple-700 focus:border-purple-500' :
-                                                                                    'border-red-400 bg-red-50 text-red-700 focus:border-red-500'
+                                                            className={`rounded-full px-3 py-1 text-xs font-bold uppercase cursor-pointer border-2 transition-colors ${order.status === 'requested' ? 'border-yellow-400 bg-yellow-50 text-yellow-700 focus:border-yellow-500' :
+                                                                    order.status === 'approved' ? 'border-green-400 bg-green-50 text-green-700 focus:border-green-500' :
+                                                                        order.status === 'rejected' ? 'border-red-400 bg-red-50 text-red-700 focus:border-red-500' :
+                                                                            order.status === 'paid' ? 'border-blue-400 bg-blue-50 text-blue-700 focus:border-blue-500' :
+                                                                                order.status === 'shipped' ? 'border-indigo-400 bg-indigo-50 text-indigo-700 focus:border-indigo-500' :
+                                                                                    order.status === 'delivered' ? 'border-matcha-deep bg-baby-green/30 text-matcha-deep focus:border-matcha-deep' :
+                                                                                        order.status === 'return_requested' ? 'border-orange-400 bg-orange-50 text-orange-700 focus:border-orange-500' :
+                                                                                            order.status === 'returned' ? 'border-purple-400 bg-purple-50 text-purple-700 focus:border-purple-500' :
+                                                                                                'border-red-400 bg-red-50 text-red-700 focus:border-red-500'
                                                                 }`}
                                                             value={order.status}
                                                             disabled={processingId === order.id}
                                                             onChange={(e) => handleStatusChange(order.id, e.target.value)}
                                                         >
-                                                            <option value="pending">Pending</option>
+                                                            <option value="requested">Requested</option>
+                                                            <option value="approved">Approved</option>
+                                                            <option value="rejected">Rejected</option>
                                                             <option value="paid">Paid</option>
                                                             <option value="shipped">Shipped</option>
                                                             <option value="delivered">Delivered</option>

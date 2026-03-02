@@ -303,6 +303,13 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
                       </Link>
                     )}
                     <Link
+                      to="/requests"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                      className="flex w-full items-center gap-2 px-4 py-3 text-left text-xs font-black uppercase tracking-widest text-black hover:bg-black hover:text-white border-b-2 border-black"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">inventory</span> Requests
+                    </Link>
+                    <Link
                       to="/orders"
                       onClick={() => setIsProfileMenuOpen(false)}
                       className="flex w-full items-center gap-2 px-4 py-3 text-left text-xs font-black uppercase tracking-widest text-black hover:bg-black hover:text-white border-b-2 border-black"

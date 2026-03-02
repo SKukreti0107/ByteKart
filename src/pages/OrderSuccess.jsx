@@ -43,11 +43,14 @@ export default function OrderSuccess() {
                     <>
                         <section className="border-4 border-black bg-white p-12 text-center shadow-brutal flex flex-col items-center">
                             <div className="mb-6 flex h-20 w-20 items-center justify-center border-4 border-black bg-matcha-bg shadow-brutal-sm">
-                                <span className="material-symbols-outlined text-4xl font-black text-black">check</span>
+                                <span className="material-symbols-outlined text-4xl font-black text-black">inventory</span>
                             </div>
-                            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-widest text-black">Payment Successful!</h1>
+                            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-widest text-black">Booking Request Sent!</h1>
                             <p className="mt-4 text-lg font-black uppercase tracking-widest text-gray-500">
-                                Your order <span className="text-black">#{order.id.split('-')[0]}</span> is confirmed.
+                                Your request <span className="text-black">#{order.id.split('-')[0]}</span> is now with the supplier for confirmation.
+                            </p>
+                            <p className="mt-2 text-sm font-bold text-black border-l-4 border-black pl-4 text-left max-w-lg mt-6 bg-matcha-bg/50 p-4">
+                                Once availability and pricing are confirmed, your request status will update to <span className="uppercase tracking-widest bg-black text-white px-2 py-1 mx-1">Approved</span> and you will be able to complete payment from your Requests page.
                             </p>
                         </section>
 
@@ -68,16 +71,18 @@ export default function OrderSuccess() {
                                 <h2 className="mb-6 text-xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-2 inline-block">Order Summary</h2>
                                 <div className="space-y-4 text-sm">
                                     <div className="flex justify-between items-center">
-                                        <span className="font-black uppercase tracking-widest text-gray-500">Total Paid:</span>
+                                        <span className="font-black uppercase tracking-widest text-gray-500">Total:</span>
                                         <span className="font-black text-xl text-black">₹{order.total_amount.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <span className="font-black uppercase tracking-widest text-gray-500">Status:</span>
-                                        <span className="border-2 border-black bg-black px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">{order.status}</span>
+                                        <span className={`border-2 border-black px-3 py-1 text-[10px] font-black uppercase tracking-widest ${order.status === 'requested' ? 'bg-yellow-400 text-black' : 'bg-black text-white'}`}>{order.status}</span>
                                     </div>
-                                    <div className="mt-4 pt-4 border-t-2 border-black border-dashed">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 break-all">TXN ID: {order.razorpay_payment_id}</p>
-                                    </div>
+                                    {order.razorpay_payment_id && (
+                                        <div className="mt-4 pt-4 border-t-2 border-black border-dashed">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 break-all">TXN ID: {order.razorpay_payment_id}</p>
+                                        </div>
+                                    )}
                                 </div>
                             </section>
                         </div>

@@ -57,8 +57,17 @@ export default function ProductCard({ product, actionLabel = 'Quick Add', onActi
                                 {tag}
                             </span>
                         ))}
+                        <span className="bg-white text-black text-[10px] font-black px-2 py-1 uppercase tracking-wider border-2 border-black shadow-brutal-sm block w-fit max-w-full">
+                            Supplier Fulfilled
+                        </span>
                     </div>
-                ) : null}
+                ) : (
+                    <div className="absolute top-2 left-2 flex flex-col gap-1 z-10 w-3/4 pointer-events-none">
+                        <span className="bg-white text-black text-[10px] font-black px-2 py-1 uppercase tracking-wider border-2 border-black shadow-brutal-sm block w-fit max-w-full">
+                            Supplier Fulfilled
+                        </span>
+                    </div>
+                )}
 
                 {discountPercentage > 0 && !isOutOfStock && (
                     <span className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-black px-2 py-1 uppercase tracking-tighter border-2 border-black z-10 transform rotate-2">

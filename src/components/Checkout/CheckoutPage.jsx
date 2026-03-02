@@ -21,7 +21,7 @@ export default function CheckoutPage() {
   const [formData, setFormData] = useState(initialForm)
   const [shippingMethod, setShippingMethod] = useState({ id: 'standard', label: 'Standard Delivery', fee: 0 })
   const [razorpayKeyId, setRazorpayKeyId] = useState('')
-  const [checkoutStep, setCheckoutStep] = useState('idle') // 'idle' | 'creating' | 'verifying'
+  const [checkoutStep, setCheckoutStep] = useState('idle') // 'idle' | 'creating'
   const [appliedCode, setAppliedCode] = useState(null) // { code, discount_type, discount_value }
   const [discount, setDiscount] = useState(0)
   const navigate = useNavigate()
@@ -60,27 +60,7 @@ export default function CheckoutPage() {
     }
   }, [session])
 
-  // Load Razorpay Script and Config
-  useEffect(() => {
-    const script = document.createElement("script")
-    script.src = "https://checkout.razorpay.com/v1/checkout.js"
-    script.async = true
-    document.body.appendChild(script)
-
-    const fetchConfig = async () => {
-      try {
-        const res = await api.get('/razorpay/config')
-        setRazorpayKeyId(res.data.key_id)
-      } catch (err) {
-        console.error("Failed to fetch Razorpay config", err)
-      }
-    }
-    fetchConfig()
-
-    return () => {
-      document.body.removeChild(script)
-    }
-  }, [])
+  // No need to load Razorpay on CheckoutPage since we just book a request now.
 
   // Recalculate discount when cart changes
   useEffect(() => {
@@ -115,7 +95,7 @@ export default function CheckoutPage() {
 
     try {
       setCheckoutStep('creating')
-      // 1. Create order on backend 
+      // 1. Create booking request on backend 
       const orderDataPayload = {
         shipping_address: {
           firstName: formData.firstName,
@@ -131,67 +111,20 @@ export default function CheckoutPage() {
       }
 
       const orderResp = await api.post('/orders', orderDataPayload)
-      const orderData = orderResp.data
 
-      // 2. Initialize Razorpay popup
-      var options = {
-        key: razorpayKeyId,
-        amount: orderData.amount,
-        currency: orderData.currency,
-        name: "ByteKart",
-        description: "Order Checkout",
-        order_id: orderData.id,
-        handler: async function (response) {
-          // 3. Verify payment 
-          setCheckoutStep('verifying')
-          try {
-            const verifyResp = await api.post('/verify/payment', {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature
-            })
+      // Clear Cart locally once backend success (backend already cleared it in DB)
+      clearCart()
 
-            if (verifyResp.status === 200) {
-              clearCart()
-              const returnedOrderId = verifyResp.data.order_id
-              if (returnedOrderId) {
-                navigate(`/order-success/${returnedOrderId}`)
-              } else {
-                navigate('/') // fallback if backend didn't return UUID
-              }
-            } else {
-              setCheckoutStep('idle')
-              alert("Payment verification failed! Transaction failed. Any money deducted will be reverted soon. Please contact support.")
-            }
-          } catch (err) {
-            setCheckoutStep('idle')
-            alert("Error verifying payment: " + (err.response?.data?.detail || err.message) + ". Transaction failed. Any money deducted will be reverted soon.")
-          }
-        },
-        modal: {
-          ondismiss: function () {
-            setCheckoutStep('idle')
-          }
-        },
-        prefill: {
-          name: `${formData.firstName} ${formData.lastName}`.trim(),
-          email: formData.email,
-          contact: formData.phone,
-        },
-        theme: {
-          color: "#000000"
-        }
+      // Redirect to success page mapping to the new order
+      if (orderResp.data && orderResp.data.order_id) {
+        navigate(`/order-success/${orderResp.data.order_id}`)
+      } else {
+        navigate('/requests') // fallback
       }
-      var rzp1 = new window.Razorpay(options)
-      rzp1.on('payment.failed', function (response) {
-        setCheckoutStep('idle')
-        alert("Payment Failed: " + response.error.description + ". Transaction failed. Any money deducted will be reverted soon.")
-      })
-      rzp1.open()
 
     } catch (err) {
       setCheckoutStep('idle')
-      alert("Error creating checkout order: " + (err.response?.data?.detail || err.message) + ". Transaction failed. Any money deducted will be reverted soon.")
+      alert("Error submitting booking request: " + (err.response?.data?.detail || err.message))
     }
   }
 

@@ -3,29 +3,7 @@ import { Link } from 'react-router-dom'
 import StorefrontLayout from '../components/StorefrontLayout'
 import api from '../api'
 
-// Returns true if the order is within the 7-day return window
-function isWithinReturnWindow(createdAt) {
-    const orderDate = new Date(createdAt)
-    const now = new Date()
-    const diffDays = (now - orderDate) / (1000 * 60 * 60 * 24)
-    return diffDays <= 7
-}
-
 function StatusBadge({ status }) {
-    if (status === 'return_requested') {
-        return (
-            <span className="border-2 border-orange-500 bg-orange-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-orange-700">
-                Return Requested
-            </span>
-        )
-    }
-    if (status === 'returned') {
-        return (
-            <span className="border-2 border-purple-500 bg-purple-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-purple-700">
-                Returned
-            </span>
-        )
-    }
     if (status === 'requested') {
         return (
             <span className="border-2 border-yellow-500 bg-yellow-400 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-black">
@@ -54,28 +32,61 @@ function StatusBadge({ status }) {
     )
 }
 
-function OrderCard({ order, onOrderUpdated }) {
-    const [showReturnForm, setShowReturnForm] = useState(false)
-    const [reason, setReason] = useState('')
-    const [submitting, setSubmitting] = useState(false)
-    const [returnError, setReturnError] = useState(null)
+function RequestCard({ order, onOrderUpdated, razorpayKeyId }) {
+    const [paying, setPaying] = useState(false)
+    const canPay = order.status === 'approved'
 
-    const canReturn = order.status === 'delivered' && isWithinReturnWindow(order.created_at)
-
-    const handleReturnSubmit = async (e) => {
-        e.preventDefault()
-        if (!reason.trim()) return
-        setSubmitting(true)
-        setReturnError(null)
+    const handlePayNow = async () => {
+        setPaying(true)
         try {
-            await api.post(`/orders/${order.id}/return`, { reason })
-            onOrderUpdated({ ...order, status: 'return_requested' })
-            setShowReturnForm(false)
-            setReason('')
+            // 1. Initialize payment session for this order
+            const initResp = await api.post(`/orders/${order.id}/pay`)
+            const orderData = initResp.data
+
+            // 2. Open Razorpay
+            const options = {
+                key: razorpayKeyId,
+                amount: orderData.amount,
+                currency: orderData.currency,
+                name: "ByteKart",
+                description: "Complete Order Payment",
+                order_id: orderData.id,
+                handler: async function (response) {
+                    try {
+                        const verifyResp = await api.post('/verify/payment', {
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature
+                        })
+                        if (verifyResp.status === 200) {
+                            onOrderUpdated({ ...order, status: 'paid', razorpay_payment_id: response.razorpay_payment_id })
+                            alert("Payment successful!")
+                        } else {
+                            alert("Payment verification failed. Please contact support.")
+                        }
+                    } catch (err) {
+                        alert("Error verifying payment: " + (err.response?.data?.detail || err.message))
+                    } finally {
+                        setPaying(false)
+                    }
+                },
+                modal: { ondismiss: () => setPaying(false) },
+                prefill: {
+                    name: `${order.shipping_address.firstName} ${order.shipping_address.lastName}`.trim(),
+                    email: order.shipping_address.email,
+                    contact: order.shipping_address.phone,
+                },
+                theme: { color: "#000000" }
+            }
+            const rzp = new window.Razorpay(options)
+            rzp.on('payment.failed', function (res) {
+                alert("Payment Failed: " + res.error.description);
+                setPaying(false)
+            })
+            rzp.open()
         } catch (err) {
-            setReturnError(err.response?.data?.detail || 'Failed to submit return request')
-        } finally {
-            setSubmitting(false)
+            alert("Error initiating payment: " + (err.response?.data?.detail || err.message))
+            setPaying(false)
         }
     }
 
@@ -85,7 +96,7 @@ function OrderCard({ order, onOrderUpdated }) {
             <div className="flex flex-col gap-6 border-b-4 border-black bg-matcha-bg p-6 md:flex-row md:items-center md:justify-between">
                 <div className="flex flex-wrap gap-x-12 gap-y-4 text-[10px] md:text-xs">
                     <div>
-                        <p className="font-black uppercase tracking-widest text-black/60 mb-1">Order Placed</p>
+                        <p className="font-black uppercase tracking-widest text-black/60 mb-1">Requested On</p>
                         <p className="font-black uppercase text-black">{new Date(order.created_at).toLocaleDateString()}</p>
                     </div>
                     <div>
@@ -93,7 +104,7 @@ function OrderCard({ order, onOrderUpdated }) {
                         <p className="font-black uppercase text-black text-lg">₹{order.total_amount.toFixed(2)}</p>
                     </div>
                     <div>
-                        <p className="font-black uppercase tracking-widest text-black/60 mb-1">Order ID</p>
+                        <p className="font-black uppercase tracking-widest text-black/60 mb-1">Request ID</p>
                         <p className="font-black uppercase text-black">#{order.id.split('-')[0]}</p>
                     </div>
                 </div>
@@ -107,42 +118,17 @@ function OrderCard({ order, onOrderUpdated }) {
                         View Details
                     </Link>
 
-                    {canReturn && (
+                    {canPay && (
                         <button
-                            id={`return-btn-${order.id}`}
-                            onClick={() => setShowReturnForm(v => !v)}
-                            className="border-4 border-black bg-white px-4 py-1 text-[10px] font-black uppercase tracking-widest text-black hover:bg-black hover:text-white transition-colors shadow-brutal-sm"
+                            onClick={handlePayNow}
+                            disabled={paying}
+                            className="border-4 border-black bg-green-500 px-4 py-1 text-[12px] font-black uppercase tracking-widest text-white hover:bg-black transition-colors shadow-brutal-sm flex items-center gap-2"
                         >
-                            {showReturnForm ? 'Cancel' : 'Return Order'}
+                            {paying ? 'Processing...' : 'Pay Now'}
                         </button>
                     )}
                 </div>
             </div>
-
-            {/* Inline return form */}
-            {showReturnForm && (
-                <form onSubmit={handleReturnSubmit} className="border-b-4 border-black bg-yellow-50 px-6 py-5 flex flex-col gap-4">
-                    <p className="font-black uppercase tracking-widest text-xs text-black">Why do you want to return this order?</p>
-                    <textarea
-                        id={`return-reason-${order.id}`}
-                        className="border-4 border-black p-3 font-bold text-sm resize-none focus:outline-none focus:ring-2 focus:ring-black bg-white"
-                        rows={3}
-                        placeholder="Describe the reason for return..."
-                        value={reason}
-                        onChange={e => setReason(e.target.value)}
-                        required
-                    />
-                    {returnError && <p className="text-xs font-black text-red-600 uppercase">{returnError}</p>}
-                    <button
-                        type="submit"
-                        id={`return-submit-${order.id}`}
-                        disabled={submitting || !reason.trim()}
-                        className="self-start border-4 border-black bg-black px-6 py-2 font-black uppercase tracking-widest text-white hover:bg-white hover:text-black transition-colors shadow-brutal-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        {submitting ? 'Submitting...' : 'Submit Return Request'}
-                    </button>
-                </form>
-            )}
 
             {/* Order items */}
             <div className="p-6">
@@ -175,23 +161,26 @@ function OrderCard({ order, onOrderUpdated }) {
     )
 }
 
-export default function OrdersPage() {
-    const [orders, setOrders] = useState([])
+export default function RequestsPage() {
+    const [requests, setRequests] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [razorpayKeyId, setRazorpayKeyId] = useState('')
 
     useEffect(() => {
-        const fetchOrdersAndConfig = async () => {
+        const fetchRequestsAndConfig = async () => {
             try {
                 const [ordersRes, configRes] = await Promise.all([
-                    api.get('/orders')
+                    api.get('/orders'),
+                    api.get('/razorpay/config')
                 ])
                 const allOrders = ordersRes.data
-                const filteredOrders = allOrders.filter(o => ['paid', 'shipped', 'delivered', 'return_requested', 'returned'].includes(o.status))
-                setOrders(filteredOrders)
+                // Filter for requests
+                const filteredRequests = allOrders.filter(o => ['requested', 'approved', 'rejected'].includes(o.status))
+                setRequests(filteredRequests)
+                setRazorpayKeyId(configRes.data.key_id)
             } catch (err) {
-                setError(err.response?.data?.detail || "Could not fetch your orders")
+                setError(err.response?.data?.detail || "Could not fetch your requests")
             } finally {
                 setLoading(false)
             }
@@ -202,7 +191,7 @@ export default function OrdersPage() {
         script.async = true
         document.body.appendChild(script)
 
-        fetchOrdersAndConfig()
+        fetchRequestsAndConfig()
 
         return () => { document.body.removeChild(script) }
     }, [])
@@ -210,7 +199,7 @@ export default function OrdersPage() {
     return (
         <StorefrontLayout>
             <main className="w-full space-y-12 px-6 lg:px-12 py-12 mb-20">
-                <h1 className="text-4xl md:text-5xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-4">Order History</h1>
+                <h1 className="text-4xl md:text-5xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-4">My Requests</h1>
 
                 {loading ? (
                     <div className="flex h-64 items-center justify-center">
@@ -220,25 +209,26 @@ export default function OrdersPage() {
                     <div className="border-4 border-black bg-white p-8 text-center shadow-brutal">
                         <p className="font-black uppercase tracking-widest text-red-600">{error}</p>
                     </div>
-                ) : orders.length === 0 ? (
+                ) : requests.length === 0 ? (
                     <div className="border-4 border-black bg-white p-12 text-center shadow-brutal flex flex-col items-center justify-center">
                         <div className="mb-6 flex h-20 w-20 items-center justify-center border-4 border-black bg-matcha-bg shadow-brutal-sm text-black">
-                            <span className="material-symbols-outlined text-4xl">receipt_long</span>
+                            <span className="material-symbols-outlined text-4xl">inventory</span>
                         </div>
-                        <h2 className="text-2xl font-black uppercase tracking-widest text-black">No orders found</h2>
-                        <p className="mt-4 font-bold uppercase tracking-widest text-gray-500">Looks like you haven't placed an order yet.</p>
+                        <h2 className="text-2xl font-black uppercase tracking-widest text-black">No requests found</h2>
+                        <p className="mt-4 font-bold uppercase tracking-widest text-gray-500">You haven't requested any products yet.</p>
                         <Link to="/catalog" className="mt-8 inline-block border-4 border-black bg-black px-8 py-3 font-black uppercase tracking-widest text-white hover:bg-white hover:text-black transition-colors shadow-brutal-sm hover:translate-y-1 hover:shadow-none">
-                            Start Shopping
+                            Check Availability
                         </Link>
                     </div>
                 ) : (
                     <div className="space-y-12">
-                        {orders.map((order) => (
-                            <OrderCard
-                                key={order.id}
-                                order={order}
-                                onOrderUpdated={(updatedOrder) => {
-                                    setOrders(prev => prev.map(o => o.id === updatedOrder.id ? updatedOrder : o))
+                        {requests.map((request) => (
+                            <RequestCard
+                                key={request.id}
+                                order={request}
+                                razorpayKeyId={razorpayKeyId}
+                                onOrderUpdated={(updatedRequest) => {
+                                    setRequests(prev => prev.map(r => r.id === updatedRequest.id ? updatedRequest : r))
                                 }}
                             />
                         ))}
