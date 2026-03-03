@@ -259,9 +259,9 @@ export default function AdminOrders() {
                                                             </div>
                                                         </td>
                                                         <td className="px-5 py-4 text-xs font-bold border-r-4 border-black whitespace-normal">
-                                                            {item.selected_variants && Object.keys(item.selected_variants).length > 0 ? (
+                                                            {item.variants && Object.keys(item.variants).length > 0 ? (
                                                                 <div className="flex flex-wrap gap-2">
-                                                                    {Object.entries(item.selected_variants).map(([k, v]) => (
+                                                                    {Object.entries(item.variants).map(([k, v]) => (
                                                                         <span key={k} className="inline-block bg-black text-white px-2 py-1 uppercase tracking-widest text-[10px]">
                                                                             {k}: {v}
                                                                         </span>
