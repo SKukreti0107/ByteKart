@@ -49,9 +49,35 @@ export default function OrderSuccess() {
                             <p className="mt-4 text-lg font-black uppercase tracking-widest text-gray-500">
                                 Your request <span className="text-black">#{order.id.split('-')[0]}</span> is now with the supplier for confirmation.
                             </p>
-                            <p className="mt-2 text-sm font-bold text-black border-l-4 border-black pl-4 text-left max-w-lg mt-6 bg-matcha-bg/50 p-4">
+                            <p className="mt-6 text-sm font-bold text-black border-l-4 border-black pl-4 text-left max-w-lg bg-matcha-bg/50 p-4">
                                 Once availability and pricing are confirmed, your request status will update to <span className="uppercase tracking-widest bg-black text-white px-2 py-1 mx-1">Approved</span> and you will be able to complete payment from your Requests page.
                             </p>
+
+                            <div className="mt-12 flex flex-col items-center gap-4 w-full max-w-lg">
+                                <p className="text-xs font-black uppercase tracking-widest text-black/40">Next Step: Message us on WhatsApp</p>
+                                <button
+                                    onClick={() => {
+                                        const waNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '918796067679';
+                                        let message = `Hey! I'm interested in this product:\n\n`;
+                                        order.items.forEach(item => {
+                                            message += `*${item.name}*\n`;
+                                            message += `Quantity: ${item.quantity}\n`;
+                                            if (item.variants && Object.keys(item.variants).length > 0) {
+                                                const variantsStr = Object.values(item.variants).join(', ');
+                                                message += `Variants: ${variantsStr}\n`;
+                                            }
+                                            message += `Listed Price: ₹${item.price}\n\n`;
+                                        });
+                                        message += `Request ID: #${order.id.split('-')[0]}\n\n`;
+                                        message += `Could you please check availability for this request? Thanks!`;
+                                        window.location.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+                                    }}
+                                    className="w-full border-4 border-black bg-green-500 px-8 py-4 text-lg font-black uppercase tracking-widest text-white hover:bg-black transition-all shadow-brutal active:translate-y-1 active:shadow-none"
+                                >
+                                    Proceed to WhatsApp
+                                </button>
+                                <p className="text-[10px] font-bold uppercase text-gray-400">Clicking will open WhatsApp directly</p>
+                            </div>
                         </section>
 
                         <div className="grid grid-cols-1 gap-12 md:grid-cols-2">

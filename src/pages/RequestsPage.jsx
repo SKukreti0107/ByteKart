@@ -31,11 +31,13 @@ function StatusBadge({ status }) {
         </span>
     )
 }
+function RequestCard({ order, onOrderUpdated}) {
+// function RequestCard({ order, onOrderUpdated, razorpayKeyId }) {
+    // const [paying, setPaying] = useState(false)
+    // const canPay = order.status === 'approved'
 
-function RequestCard({ order, onOrderUpdated, razorpayKeyId }) {
-    const [paying, setPaying] = useState(false)
-    const canPay = order.status === 'approved'
-
+    // --- FUTURE: Razorpay Payment Integration ---
+    /*
     const handlePayNow = async () => {
         setPaying(true)
         try {
@@ -89,6 +91,7 @@ function RequestCard({ order, onOrderUpdated, razorpayKeyId }) {
             setPaying(false)
         }
     }
+    */
 
     return (
         <div className="border-4 border-black bg-white shadow-brutal overflow-hidden">
@@ -118,7 +121,8 @@ function RequestCard({ order, onOrderUpdated, razorpayKeyId }) {
                         View Details
                     </Link>
 
-                    {canPay && (
+                    {/* --- FUTURE: Razorpay Payment Integration --- */}
+                    {/* canPay && (
                         <button
                             onClick={handlePayNow}
                             disabled={paying}
@@ -126,7 +130,7 @@ function RequestCard({ order, onOrderUpdated, razorpayKeyId }) {
                         >
                             {paying ? 'Processing...' : 'Pay Now'}
                         </button>
-                    )}
+                    ) */}
                 </div>
             </div>
 
@@ -165,20 +169,18 @@ export default function RequestsPage() {
     const [requests, setRequests] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [razorpayKeyId, setRazorpayKeyId] = useState('')
+    // const [razorpayKeyId, setRazorpayKeyId] = useState('')
 
     useEffect(() => {
         const fetchRequestsAndConfig = async () => {
             try {
-                const [ordersRes, configRes] = await Promise.all([
-                    api.get('/orders'),
-                    api.get('/razorpay/config')
+                const [ordersRes] = await Promise.all([
+                    api.get('/orders')
                 ])
                 const allOrders = ordersRes.data
                 // Filter for requests
                 const filteredRequests = allOrders.filter(o => ['requested', 'approved', 'rejected'].includes(o.status))
                 setRequests(filteredRequests)
-                setRazorpayKeyId(configRes.data.key_id)
             } catch (err) {
                 setError(err.response?.data?.detail || "Could not fetch your requests")
             } finally {
@@ -186,14 +188,15 @@ export default function RequestsPage() {
             }
         }
 
-        const script = document.createElement("script")
-        script.src = "https://checkout.razorpay.com/v1/checkout.js"
-        script.async = true
-        document.body.appendChild(script)
+        // --- FUTURE: Razorpay Payment Integration ---
+        // const script = document.createElement("script")
+        // script.src = "https://checkout.razorpay.com/v1/checkout.js"
+        // script.async = true
+        // document.body.appendChild(script)
 
         fetchRequestsAndConfig()
 
-        return () => { document.body.removeChild(script) }
+        // return () => { document.body.removeChild(script) }
     }, [])
 
     return (
@@ -226,7 +229,7 @@ export default function RequestsPage() {
                             <RequestCard
                                 key={request.id}
                                 order={request}
-                                razorpayKeyId={razorpayKeyId}
+                                // razorpayKeyId={razorpayKeyId}
                                 onOrderUpdated={(updatedRequest) => {
                                     setRequests(prev => prev.map(r => r.id === updatedRequest.id ? updatedRequest : r))
                                 }}

@@ -10,6 +10,12 @@ export default function AdminOrders() {
     const [processingId, setProcessingId] = useState(null)
     const [selectedOrder, setSelectedOrder] = useState(null)
 
+    // Price Modal State
+    const [priceModalOpen, setPriceModalOpen] = useState(false)
+    const [priceModalOrder, setPriceModalOrder] = useState(null)
+    const [priceModalStatus, setPriceModalStatus] = useState(null)
+    const [priceModalValue, setPriceModalValue] = useState('')
+
     useEffect(() => {
         fetchOrders()
     }, [])
@@ -26,17 +32,33 @@ export default function AdminOrders() {
     }
 
     const handleStatusChange = async (orderId, newStatus) => {
+        if (newStatus === 'approved' || newStatus === 'paid') {
+            const order = orders.find(o => o.id === orderId)
+            setPriceModalOrder(order)
+            setPriceModalStatus(newStatus)
+            setPriceModalValue(order ? order.total_amount.toString() : '0')
+            setPriceModalOpen(true)
+            return
+        }
+        await submitStatusChange(orderId, newStatus, null)
+    }
+
+    const submitStatusChange = async (orderId, newStatus, finalPrice) => {
         setProcessingId(orderId)
         try {
-            await api.put(`/admin/orders/${orderId}/status`, { status: newStatus })
-            // Update local state without refetching the whole list
+            const payload = { status: newStatus }
+            if (finalPrice !== null) {
+                payload.final_price = Number(finalPrice)
+            }
+            const res = await api.put(`/admin/orders/${orderId}/status`, payload)
             setOrders(orders.map(order =>
-                order.id === orderId ? { ...order, status: newStatus } : order
+                order.id === orderId ? res.data : order
             ))
         } catch (err) {
             alert("Failed to update status: " + (err.response?.data?.detail || err.message))
         } finally {
             setProcessingId(null)
+            setPriceModalOpen(false)
         }
     }
 
@@ -310,6 +332,49 @@ export default function AdminOrders() {
                                 >
                                     Done
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Price Modal */}
+                {priceModalOpen && priceModalOrder && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 font-['Fredoka',sans-serif] backdrop-blur-sm">
+                        <div className="w-full max-w-sm bg-white border-4 border-black shadow-brutal overflow-hidden">
+                            <div className="bg-black p-4 text-white flex justify-between items-center">
+                                <h3 className="font-black uppercase tracking-widest text-lg">Set Final Price</h3>
+                                <button onClick={() => setPriceModalOpen(false)} className="hover:text-red-400">
+                                    <span className="material-symbols-outlined font-bold">close</span>
+                                </button>
+                            </div>
+                            <div className="p-6 space-y-4">
+                                <p className="text-sm font-bold uppercase tracking-widest text-gray-600">
+                                    Setting status to {priceModalStatus}. Enter the final negotiated price.
+                                </p>
+                                <div>
+                                    <label className="block text-xs font-black uppercase tracking-widest mb-2">Final Price (₹)</label>
+                                    <input
+                                        type="number"
+                                        className="w-full border-4 border-black px-4 py-3 font-bold text-lg focus:outline-none focus:ring-2 focus:ring-black"
+                                        value={priceModalValue}
+                                        onChange={e => setPriceModalValue(e.target.value)}
+                                    />
+                                </div>
+                                <div className="flex justify-end gap-3 mt-6">
+                                    <button
+                                        onClick={() => setPriceModalOpen(false)}
+                                        className="border-4 border-black px-4 py-2 font-black uppercase tracking-widest text-sm hover:bg-gray-100"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={() => submitStatusChange(priceModalOrder.id, priceModalStatus, priceModalValue)}
+                                        disabled={processingId === priceModalOrder.id}
+                                        className="border-4 border-black bg-black text-white px-6 py-2 font-black uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors"
+                                    >
+                                        {processingId === priceModalOrder.id ? 'Saving...' : 'Save & Update'}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

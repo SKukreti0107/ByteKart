@@ -32,7 +32,7 @@ export default function Footer() {
             </div>
             <div className="relative z-10 flex flex-col md:flex-row justify-center items-center pt-8 border-t-2 border-white/10 w-full">
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 text-center">
-                    © 2026 BYTEKART — MARKETPLACE FACILITATOR — GREATER NOIDA, INDIA. GENUINE TECH FOR STUDENTS.
+                    © 2026 BYTEKART. GENUINE TECH FOR STUDENTS.
                 </p>
             </div>
         </footer>

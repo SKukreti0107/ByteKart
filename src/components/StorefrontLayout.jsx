@@ -1,5 +1,6 @@
 import NavBar from './NavBar'
 import Footer from './Footer'
+import WhatsAppFloat from './WhatsAppFloat'
 
 export default function StorefrontLayout({ children, showFooter = true, navProps }) {
   return (
@@ -11,6 +12,7 @@ export default function StorefrontLayout({ children, showFooter = true, navProps
         {children}
       </div>
       {showFooter ? <Footer /> : null}
+      <WhatsAppFloat />
     </div>
   )
 }

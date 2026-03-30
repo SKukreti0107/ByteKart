@@ -5,7 +5,7 @@ export default function CatalogResults({ products, view, page, setPage, totalPag
   return (
     <section>
       {view === 'grid' ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-2 xl:grid-cols-3 md:gap-6">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} actionLabel="View Product" onAction={() => window.location.href = `/product/${product.id}`} />
           ))}
@@ -21,9 +21,6 @@ export default function CatalogResults({ products, view, page, setPage, totalPag
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2 mb-1">
                     <p className="text-xs sm:text-sm font-black uppercase tracking-widest text-black">{product.brand}</p>
-                    <span className="bg-[#C6DCBA] text-black text-[10px] font-black px-2 py-0.5 uppercase tracking-wider border-2 border-black shadow-brutal-sm">
-                      Supplier Fulfilled
-                    </span>
                   </div>
                   <Link to={`/product/${product.id}`} className="block">
                     <h4 className="text-lg sm:text-xl font-black uppercase line-clamp-2 hover:text-matcha-dark transition-colors">{product.name}</h4>

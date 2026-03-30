@@ -1,12 +1,17 @@
 import StorefrontLayout from '../components/StorefrontLayout'
 import { useState } from 'react'
 import api from '../api'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 
 export default function ContactUs() {
     const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
     const [submitting, setSubmitting] = useState(false)
     const [submitted, setSubmitted] = useState(false)
     const [error, setError] = useState(null)
+
+    const waNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '918796067679';
+    const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent("Hey! I have a question.")}`;
 
     const handleChange = (e) => {
         setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -36,7 +41,7 @@ export default function ContactUs() {
                         Contact Us
                     </h1>
                     <p className="text-lg font-bold uppercase tracking-widest text-gray-500 max-w-2xl border-l-4 border-black pl-4">
-                        Direct connection to the hub. Get support, ask questions, or find us in Greater Noida.
+                        Direct connection to the hub. Get support, ask questions.
                     </p>
                 </section>
 
@@ -146,15 +151,17 @@ export default function ContactUs() {
 
                 {/* Contact Info Cards */}
                 <section className="px-6 lg:px-12 py-20 bg-pure-black text-white grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <div className="border-4 border-white p-8 hover:bg-white hover:text-black transition-all group">
-                        <span className="material-symbols-outlined text-4xl mb-4 group-hover:scale-110 transition-transform">location_on</span>
-                        <h3 className="text-xl font-black uppercase tracking-widest mb-4">The Workshop</h3>
-                        <p className="text-sm font-bold uppercase tracking-wider text-gray-400 group-hover:text-black/60 leading-relaxed">
-                            ByteKart Campus<br />
-                            Greater Noida<br />
-                            UTTAR PRADESH, 201310
+                    <a href={waUrl} target="_blank" rel="noopener noreferrer" className="border-4 border-white p-8 hover:bg-[#25D366] hover:border-[#25D366] hover:text-white transition-all group block cursor-pointer">
+                        <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
+                            <FontAwesomeIcon icon={faWhatsapp} />
+                        </div>
+                        <h3 className="text-xl font-black uppercase tracking-widest mb-4">WhatsApp Support</h3>
+                        <p className="text-sm font-bold uppercase tracking-wider text-gray-400 group-hover:text-white/90 leading-relaxed">
+                            Reach out instantly<br />
+                            For general queries,<br />
+                            and order assistance.
                         </p>
-                    </div>
+                    </a>
 
                     <div className="border-4 border-white p-8 hover:bg-matcha-bg hover:text-black transition-all group">
                         <span className="material-symbols-outlined text-4xl mb-4 group-hover:scale-110 transition-transform">alternate_email</span>

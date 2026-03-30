@@ -20,7 +20,7 @@ const FAQ_DATA = [
     },
     {
         question: "WHERE IS BYTEKART LOCATED?",
-        answer: "We are based in Greater Noida, India. ByteKart was founded by students who wanted to solve the problem of sketchy tech deals for their fellow students."
+        answer: "We are based in India. ByteKart was founded by students who wanted to solve the problem of sketchy tech deals for their fellow students."
     },
     {
         question: "HOW CAN I TRACK MY ORDER?",

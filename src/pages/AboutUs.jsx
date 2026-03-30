@@ -84,9 +84,9 @@ export default function AboutUs() {
                         </div>
                         <div className="border-4 border-black p-8 bg-matcha-bg shadow-brutal flex flex-col items-center justify-center min-h-[300px]">
                             <img src="/final_logo.png" alt="ByteKart Logo" className="h-52 w-auto object-contain mb-6" />
-                            <p className="text-xs font-black uppercase tracking-[0.3em] text-black/60 text-center">
+                            {/* <p className="text-xs font-black uppercase tracking-[0.3em] text-black/60 text-center">
                                 Greater Noida, India — 2026
-                            </p>
+                            </p> */}
                         </div>
                     </div>
                 </section>

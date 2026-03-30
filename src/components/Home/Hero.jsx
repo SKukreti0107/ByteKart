@@ -66,9 +66,19 @@ export default function Hero() {
               {currentItem.name}
             </h2>
 
-            <p className="text-charcoal text-base md:text-lg font-bold max-w-xl leading-relaxed mb-10 border-l-4 border-black pl-4 line-clamp-3">
-              {currentItem.description || 'Check out our latest premium addition tailored for enthusiasts.'}
+            <p className="text-charcoal text-sm md:text-lg font-bold max-w-xl leading-relaxed mb-6 md:mb-10 border-l-4 border-black pl-4 line-clamp-2 md:line-clamp-2">
+              {currentItem.description?.length > 120 ? currentItem.description.substring(0, 120).trim() + '...' : (currentItem.description || 'Check out our latest premium addition tailored for enthusiasts.')}
             </p>
+
+            {/* Mobile-only Image */}
+            <div className="md:hidden w-full bg-matcha-bg border-4 border-black p-4 mb-8 flex items-center justify-center relative overflow-hidden">
+               <div className="absolute inset-0 bg-black/10 mix-blend-overlay pointer-events-none"></div>
+               <img
+                alt={currentItem.name}
+                className="relative z-10 w-full max-w-[200px] object-contain drop-shadow-[4px_4px_0px_rgba(0,0,0,1)]"
+                src={currentItem.image_url || "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60"}
+              />
+            </div>
 
             <Link to={`/product/${currentItem.id}`} className="bg-matcha-bg text-black px-8 md:px-12 py-4 md:py-5 font-black uppercase tracking-widest text-base md:text-lg border-4 border-black shadow-brutal hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all inline-flex items-center justify-center gap-3 group w-fit">
               Shop Now - ₹{(parseFloat(currentItem.supplier_price) || 0) + (parseFloat(currentItem.our_cut) || 0)}
@@ -89,11 +99,11 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="md:col-span-5 bg-matcha-bg relative p-8 lg:p-12 flex items-center justify-center min-h-[400px] md:min-h-0 filter grayscale hover:grayscale-0 transition-all duration-700">
+        <div className="hidden md:flex md:col-span-5 bg-matcha-bg relative p-8 lg:p-12 items-center justify-center min-h-[300px] md:min-h-0 filter grayscale hover:grayscale-0 transition-all duration-700">
           <div className="absolute inset-0 bg-black/10 mix-blend-overlay pointer-events-none"></div>
           <img
             alt={currentItem.name}
-            className="relative z-10 w-full max-w-md object-contain drop-shadow-[8px_8px_0px_rgba(0,0,0,1)] hover:-translate-y-4 hover:scale-105 transition-transform duration-500"
+            className="relative z-10 w-full max-w-[240px] md:max-w-md object-contain drop-shadow-[8px_8px_0px_rgba(0,0,0,1)] hover:-translate-y-4 hover:scale-105 transition-transform duration-500"
             src={currentItem.image_url || "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60"}
             fetchPriority="high"
             loading="eager"
@@ -126,10 +136,20 @@ export default function Hero() {
           </h2>
 
           {heroData.subtitle && (
-            <p className="text-charcoal text-base md:text-lg font-bold max-w-xl leading-relaxed mb-10 border-l-4 border-black pl-4 line-clamp-3">
-              {heroData.subtitle}
+            <p className="text-charcoal text-sm md:text-lg font-bold max-w-xl leading-relaxed mb-6 md:mb-10 border-l-4 border-black pl-4 line-clamp-2 md:line-clamp-2">
+              {heroData.subtitle.length > 120 ? heroData.subtitle.substring(0, 120).trim() + '...' : heroData.subtitle}
             </p>
           )}
+
+          {/* Mobile-only Image */}
+          <div className="md:hidden w-full bg-matcha-bg border-4 border-black p-4 mb-8 flex items-center justify-center relative overflow-hidden">
+             <div className="absolute inset-0 bg-black/10 mix-blend-overlay pointer-events-none"></div>
+             <img
+              alt={heroData.title}
+              className="relative z-10 w-full max-w-[200px] object-contain drop-shadow-[4px_4px_0px_rgba(0,0,0,1)]"
+              src={heroData.image_url || "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60"}
+            />
+          </div>
 
           <div className="flex flex-wrap gap-4 mt-auto">
             {(heroData.cta_text && heroData.cta_link) ? (
@@ -147,11 +167,11 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="md:col-span-5 bg-matcha-bg relative p-8 lg:p-12 flex items-center justify-center min-h-[400px] md:min-h-0 filter grayscale hover:grayscale-0 transition-all duration-700">
+      <div className="hidden md:flex md:col-span-5 bg-matcha-bg relative p-8 lg:p-12 items-center justify-center min-h-[300px] md:min-h-0 filter grayscale hover:grayscale-0 transition-all duration-700">
         <div className="absolute inset-0 bg-black/10 mix-blend-overlay pointer-events-none"></div>
         <img
           alt={heroData.title}
-          className="relative z-10 w-full max-w-md object-contain drop-shadow-[8px_8px_0px_rgba(0,0,0,1)] hover:-translate-y-4 hover:scale-105 transition-transform duration-500"
+          className="relative z-10 w-full max-w-[240px] md:max-w-md object-contain drop-shadow-[8px_8px_0px_rgba(0,0,0,1)] hover:-translate-y-4 hover:scale-105 transition-transform duration-500"
           src={heroData.image_url || "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=1200&auto=format&fit=crop&q=60"}
           fetchPriority="high"
           loading="eager"

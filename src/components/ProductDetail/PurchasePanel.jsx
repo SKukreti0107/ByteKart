@@ -65,9 +65,6 @@ export default function PurchasePanel({ product, quantity, setQuantity, onVarian
           <span className="bg-black text-white px-3 py-1 text-xs font-black uppercase tracking-widest border-2 border-black">
             {product.stock_status || 'In Stock'}
           </span>
-          <span className="bg-[#C6DCBA] text-black border-2 border-black px-3 py-1 text-xs font-black uppercase tracking-widest shadow-brutal-sm">
-            Supplier Fulfilled
-          </span>
           {displayStock !== null && (
             <span className="bg-white text-black border-2 border-black px-3 py-1 text-xs font-black uppercase tracking-widest">
               {displayStock > 0 ? `${displayStock} Available` : 'Out of Stock'}

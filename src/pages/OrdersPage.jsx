@@ -179,12 +179,12 @@ export default function OrdersPage() {
     const [orders, setOrders] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [razorpayKeyId, setRazorpayKeyId] = useState('')
+    // const [razorpayKeyId, setRazorpayKeyId] = useState('')
 
     useEffect(() => {
         const fetchOrdersAndConfig = async () => {
             try {
-                const [ordersRes, configRes] = await Promise.all([
+                const [ordersRes] = await Promise.all([
                     api.get('/orders')
                 ])
                 const allOrders = ordersRes.data
@@ -197,14 +197,15 @@ export default function OrdersPage() {
             }
         }
 
-        const script = document.createElement("script")
-        script.src = "https://checkout.razorpay.com/v1/checkout.js"
-        script.async = true
-        document.body.appendChild(script)
+        // --- FUTURE: Razorpay Payment Integration ---
+        // const script = document.createElement("script")
+        // script.src = "https://checkout.razorpay.com/v1/checkout.js"
+        // script.async = true
+        // document.body.appendChild(script)
 
         fetchOrdersAndConfig()
 
-        return () => { document.body.removeChild(script) }
+        // return () => { document.body.removeChild(script) }
     }, [])
 
     return (
