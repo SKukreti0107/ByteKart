@@ -87,7 +87,7 @@ export default function ElectronicsHubPage() {
                             <Link to="/catalog" className="text-base md:text-lg font-bold border-b-4 border-black hover:bg-black hover:text-white px-2 transition-all w-fit">View All</Link>
                         </div>
                         {loading ? (
-                            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
                                 {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                                     <ProductCardSkeleton key={n} />
                                 ))}

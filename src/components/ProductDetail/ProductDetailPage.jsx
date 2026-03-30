@@ -134,7 +134,7 @@ export default function ProductDetailPage() {
 
         <section className="space-y-8 pt-8 border-t-4 border-black">
           <h2 className="text-2xl font-black uppercase tracking-widest">Related Gear</h2>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3">
             {relatedProducts.length > 0 ? (
               relatedProducts.map((item) => (
                 <ProductCard key={item.id} product={item} actionLabel="Open" />

@@ -207,7 +207,7 @@ export default function CatalogPage() {
                     <div className="h-12 w-24 animate-pulse bg-charcoal/10 hidden sm:block" />
                   </div>
                 </div>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-2 xl:grid-cols-3 md:gap-6">
                   {[1, 2, 3, 4, 5, 6].map(n => <ProductCardSkeleton key={n} />)}
                 </div>
               </>
