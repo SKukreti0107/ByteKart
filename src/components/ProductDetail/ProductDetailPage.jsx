@@ -137,7 +137,7 @@ export default function ProductDetailPage() {
           <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3">
             {relatedProducts.length > 0 ? (
               relatedProducts.map((item) => (
-                <ProductCard key={item.id} product={item} actionLabel="Open" />
+                <ProductCard key={item.id} product={item} actionLabel="Quick Add to cart" />
               ))
             ) : (
               <p className="text-sm font-bold uppercase tracking-widest text-gray-700">No related products found.</p>
