@@ -7,10 +7,15 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    const { data } = await authClient.getSession();
-    const token = data?.session?.token;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const publicPaths = ['/hero', '/listings', '/categories', '/subCategories', '/brands', '/notice', '/catalog/init'];
+    const isPublic = publicPaths.some(p => config.url?.startsWith(p));
+    
+    if (!isPublic) {
+      const { data } = await authClient.getSession();
+      const token = data?.session?.token;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },

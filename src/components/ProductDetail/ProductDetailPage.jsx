@@ -21,27 +21,19 @@ export default function ProductDetailPage() {
     const fetchProduct = async () => {
       try {
         setLoading(true)
-        const response = await api.getWithCache(`/listings/${id}`)
-        const fetchedProduct = response.data
+        const response = await api.getWithCache(`/listings/${id}/detail`)
+        const fetchedProduct = response.data.product
         setProduct(fetchedProduct)
 
-        try {
-          const relatedRes = await api.getWithCache(`/listings?category_id=${fetchedProduct.category_id}`)
-          const filteredRelated = relatedRes.data.data
-            .filter(p => p.id !== fetchedProduct.id)
-            .map(item => {
-              const displayPrice = (parseFloat(item.supplier_price) || 0) + (parseFloat(item.our_cut) || 0)
-              return {
-                ...item,
-                price: `₹${displayPrice}`,
-                oldPrice: item.MRP > displayPrice ? `₹${item.MRP}` : null
-              }
-            })
-            .slice(0, 3)
-          setRelatedProducts(filteredRelated)
-        } catch (relatedErr) {
-          console.error("Failed to fetch related products:", relatedErr)
-        }
+        const filteredRelated = response.data.related.map(item => {
+          const displayPrice = (parseFloat(item.supplier_price) || 0) + (parseFloat(item.our_cut) || 0)
+          return {
+            ...item,
+            price: `₹${displayPrice}`,
+            oldPrice: item.MRP > displayPrice ? `₹${item.MRP}` : null
+          }
+        })
+        setRelatedProducts(filteredRelated)
       } catch (err) {
         console.error("Failed to fetch product:", err)
         setError("Failed to load product details.")

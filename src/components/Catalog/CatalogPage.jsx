@@ -107,42 +107,45 @@ export default function CatalogPage() {
     fetchListings()
   }, [categories, queryCategory, selectedSubCategories, selectedBrand, subCategories, brands, searchParams, page])
 
+  const [allSubCategories, setAllSubCategories] = useState([])
+  const [allBrands, setAllBrands] = useState([])
+
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchInitData = async () => {
       try {
-        const response = await api.getWithCache('/categories')
-        setCategories(response.data)
+        const response = await api.getWithCache('/catalog/init')
+        setCategories(response.data.categories)
+        setAllSubCategories(response.data.subcategories)
+        setAllBrands(response.data.brands)
       } catch (err) {
-        console.error("Failed to fetch categories:", err)
+        console.error("Failed to fetch catalog init data:", err)
       }
     }
-    fetchCategories()
+    fetchInitData()
   }, [])
 
   useEffect(() => {
     const currentCategoryObj = categories.find(c => c.name === queryCategory)
     if (currentCategoryObj) {
-      api.getWithCache(`/subCategories?category_id=${currentCategoryObj.id}`)
-        .then(res => setSubCategories(res.data))
-        .catch(err => console.error("Failed to fetch subcategories:", err))
+      setSubCategories(allSubCategories.filter(sc => sc.category_id === currentCategoryObj.id))
     } else {
       setSubCategories([])
     }
-  }, [categories, queryCategory])
+  }, [categories, queryCategory, allSubCategories])
 
   useEffect(() => {
     if (selectedSubCategories.length > 0) {
       const selectedSubCatObj = subCategories.find(sc => sc.name === selectedSubCategories[0])
       if (selectedSubCatObj) {
-        api.getWithCache(`/brands?subCategory_id=${selectedSubCatObj.id}`)
-          .then(res => setBrands(res.data))
-          .catch(err => console.error("Failed to fetch brands", err))
+        // In reality, listings would join brands. For simplicity we assume brand IDs exist in listings for this subcategory.
+        // Here we just use all brands for now or filter if we had that data.
+        setBrands(allBrands)
       }
     } else {
       setBrands([])
       setSelectedBrand('All')
     }
-  }, [selectedSubCategories, subCategories])
+  }, [selectedSubCategories, subCategories, allBrands])
 
   const filteredProducts = useMemo(() => {
     const selectedSubCatIds = selectedSubCategories

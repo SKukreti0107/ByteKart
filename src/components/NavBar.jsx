@@ -273,15 +273,15 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                 className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-matcha-bg rounded-none !border-2 !border-black hover:bg-black hover:text-matcha-bg transition-colors shadow-brutal-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] overflow-hidden"
               >
-                {session.user.image ? (
+                {session?.user?.image ? (
                   <img
-                    alt={session.user.name || "User Profile"}
+                    alt={session?.user?.name || "User Profile"}
                     className="h-full w-full object-cover"
-                    src={session.user.image}
+                    src={session?.user?.image}
                   />
                 ) : (
                   <span className="font-bold text-sm uppercase">
-                    {session.user?.name?.substring(0, 2) || "NS"}
+                    {session?.user?.name?.substring(0, 2) || "NS"}
                   </span>
                 )}
               </button>
@@ -289,11 +289,11 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
               {isProfileMenuOpen && (
                 <div className="absolute right-0 top-full mt-2 w-56 border-4 border-black bg-pure-white shadow-brutal">
                   <div className="border-b-4 border-black px-4 py-3 bg-matcha-bg">
-                    <p className="truncate text-sm font-black uppercase text-black">{session.user.name}</p>
-                    <p className="truncate text-[10px] font-bold text-black/60">{session.user.email}</p>
+                    <p className="truncate text-sm font-black uppercase text-black">{session?.user?.name || "User"}</p>
+                    <p className="truncate text-[10px] font-bold text-black/60">{session?.user?.email}</p>
                   </div>
                   <div className="flex flex-col">
-                    {(session.user?.is_admin || session.user?.role === 'admin') && (
+                    {(session?.user?.is_admin || session?.user?.role === 'admin') && (
                       <Link
                         to="/admin/inventory"
                         onClick={() => setIsProfileMenuOpen(false)}
