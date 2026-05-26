@@ -11,7 +11,7 @@ const WhatsAppFloat = () => {
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="fixed bottom-24 lg:bottom-8 right-8 z-[9999] flex h-16 w-16 items-center justify-center border-4 border-black bg-[#25D366] text-white shadow-brutal hover:-translate-y-1 hover:shadow-none active:translate-y-0 transition-all group"
+            className="fixed bottom-8 right-8 z-[9999] flex h-16 w-16 items-center justify-center border-4 border-black bg-[#25D366] text-white shadow-brutal hover:-translate-y-1 hover:shadow-none active:translate-y-0 transition-all group"
             aria-label="Chat on WhatsApp"
         >
             <FontAwesomeIcon icon={faWhatsapp} className="text-3xl" />
