@@ -232,7 +232,7 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
 
         <div className="flex items-center px-4 md:px-6 gap-2 md:gap-4 bg-pure-white flex-grow justify-end">
           {showSearch && (
-            <div className="relative w-full max-w-md hidden md:block" ref={searchContainerRefDesk}>
+            <div className="relative w-full max-w-md hidden lg:block" ref={searchContainerRefDesk}>
               <form onSubmit={handleSearch} className="group relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-500 group-focus-within:text-black">search</span>
                 <input
@@ -255,7 +255,7 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
 
           <Link
             to="/cart"
-            className="w-10 h-10 md:w-12 md:h-12 relative flex items-center justify-center bg-matcha-bg rounded-none !border-2 !border-black hover:bg-black hover:text-matcha-bg transition-colors shadow-brutal-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+            className="w-10 h-10 md:w-12 md:h-12 relative hidden lg:flex items-center justify-center bg-matcha-bg rounded-none !border-2 !border-black hover:bg-black hover:text-matcha-bg transition-colors shadow-brutal-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
           >
             <span className="material-symbols-outlined text-lg md:text-xl">shopping_cart</span>
             {cartCount > 0 && (
@@ -266,9 +266,9 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
           </Link>
 
           {isPending ? (
-            <div className="w-10 h-10 md:w-12 md:h-12 animate-pulse rounded-full bg-gray-200 border-2 border-black"></div>
+            <div className="w-10 h-10 md:w-12 md:h-12 animate-pulse rounded-full bg-gray-200 border-2 border-black hidden lg:block"></div>
           ) : session ? (
-            <div className="relative">
+            <div className="relative hidden lg:block">
               <button
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                 className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-matcha-bg rounded-none !border-2 !border-black hover:bg-black hover:text-matcha-bg transition-colors shadow-brutal-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] overflow-hidden"
@@ -329,71 +329,36 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
           ) : (
             <button
               onClick={() => setIsAuthModalOpen(true)}
-              className="h-10 md:h-12 px-4 bg-pure-black text-pure-white font-black uppercase tracking-widest text-xs border-2 border-black shadow-brutal-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-white hover:text-black transition-all flex items-center"
+              className="h-10 md:h-12 px-4 bg-pure-black text-pure-white font-black uppercase tracking-widest text-xs border-2 border-black shadow-brutal-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-white hover:text-black transition-all hidden lg:flex items-center"
             >
               Sign In
             </button>
           )}
-
-          {/* Mobile menu toggle */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="w-10 h-10 relative flex items-center justify-center bg-pure-white rounded-none !border-2 !border-black transition-colors shadow-brutal-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] lg:hidden"
-          >
-            <span className="material-symbols-outlined text-lg">{isMobileMenuOpen ? 'close' : 'menu'}</span>
-          </button>
         </div>
       </header>
 
-      {/* Mobile Menu Dropdown */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden border-b-4 border-pure-black bg-pure-white px-4 py-4 sticky top-24 z-40 shadow-brutal transition-all">
-          <nav className="flex flex-col gap-2">
-            {links.map((item) => (
-              <NavLink
-                key={item.label}
-                to={item.to}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `px-4 py-3 text-sm font-black uppercase tracking-widest transition-all border-2 border-black shadow-brutal-sm ${isActive
-                    ? 'bg-black text-matcha-bg'
-                    : 'bg-white text-black hover:bg-matcha-bg'
-                  }`
-                }
-              >
-                <div className="flex items-center gap-2">
-                  {item.label}
-                </div>
-              </NavLink>
-            ))}
-          </nav>
-
-          {showSearch && (
-            <div ref={searchContainerRefMob} className="relative mt-4">
-              <form onSubmit={handleSearch} className="group relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-500">search</span>
-                <input
-                  type="text"
-                  placeholder="Search gear..."
-                  value={searchQuery}
-                  onFocus={() => { if (searchQuery.trim().length > 1) setShowDropdown(true) }}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-[#E8EFE5] text-charcoal font-bold text-sm focus:ring-0 placeholder:text-gray-500 !border-2 !border-black rounded-none shadow-brutal-sm"
-                />
-                <SearchDropdown
-                  results={searchResults}
-                  isSearching={isSearching}
-                  onResultClick={handleResultClick}
-                  show={showDropdown}
-                />
-              </form>
-            </div>
-          )}
+      {/* Mobile Search Bar below Logo */}
+      {showSearch && (
+        <div className="lg:hidden px-4 py-3 bg-pure-white border-b-4 border-pure-black" ref={searchContainerRefMob}>
+          <form onSubmit={handleSearch} className="group relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-500 group-focus-within:text-black">search</span>
+            <input
+              type="text"
+              placeholder="Search gear..."
+              value={searchQuery}
+              onFocus={() => { if (searchQuery.trim().length > 1) setShowDropdown(true) }}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 bg-[#E8EFE5] text-charcoal font-bold text-sm focus:ring-0 placeholder:text-gray-500 !border-2 !border-black rounded-none shadow-brutal-sm"
+            />
+            <SearchDropdown
+              results={searchResults}
+              isSearching={isSearching}
+              onResultClick={handleResultClick}
+              show={showDropdown}
+            />
+          </form>
         </div>
       )}
-
-      {/* Authentication Modal */}
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </>
   )
 }
