@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import { CartProvider } from './context/CartContext'
 import { Analytics } from "@vercel/analytics/react"
 import PremiumLoader from './components/Loaders/PremiumLoader'
+import ReloadPrompt from './components/ReloadPrompt'
 
 // Lazy-loaded routes for Code Splitting (Reduces initial JS bundle)
 const Home = lazy(() => import('./pages/Home'))
@@ -47,6 +48,7 @@ function App() {
     <CartProvider>
       <Analytics />
       <BrowserRouter>
+        <ReloadPrompt />
         <Suspense fallback={<PageFallbackLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
