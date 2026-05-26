@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import StorefrontLayout from '../StorefrontLayout'
 import Hero from './Hero'
 import ProductGrid from './ProductsGrid'
-import ProductCardSkeleton from '../Loaders/ProductCardSkeleton'
+import PremiumLoader from '../Loaders/PremiumLoader'
 import api from '../../api'
 
 const noticeStyles = {
@@ -80,17 +80,15 @@ export default function ElectronicsHubPage() {
                 )}
 
                 <Hero />
-                <section className="bg-matcha-bg py-16 px-6 lg:px-12 border-b-4 border-pure-black">
+                <section className="bg-matcha-bg py-8 sm:py-16 px-4 lg:px-12 border-b-4 border-pure-black">
                     <div className="w-full">
-                        <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-12">
-                            <h3 className="text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-black" style={{ textShadow: '3px 3px 0px #FFF' }}>Latest Arrivals</h3>
+                        <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-6 sm:mb-12">
+                            <h3 className="text-3xl sm:text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-black" style={{ textShadow: '3px 3px 0px #FFF' }}>Latest Arrivals</h3>
                             <Link to="/catalog" className="text-base md:text-lg font-bold border-b-4 border-black hover:bg-black hover:text-white px-2 transition-all w-fit">View All</Link>
                         </div>
                         {loading ? (
-                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
-                                {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-                                    <ProductCardSkeleton key={n} />
-                                ))}
+                            <div className="bg-white border-4 border-black p-8 shadow-brutal w-full flex justify-center items-center">
+                                <PremiumLoader message="Sourcing the latest arrivals..." />
                             </div>
                         ) : error ? (
                             <div className="text-center font-bold text-red-500 uppercase">{error}</div>

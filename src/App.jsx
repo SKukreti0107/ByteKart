@@ -4,6 +4,7 @@ import { lazy, Suspense } from 'react'
 import ProtectedRoute from './components/ProtectedRoute'
 import { CartProvider } from './context/CartContext'
 import { Analytics } from "@vercel/analytics/react"
+import PremiumLoader from './components/Loaders/PremiumLoader'
 
 // Lazy-loaded routes for Code Splitting (Reduces initial JS bundle)
 const Home = lazy(() => import('./pages/Home'))
@@ -37,7 +38,7 @@ const AdminRedeemCodes = lazy(() => import('./pages/AdminRedeemCodes'))
 // Fallback Loader for Suspense boundaries
 const PageFallbackLoader = () => (
   <div className="flex min-h-screen items-center justify-center bg-matcha-bg">
-    <div className="h-12 w-12 animate-spin rounded-full border-4 border-baby-green border-t-matcha-deep"></div>
+    <PremiumLoader message="Booting up ByteKart..." />
   </div>
 )
 

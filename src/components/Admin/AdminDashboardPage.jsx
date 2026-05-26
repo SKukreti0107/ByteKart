@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import AdminSidebar from './AdminSidebar'
 import NavBar from '../NavBar'
 import api from '../../api'
-import Skeleton from '../Loaders/Skeleton'
+import PremiumLoader from '../Loaders/PremiumLoader'
 
 export default function AdminDashboardPage() {
     const [kpi, setKpi] = useState(null)
@@ -36,62 +36,53 @@ export default function AdminDashboardPage() {
                         </div>
                     </div>
 
-                    {/* Phase 1: High-Level Overview Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
-                        {loading ? (
-                            Array.from({ length: 5 }).map((_, idx) => (
-                                <div key={idx} className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform">
-                                    <div className="mb-4 flex items-start justify-between">
-                                        <Skeleton className="h-4 w-24 bg-gray-200" />
-                                        <Skeleton className="h-8 w-8 rounded-none bg-gray-200" />
-                                    </div>
-                                    <Skeleton className="h-10 w-20 mt-2 bg-gray-200" />
+                    {loading ? (
+                        <div className="bg-white border-4 border-black p-8 shadow-brutal flex justify-center items-center min-h-[220px] mb-12">
+                            <PremiumLoader message="Loading business intelligence..." />
+                        </div>
+                    ) : kpi ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
+                            <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+                                <div className="flex justify-between items-start mb-4">
+                                    <p className="text-sm font-black uppercase tracking-widest text-black">Total Products</p>
+                                    <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">inventory_2</span>
                                 </div>
-                            ))
-                        ) : kpi ? (
-                            <>
-                                <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
-                                    <div className="flex justify-between items-start mb-4">
-                                        <p className="text-sm font-black uppercase tracking-widest text-black">Total Products</p>
-                                        <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">inventory_2</span>
-                                    </div>
-                                    <p className="text-4xl font-black text-black">{kpi.totalProducts}</p>
-                                </div>
+                                <p className="text-4xl font-black text-black">{kpi.totalProducts}</p>
+                            </div>
 
-                                <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
-                                    <div className="flex justify-between items-start mb-4">
-                                        <p className="text-sm font-black uppercase tracking-widest text-black">Total Orders</p>
-                                        <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">local_shipping</span>
-                                    </div>
-                                    <p className="text-4xl font-black text-black">{kpi.totalOrders}</p>
+                            <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+                                <div className="flex justify-between items-start mb-4">
+                                    <p className="text-sm font-black uppercase tracking-widest text-black">Total Orders</p>
+                                    <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">local_shipping</span>
                                 </div>
+                                <p className="text-4xl font-black text-black">{kpi.totalOrders}</p>
+                            </div>
 
-                                <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
-                                    <div className="flex justify-between items-start mb-4">
-                                        <p className="text-sm font-black uppercase tracking-widest text-black">Revenue</p>
-                                        <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">payments</span>
-                                    </div>
-                                    <p className="text-4xl font-black text-black">₹{(kpi.revenue || 0).toLocaleString()}</p>
+                            <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+                                <div className="flex justify-between items-start mb-4">
+                                    <p className="text-sm font-black uppercase tracking-widest text-black">Revenue</p>
+                                    <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">payments</span>
                                 </div>
+                                <p className="text-4xl font-black text-black">₹{(kpi.revenue || 0).toLocaleString()}</p>
+                            </div>
 
-                                <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
-                                    <div className="flex justify-between items-start mb-4">
-                                        <p className="text-sm font-black uppercase tracking-widest text-black">Pending Requests</p>
-                                        <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">pending_actions</span>
-                                    </div>
-                                    <p className="text-4xl font-black text-black">{kpi.pendingRequests}</p>
+                            <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+                                <div className="flex justify-between items-start mb-4">
+                                    <p className="text-sm font-black uppercase tracking-widest text-black">Pending Requests</p>
+                                    <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">pending_actions</span>
                                 </div>
+                                <p className="text-4xl font-black text-black">{kpi.pendingRequests}</p>
+                            </div>
 
-                                <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
-                                    <div className="flex justify-between items-start mb-4">
-                                        <p className="text-sm font-black uppercase tracking-widest text-black">Open Tickets</p>
-                                        <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">support_agent</span>
-                                    </div>
-                                    <p className="text-4xl font-black text-black">{kpi.openTickets || 0}</p>
+                            <div className="bg-white border-4 border-black p-6 shadow-brutal hover:-translate-y-1 transition-transform group">
+                                <div className="flex justify-between items-start mb-4">
+                                    <p className="text-sm font-black uppercase tracking-widest text-black">Open Tickets</p>
+                                    <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">support_agent</span>
                                 </div>
-                            </>
-                        ) : null}
-                    </div>
+                                <p className="text-4xl font-black text-black">{kpi.openTickets || 0}</p>
+                            </div>
+                        </div>
+                    ) : null}
 
                     {/* Phase 2: Analytics Placeholders */}
                     <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">

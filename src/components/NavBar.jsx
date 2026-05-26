@@ -177,16 +177,19 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
 
   return (
     <>
-      <header className="flex items-stretch justify-between h-24 border-b-4 border-pure-black bg-pure-white sticky top-0 z-50 shadow-sm">
+      <header className="flex items-stretch justify-between h-[102px] pt-1.5 border-b-4 border-pure-black bg-pure-white sticky top-0 z-50 shadow-sm relative">
+        {/* Forest Green Top Accent Bar */}
+        <div className="w-full h-1.5 bg-matcha-dark absolute top-0 left-0 z-50"></div>
+
         <Link to="/" className="flex items-center justify-center border-r-4 border-pure-black bg-matcha-bg hover:bg-black transition-colors group overflow-hidden h-full min-w-[120px] md:min-w-[280px]">
           <img
             src="/final_logo.png"
             alt="ByteKart Logo"
-            className="w-full h-52 object-contain"
+            className="w-full h-52 object-contain group-hover:scale-105 group-hover:-rotate-2 transition-transform duration-300"
           />
         </Link>
 
-        <nav className="hidden lg:flex flex-grow items-center justify-start px-8 gap-8 text-sm font-black tracking-widest uppercase text-pure-black h-full">
+        <nav className="hidden lg:flex flex-grow items-center justify-start px-8 gap-6 text-sm font-black uppercase text-pure-black h-full">
           {links.map((item) => (
             <div
               key={item.label}
@@ -197,7 +200,9 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
               <NavLink
                 to={item.to}
                 className={({ isActive }) =>
-                  `nav-link px-4 py-2 hover:bg-pure-black hover:text-matcha-bg transition-colors border-2 border-transparent hover:border-black flex items-center gap-1 ${isActive ? 'bg-pure-black text-matcha-bg border-black' : ''}`
+                  `px-4 py-2 font-display font-black transition-all border-2 border-pure-black flex items-center gap-1 shadow-[2px_2px_0px_#C6DCBA] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] ${
+                    isActive ? 'bg-pure-black text-matcha-bg shadow-none translate-x-[2px] translate-y-[2px]' : 'bg-pure-white text-pure-black hover:bg-pure-black hover:text-matcha-bg'
+                  }`
                 }
               >
                 {item.label}
@@ -210,14 +215,14 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
                 <div className="absolute top-full left-0 w-48 pt-2"
                   onMouseLeave={handleCatalogLeave}
                   onMouseEnter={handleCatalogHover}>
-                  <div className="border-4 border-pure-black bg-pure-white p-2 shadow-brutal">
+                  <div className="border-4 border-pure-black bg-pure-white p-2 shadow-[4px_4px_0px_rgba(0,0,0,1)]">
                     <div className="flex flex-col gap-1">
                       {categories.map((cat) => (
                         <Link
                           key={cat.id}
                           to={`/catalog?category=${cat.name}`}
                           onClick={() => setIsHoveringCatalog(false)}
-                          className="px-3 py-2 text-sm font-bold uppercase tracking-wider transition-all hover:bg-pure-black hover:text-white"
+                          className="px-3 py-2 text-sm font-display font-black uppercase tracking-wider transition-all hover:bg-pure-black hover:text-matcha-bg hover:translate-x-1"
                         >
                           {cat.name}
                         </Link>
@@ -234,14 +239,14 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
           {showSearch && (
             <div className="relative w-full max-w-md hidden lg:block" ref={searchContainerRefDesk}>
               <form onSubmit={handleSearch} className="group relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-500 group-focus-within:text-black">search</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-500 group-focus-within:text-black transition-colors">search</span>
                 <input
                   type="text"
                   placeholder="Search gear..."
                   value={searchQuery}
                   onFocus={() => { if (searchQuery.trim().length > 1) setShowDropdown(true) }}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-2 bg-[#E8EFE5] text-charcoal font-bold text-sm focus:ring-0 placeholder:text-gray-500 !border-2 !border-black rounded-none shadow-brutal-sm"
+                  className="w-full pl-12 pr-4 py-2 bg-[#E8EFE5] text-charcoal font-bold text-sm focus:ring-0 placeholder:text-gray-500 !border-2 !border-black rounded-none shadow-[3px_3px_0px_rgba(0,0,0,1)] group-focus-within:shadow-none group-focus-within:translate-x-0.5 group-focus-within:translate-y-0.5 transition-all"
                 />
                 <SearchDropdown
                   results={searchResults}
@@ -255,7 +260,7 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
 
           <Link
             to="/cart"
-            className="w-10 h-10 md:w-12 md:h-12 relative hidden lg:flex items-center justify-center bg-matcha-bg rounded-none !border-2 !border-black hover:bg-black hover:text-matcha-bg transition-colors shadow-brutal-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+            className="w-10 h-10 md:w-12 md:h-12 relative hidden lg:flex items-center justify-center bg-matcha-bg text-pure-black rounded-none !border-2 !border-black hover:bg-pure-black hover:text-matcha-bg transition-colors shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
           >
             <span className="material-symbols-outlined text-lg md:text-xl">shopping_cart</span>
             {cartCount > 0 && (
@@ -271,7 +276,7 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
             <div className="relative hidden lg:block">
               <button
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-matcha-bg rounded-none !border-2 !border-black hover:bg-black hover:text-matcha-bg transition-colors shadow-brutal-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] overflow-hidden"
+                className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-matcha-bg text-pure-black rounded-none !border-2 !border-black hover:bg-pure-black hover:text-matcha-bg transition-colors shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] overflow-hidden"
               >
                 {session?.user?.image ? (
                   <img
@@ -329,7 +334,7 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
           ) : (
             <button
               onClick={() => setIsAuthModalOpen(true)}
-              className="h-10 md:h-12 px-4 bg-pure-black text-pure-white font-black uppercase tracking-widest text-xs border-2 border-black shadow-brutal-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-white hover:text-black transition-all hidden lg:flex items-center"
+              className="h-10 md:h-12 px-4 bg-matcha-bg text-pure-black font-black uppercase tracking-widest text-xs border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-pure-black hover:text-matcha-bg transition-all hidden lg:flex items-center"
             >
               Sign In
             </button>
@@ -341,14 +346,14 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
       {showSearch && (
         <div className="lg:hidden px-4 py-3 bg-pure-white border-b-4 border-pure-black" ref={searchContainerRefMob}>
           <form onSubmit={handleSearch} className="group relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-500 group-focus-within:text-black">search</span>
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-500 group-focus-within:text-black transition-colors">search</span>
             <input
               type="text"
               placeholder="Search gear..."
               value={searchQuery}
               onFocus={() => { if (searchQuery.trim().length > 1) setShowDropdown(true) }}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-[#E8EFE5] text-charcoal font-bold text-sm focus:ring-0 placeholder:text-gray-500 !border-2 !border-black rounded-none shadow-brutal-sm"
+              className="w-full pl-12 pr-4 py-3 bg-[#E8EFE5] text-charcoal font-bold text-sm focus:ring-0 placeholder:text-gray-500 !border-2 !border-black rounded-none shadow-[3px_3px_0px_rgba(0,0,0,1)] group-focus-within:shadow-none group-focus-within:translate-x-0.5 group-focus-within:translate-y-0.5 transition-all"
             />
             <SearchDropdown
               results={searchResults}
@@ -359,6 +364,9 @@ export default function NavBar({ links = defaultLinks, title = 'ByteKart', showS
           </form>
         </div>
       )}
+
+      {/* Authentication Modal */}
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </>
   )
 }

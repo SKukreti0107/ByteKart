@@ -4,7 +4,7 @@ import StorefrontLayout from '../StorefrontLayout'
 import ProductCard from '../ProductCard'
 import ProductGallery from './ProductGallery'
 import PurchasePanel from './PurchasePanel'
-import ProductDetailSkeleton from '../Loaders/ProductDetailSkeleton'
+import PremiumLoader from '../Loaders/PremiumLoader'
 import api from '../../api'
 
 export default function ProductDetailPage() {
@@ -47,7 +47,11 @@ export default function ProductDetailPage() {
   if (loading) {
     return (
       <StorefrontLayout>
-        <ProductDetailSkeleton />
+        <div className="px-6 lg:px-12 py-12">
+          <div className="bg-white border-4 border-black p-12 shadow-brutal flex justify-center items-center min-h-[400px]">
+            <PremiumLoader message="Inspecting product specification..." />
+          </div>
+        </div>
       </StorefrontLayout>
     )
   }
@@ -93,12 +97,12 @@ export default function ProductDetailPage() {
   return (
     <StorefrontLayout>
       <main className="w-full space-y-16 px-6 lg:px-12 py-8">
-        <div className="flex flex-wrap items-center gap-2 text-[10px] md:text-sm font-black uppercase tracking-widest">
-          <Link to="/" className="bg-charcoal/10 px-2 py-1 text-black hover:bg-black hover:text-white transition-colors">Home</Link>
-          <span className="text-black/30">/</span>
-          <Link to="/catalog" className="bg-charcoal/10 px-2 py-1 text-black hover:bg-black hover:text-white transition-colors">Catalog</Link>
-          <span className="text-black/30">/</span>
-          <span className="bg-black text-white px-2 py-1">{product?.name}</span>
+        <div className="flex flex-wrap items-center gap-3 text-[10px] md:text-xs font-display font-black uppercase tracking-widest">
+          <Link to="/" className="px-3 py-1.5 border-2 border-pure-black bg-pure-white text-pure-black shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all">Home</Link>
+          <span className="text-black/40 font-bold">/</span>
+          <Link to="/catalog" className="px-3 py-1.5 border-2 border-pure-black bg-pure-white text-pure-black shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all">Catalog</Link>
+          <span className="text-black/40 font-bold">/</span>
+          <span className="bg-pure-black text-matcha-bg px-3 py-1.5 border-2 border-pure-black shadow-[2px_2px_0px_#C6DCBA]">{product?.name}</span>
         </div>
 
         <div className="grid grid-cols-1 gap-12 xl:grid-cols-2">
@@ -115,10 +119,12 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-3 pt-8">
           <div className="xl:col-span-3">
             <section className="text-black h-full border-4 border-black bg-white p-8 md:p-12 shadow-brutal relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-black text-white px-4 py-1 text-[10px] font-black uppercase tracking-[0.2em] shadow-brutal-sm">Technical_Specs</div>
-              <h2 className="text-2xl md:text-3xl font-black uppercase tracking-widest mb-8 border-b-4 border-black pb-4 inline-block">Description</h2>
-              <div className="max-h-96 overflow-y-auto pr-2">
-                <p className="whitespace-pre-wrap font-bold text-base leading-relaxed max-w-5xl">{product?.description || 'No description available for this product.'}</p>
+              {/* Dot Grid Background */}
+              <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(#000000_1px,transparent_1px)] [background-size:16px_16px]"></div>
+              <div className="absolute top-0 right-0 bg-black text-white px-4 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] shadow-[2px_2px_0px_#C6DCBA]">Technical_Specs</div>
+              <h2 className="text-2xl md:text-3xl font-display font-black uppercase tracking-widest mb-8 border-b-4 border-black pb-4 inline-block">Description</h2>
+              <div className="max-h-96 overflow-y-auto pr-2 relative z-10">
+                <p className="whitespace-pre-wrap font-bold text-base leading-relaxed max-w-5xl text-charcoal">{product?.description || 'No description available for this product.'}</p>
               </div>
             </section>
           </div>

@@ -24,11 +24,6 @@ export default function AuthModal({ isOpen, onClose }) {
         onClose()
     }
 
-    const toggleMode = () => {
-        setIsLogin(!isLogin)
-        resetState()
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
@@ -36,19 +31,19 @@ export default function AuthModal({ isOpen, onClose }) {
 
         try {
             if (isLogin) {
-                const { data, error } = await authClient.signIn.email({
+                const { error: signInError } = await authClient.signIn.email({
                     email,
                     password,
                 })
-                if (error) throw new Error(error.message || 'Failed to sign in')
+                if (signInError) throw new Error(signInError.message || 'Failed to sign in')
                 handleClose()
             } else {
-                const { data, error } = await authClient.signUp.email({
+                const { error: signUpError } = await authClient.signUp.email({
                     email,
                     password,
                     name,
                 })
-                if (error) throw new Error(error.message || 'Failed to sign up')
+                if (signUpError) throw new Error(signUpError.message || 'Failed to sign up')
                 handleClose()
             }
         } catch (err) {
@@ -59,38 +54,70 @@ export default function AuthModal({ isOpen, onClose }) {
     }
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-3 sm:p-4 backdrop-blur-sm overflow-y-auto">
-            <div className="relative w-full max-w-md border-4 border-black bg-pure-white p-5 sm:p-8 shadow-brutal my-auto">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm overflow-y-auto">
+            <div className="relative w-full max-w-md border-4 border-black bg-pure-white p-6 sm:p-8 shadow-brutal my-auto overflow-hidden">
+                {/* Dotted Grid Background */}
+                <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#000000_1px,transparent_1px)] [background-size:10px_10px]"></div>
+
+                {/* Close Button */}
                 <button
                     onClick={handleClose}
-                    className="absolute -right-3 -top-3 sm:-right-4 sm:-top-4 w-9 h-9 sm:w-10 sm:h-10 bg-white border-4 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors z-20 shadow-brutal-sm"
+                    className="absolute -right-3 -top-3 sm:-right-4 sm:-top-4 w-10 h-10 bg-white border-4 border-black flex items-center justify-center hover:bg-black hover:text-matcha-bg transition-colors z-20 shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
                     aria-label="Close modal"
                 >
-                    <span className="material-symbols-outlined text-lg sm:text-xl">close</span>
+                    <span className="material-symbols-outlined text-xl font-black">close</span>
                 </button>
 
-                <div className="mb-5 sm:mb-10 text-center">
-                    <div className="mx-auto mb-4 sm:mb-6 flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center border-4 border-black bg-matcha-bg shadow-brutal-sm">
-                        <span className="material-symbols-outlined text-2xl sm:text-4xl text-black">terminal</span>
-                    </div>
-                    <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tighter text-black">
-                        {isLogin ? 'Welcome Back' : 'Create Account'}
-                    </h2>
-                    <p className="mt-1 sm:mt-2 text-xs font-black uppercase tracking-[0.2em] text-gray-500">
-                        {isLogin ? 'Login' : 'Register'}
-                    </p>
+                {/* Interactive Mode Switching Tabs */}
+                <div className="grid grid-cols-2 gap-2 mb-6 sm:mb-8 relative z-10">
+                    <button
+                        type="button"
+                        onClick={() => { setIsLogin(true); setError('') }}
+                        className={`py-3 text-xs sm:text-sm font-display font-black uppercase tracking-widest border-4 border-black transition-all ${
+                            isLogin 
+                                ? 'bg-black text-matcha-bg shadow-none translate-x-0.5 translate-y-0.5' 
+                                : 'bg-white text-black shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5'
+                        }`}
+                    >
+                        Login
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => { setIsLogin(false); setError('') }}
+                        className={`py-3 text-xs sm:text-sm font-display font-black uppercase tracking-widest border-4 border-black transition-all ${
+                            !isLogin 
+                                ? 'bg-black text-matcha-bg shadow-none translate-x-0.5 translate-y-0.5' 
+                                : 'bg-white text-black shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5'
+                        }`}
+                    >
+                        Register
+                    </button>
                 </div>
 
+                {/* Portal Header */}
+                <div className="mb-6 sm:mb-8 text-center relative z-10">
+                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center border-4 border-black bg-matcha-bg shadow-[3px_3px_0px_rgba(0,0,0,1)] rotate-[-3deg]">
+                        <span className="material-symbols-outlined text-2xl font-black text-black">
+                            {isLogin ? 'vpn_key' : 'person_add'}
+                        </span>
+                    </div>
+                    <h2 className="text-xl sm:text-2xl font-display font-black uppercase tracking-tight text-black">
+                        {isLogin ? 'Access Portal' : 'Register Terminal'}
+                    </h2>
+                </div>
+
+                {/* Error Banner */}
                 {error && (
-                    <div className="mb-4 sm:mb-6 border-4 border-black bg-red-100 p-3 sm:p-4 text-xs font-black uppercase tracking-widest text-red-600">
+                    <div className="mb-6 border-4 border-black bg-red-50 p-4 text-xs font-black uppercase tracking-widest text-red-600 shadow-[3px_3px_0px_rgba(220,38,38,1)] relative z-10">
                         {error}
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                {/* Input Fields */}
+                <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 relative z-10">
                     {!isLogin && (
-                        <div>
-                            <label className="mb-2 block text-xs font-black uppercase tracking-widest text-black/50" htmlFor="name">
+                        <div className="flex flex-col gap-2">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-black/60" htmlFor="name">
                                 Full Name
                             </label>
                             <input
@@ -99,15 +126,15 @@ export default function AuthModal({ isOpen, onClose }) {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required={!isLogin}
-                                className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-2 sm:py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
+                                className="w-full border-4 border-black bg-[#fcfdfc] px-4 py-3 font-bold text-black outline-none shadow-[2px_2px_0px_rgba(0,0,0,1)] focus:shadow-none focus:translate-x-0.5 focus:translate-y-0.5 transition-all placeholder:text-gray-300"
                                 placeholder="IDENTIFY YOURSELF"
                             />
                         </div>
                     )}
 
-                    <div>
-                        <label className="mb-2 block text-xs font-black uppercase tracking-widest text-black/50" htmlFor="email">
-                            Email address
+                    <div className="flex flex-col gap-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-black/60" htmlFor="email">
+                            Email Address
                         </label>
                         <input
                             id="email"
@@ -115,14 +142,14 @@ export default function AuthModal({ isOpen, onClose }) {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-2 sm:py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
+                            className="w-full border-4 border-black bg-[#fcfdfc] px-4 py-3 font-bold text-black outline-none shadow-[2px_2px_0px_rgba(0,0,0,1)] focus:shadow-none focus:translate-x-0.5 focus:translate-y-0.5 transition-all placeholder:text-gray-300"
                             placeholder="USER@HUB.COM"
                         />
                     </div>
 
-                    <div>
-                        <label className="mb-2 block text-xs font-black uppercase tracking-widest text-black/50" htmlFor="password">
-                            Password key
+                    <div className="flex flex-col gap-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-black/60" htmlFor="password">
+                            Password Key
                         </label>
                         <input
                             id="password"
@@ -131,31 +158,36 @@ export default function AuthModal({ isOpen, onClose }) {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             minLength={8}
-                            className="w-full border-b-4 border-gray-200 bg-transparent px-0 py-2 sm:py-3 font-bold text-black outline-none transition-colors placeholder:text-gray-300 focus:border-black rounded-none"
+                            className="w-full border-4 border-black bg-[#fcfdfc] px-4 py-3 font-bold text-black outline-none shadow-[2px_2px_0px_rgba(0,0,0,1)] focus:shadow-none focus:translate-x-0.5 focus:translate-y-0.5 transition-all placeholder:text-gray-300"
                             placeholder="••••••••"
                         />
                     </div>
 
+                    {/* Authentication Submit Button */}
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full border-4 border-black bg-black py-3 sm:py-5 font-black uppercase tracking-widest text-white shadow-brutal hover:bg-white hover:text-black transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none disabled:cursor-not-allowed disabled:opacity-50"
+                        className="w-full border-4 border-black bg-[#E8EFE5] text-black py-4 font-display font-black uppercase tracking-widest text-sm shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:bg-black hover:text-matcha-bg hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center gap-2"
                     >
-                        {loading ? 'Processing...' : isLogin ? 'Authenticate' : 'Establish Record'}
+                        {loading ? (
+                            <>
+                                <span className="material-symbols-outlined animate-spin text-lg">progress_activity</span>
+                                Processing...
+                            </>
+                        ) : (
+                            <>
+                                <span className="material-symbols-outlined text-lg">power_settings_new</span>
+                                {isLogin ? 'Authenticate' : 'Establish Record'}
+                            </>
+                        )}
                     </button>
                 </form>
 
-                <div className="mt-6 sm:mt-10 text-center">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 sm:mb-4 leading-relaxed">
+                {/* Footer security tag */}
+                <div className="mt-8 text-center relative z-10 border-t-2 border-dashed border-black/10 pt-4">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 leading-relaxed">
                         Secure terminal access. All credentials encrypted.
                     </p>
-                    <button
-                        type="button"
-                        onClick={toggleMode}
-                        className="text-xs font-black uppercase tracking-widest text-black underline underline-offset-4 hover:bg-black hover:text-white transition-colors px-2 py-1"
-                    >
-                        {isLogin ? 'Sign up' : 'Existing user? Login'}
-                    </button>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import AdminSidebar from './AdminSidebar'
 import NavBar from '../NavBar'
-import InventoryTableSkeleton from '../Loaders/InventoryTableSkeleton'
+import PremiumLoader from '../Loaders/PremiumLoader'
 import api from '../../api'
 
 export default function EntityManagerPage({ config }) {
@@ -122,7 +122,9 @@ export default function EntityManagerPage({ config }) {
                     </div>
 
                     {loading ? (
-                        <InventoryTableSkeleton />
+                        <div className="bg-white border-4 border-black p-8 shadow-brutal flex justify-center items-center min-h-[400px]">
+                            <PremiumLoader message={`Fetching ${config.title.toLowerCase()}...`} />
+                        </div>
                     ) : error ? (
                         <div className="p-8 text-center text-red-500 font-bold uppercase">{error}</div>
                     ) : (

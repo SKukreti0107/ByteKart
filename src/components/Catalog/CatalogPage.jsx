@@ -4,8 +4,7 @@ import StorefrontLayout from '../StorefrontLayout'
 import CatalogSidebar from './CatalogSidebar'
 import CatalogToolbar from './CatalogToolbar'
 import CatalogResults from './CatalogResults'
-import ProductCardSkeleton from '../Loaders/ProductCardSkeleton'
-import CatalogSidebarSkeleton from '../Loaders/CatalogSidebarSkeleton'
+import PremiumLoader from '../Loaders/PremiumLoader'
 import api from '../../api'
 
 const perPage = 8
@@ -181,39 +180,24 @@ export default function CatalogPage() {
     <StorefrontLayout>
       <main className="w-full">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-8 lg:mt-12 px-6 lg:px-12 mb-20 w-full">
-          {categories.length === 0 && loading ? (
-            <div className="w-full lg:w-80 flex-shrink-0">
-              <CatalogSidebarSkeleton />
-            </div>
-          ) : (
-            <CatalogSidebar
-              selectedSubCategories={selectedSubCategories}
-              toggleSubCategory={toggleSubCategory}
-              selectedBrand={selectedBrand}
-              setSelectedBrand={setSelectedBrand}
-              priceCap={priceCap}
-              setPriceCap={setPriceCap}
-              categories={categories}
-              queryCategory={queryCategory}
-              subCategories={subCategories}
-              brands={brands}
-            />
-          )}
+          <CatalogSidebar
+            selectedSubCategories={selectedSubCategories}
+            toggleSubCategory={toggleSubCategory}
+            selectedBrand={selectedBrand}
+            setSelectedBrand={setSelectedBrand}
+            priceCap={priceCap}
+            setPriceCap={setPriceCap}
+            categories={categories}
+            queryCategory={queryCategory}
+            subCategories={subCategories}
+            brands={brands}
+          />
 
           <div className="flex-grow">
             {loading ? (
-              <>
-                <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-4 border-black bg-white p-4 shadow-brutal-sm">
-                  <div className="h-8 w-32 animate-pulse bg-charcoal/10" />
-                  <div className="flex gap-4">
-                    <div className="h-12 w-40 animate-pulse bg-charcoal/10" />
-                    <div className="h-12 w-24 animate-pulse bg-charcoal/10 hidden sm:block" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-2 xl:grid-cols-3 md:gap-6">
-                  {[1, 2, 3, 4, 5, 6].map(n => <ProductCardSkeleton key={n} />)}
-                </div>
-              </>
+              <div className="bg-white border-4 border-black p-8 shadow-brutal flex justify-center items-center min-h-[400px]">
+                <PremiumLoader message="Searching the catalog..." />
+              </div>
             ) : error ? (
               <div className="p-8 text-center text-red-500 font-bold uppercase">{error}</div>
             ) : (

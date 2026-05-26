@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from 'react'
 import AdminSidebar from './AdminSidebar'
-import InventoryTableSkeleton from '../Loaders/InventoryTableSkeleton'
+import PremiumLoader from '../Loaders/PremiumLoader'
 import InventoryTable from './InventoryTable'
 import ProductFormModal from './ProductFormModal'
 import NavBar from '../NavBar'
@@ -162,7 +162,9 @@ export default function AdminInventoryPage() {
           </div>
 
           {loading ? (
-            <InventoryTableSkeleton />
+            <div className="bg-white border-4 border-black p-8 shadow-brutal flex justify-center items-center min-h-[400px]">
+              <PremiumLoader message="Fetching inventory data..." />
+            </div>
           ) : (
             <InventoryTable rows={currentRows} onEdit={handleEdit} onDelete={handleDelete} page={currentPage} setPage={setPage} totalPages={totalPages} />
           )}
