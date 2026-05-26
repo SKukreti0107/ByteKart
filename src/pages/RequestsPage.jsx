@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import StorefrontLayout from '../components/StorefrontLayout'
 import api from '../api'
+import PremiumLoader from '../components/Loaders/PremiumLoader'
 
 function StatusBadge({ status }) {
     if (status === 'requested') {
@@ -205,8 +206,8 @@ export default function RequestsPage() {
                 <h1 className="text-4xl md:text-5xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-4">My Requests</h1>
 
                 {loading ? (
-                    <div className="flex h-64 items-center justify-center">
-                        <div className="h-12 w-12 animate-spin border-4 border-black border-t-transparent"></div>
+                    <div className="bg-white border-4 border-black p-8 shadow-brutal flex justify-center items-center min-h-[300px]">
+                        <PremiumLoader message="Loading requests..." />
                     </div>
                 ) : error ? (
                     <div className="border-4 border-black bg-white p-8 text-center shadow-brutal">
