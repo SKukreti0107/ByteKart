@@ -37,6 +37,7 @@ export default function AuthModal({ isOpen, onClose }) {
                 })
                 if (signInError) throw new Error(signInError.message || 'Failed to sign in')
                 handleClose()
+                window.location.reload()
             } else {
                 const { error: signUpError } = await authClient.signUp.email({
                     email,
@@ -45,6 +46,7 @@ export default function AuthModal({ isOpen, onClose }) {
                 })
                 if (signUpError) throw new Error(signUpError.message || 'Failed to sign up')
                 handleClose()
+                window.location.reload()
             }
         } catch (err) {
             setError(err.message || 'An error occurred during authentication.')
